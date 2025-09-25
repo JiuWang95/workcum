@@ -11,6 +11,7 @@ const TimeEntryForm = ({ onAddEntry }) => {
   const [syncToSchedule, setSyncToSchedule] = useState(false);
   const [shifts, setShifts] = useState([]);
   const [selectedShift, setSelectedShift] = useState('');
+  const [customDuration, setCustomDuration] = useState('');
 
   // Load custom shifts from localStorage
   useEffect(() => {
@@ -18,7 +19,20 @@ const TimeEntryForm = ({ onAddEntry }) => {
     setShifts(savedShifts);
   }, []);
 
-  const calculateDuration = (start, end) => {
+  const calculateDuration = (start, end, customDur) => {
+    // If custom duration is provided, use it instead of calculating from start and end times
+    if (customDur) {
+      // Parse custom duration (e.g., "8h", "480m", "1h30m")
+      const hoursMatch = customDur.match(/(\d+)h/);
+      const minutesMatch = customDur.match(/(\d+)m/);
+      
+      const hours = hoursMatch ? parseInt(hoursMatch[1]) : 0;
+      const minutes = minutesMatch ? parseInt(minutesMatch[1]) : 0;
+      
+      return hours * 60 + minutes;
+    }
+    
+    // Otherwise, calculate duration from start and end times
     const startDate = parse(start, 'HH:mm', new Date());
     const endDate = parse(end, 'HH:mm', new Date());
     
@@ -34,16 +48,18 @@ const TimeEntryForm = ({ onAddEntry }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     
-    // Validate that end time is after start time
-    const startDateTime = parse(startTime, 'HH:mm', new Date());
-    const endDateTime = parse(endTime, 'HH:mm', new Date());
-    
-    if (endDateTime <= startDateTime) {
-      alert(t('time_entry.validation.end_time_after_start'));
-      return;
+    // Validate that end time is after start time (only if no custom duration is set)
+    if (!customDuration) {
+      const startDateTime = parse(startTime, 'HH:mm', new Date());
+      const endDateTime = parse(endTime, 'HH:mm', new Date());
+      
+      if (endDateTime <= startDateTime) {
+        alert(t('time_entry.validation.end_time_after_start'));
+        return;
+      }
     }
     
-    const duration = calculateDuration(startTime, endTime);
+    const duration = calculateDuration(startTime, endTime, customDuration);
     
     const newEntry = {
       id: Date.now().toString(),
@@ -65,6 +81,7 @@ const TimeEntryForm = ({ onAddEntry }) => {
     setNotes('');
     setSyncToSchedule(false);
     setSelectedShift('');
+    setCustomDuration('');
   };
 
   const syncEntryToSchedule = (entry) => {
@@ -101,7 +118,11 @@ const TimeEntryForm = ({ onAddEntry }) => {
         setStartTime(shift.startTime);
         setEndTime(shift.endTime);
         setNotes(shift.name);
+        setCustomDuration(shift.customDuration || '');
       }
+    } else {
+      // Reset custom duration when no shift is selected
+      setCustomDuration('');
     }
   };
 
@@ -139,11 +160,30 @@ const TimeEntryForm = ({ onAddEntry }) => {
               {shifts.map((shift) => (
                 <option key={shift.id} value={shift.id}>
                   {shift.name} ({shift.startTime} - {shift.endTime})
+                  {shift.customDuration && ` [${shift.customDuration}]`}
                 </option>
               ))}
             </select>
           </div>
         )}
+        
+        {/* Custom duration input */}
+        <div className="mb-4">
+          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="customDuration">
+            {t('time_entry.custom_shift.custom_duration')}
+          </label>
+          <input
+            type="text"
+            id="customDuration"
+            value={customDuration}
+            onChange={(e) => setCustomDuration(e.target.value)}
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            placeholder={t('time_entry.custom_shift.custom_duration_placeholder') || "例如: 8h 或 480m"}
+          />
+          <p className="text-gray-500 text-xs mt-1">
+            {t('time_entry.custom_shift.custom_duration_help') || "输入自定义工时，例如 8h 表示8小时，480m 表示480分钟"}
+          </p>
+        </div>
         
         <div className="grid grid-cols-2 gap-4 mb-4">
           <div>
@@ -156,7 +196,8 @@ const TimeEntryForm = ({ onAddEntry }) => {
               value={startTime}
               onChange={(e) => setStartTime(e.target.value)}
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              required
+              required={!customDuration}
+              disabled={!!customDuration}
             />
           </div>
           
@@ -170,7 +211,8 @@ const TimeEntryForm = ({ onAddEntry }) => {
               value={endTime}
               onChange={(e) => setEndTime(e.target.value)}
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              required
+              required={!customDuration}
+              disabled={!!customDuration}
             />
           </div>
         </div>

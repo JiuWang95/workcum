@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import DurationPicker from './DurationPicker';
 
 const CustomShiftManager = () => {
   const { t } = useTranslation();
@@ -138,16 +139,11 @@ const CustomShiftManager = () => {
             </div>
             
             <div>
-              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="customDuration">
-                {t('time_entry.custom_shift.custom_duration')}
-              </label>
-              <input
-                type="text"
+              <DurationPicker
                 id="customDuration"
+                label={t('time_entry.custom_shift.custom_duration')}
                 value={customDuration}
-                onChange={(e) => setCustomDuration(e.target.value)}
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                placeholder="例如: 8h 或 480m"
+                onChange={setCustomDuration}
               />
             </div>
           </div>
