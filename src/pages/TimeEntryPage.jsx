@@ -21,7 +21,7 @@ const TimeEntryPage = () => {
 
   return (
     <div className="max-w-4xl mx-auto">
-      <h1 className="text-2xl font-bold text-gray-800 mb-6">{t('time_entry.title')}</h1>
+      <h1 className="page-heading">{t('time_entry.title')}</h1>
       
       {/* Custom Shift Manager */}
       <CustomShiftManager />
@@ -31,7 +31,7 @@ const TimeEntryPage = () => {
           <TimeEntryForm onAddEntry={handleAddEntry} />
         </div>
         <div>
-          <h2 className="text-xl font-semibold text-gray-700 mb-4">{t('time_entry.recent_entries')}</h2>
+          <h2 className="section-heading">{t('time_entry.recent_entries')}</h2>
           {entries.length === 0 ? (
             <p className="text-gray-500">{t('time_entry.no_entries')}</p>
           ) : (

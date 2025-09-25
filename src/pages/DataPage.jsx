@@ -86,11 +86,11 @@ const DataPage = () => {
 
   return (
     <div className="max-w-4xl mx-auto">
-      <h1 className="text-2xl font-bold text-gray-800 mb-6">{t('data.title')}</h1>
+      <h1 className="page-heading">{t('data.title')}</h1>
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         <div className="bg-white rounded-lg shadow p-6">
-          <h2 className="text-xl font-semibold text-gray-700 mb-4">{t('data.export.title')}</h2>
+          <h2 className="section-heading">{t('data.export.title')}</h2>
           <p className="text-gray-600 mb-4">
             {t('data.export.description')}
           </p>
@@ -108,7 +108,7 @@ const DataPage = () => {
         </div>
         
         <div className="bg-white rounded-lg shadow p-6">
-          <h2 className="text-xl font-semibold text-gray-700 mb-4">{t('data.import.title')}</h2>
+          <h2 className="section-heading">{t('data.import.title')}</h2>
           <p className="text-gray-600 mb-4">
             {t('data.import.description')}
           </p>
@@ -132,7 +132,7 @@ const DataPage = () => {
       </div>
       
       <div className="mt-8 bg-white rounded-lg shadow p-6">
-        <h2 className="text-xl font-semibold text-gray-700 mb-4">{t('data.danger_zone.title')}</h2>
+        <h2 className="section-heading">{t('data.danger_zone.title')}</h2>
         <p className="text-gray-600 mb-4">
           {t('data.danger_zone.description')}
         </p>

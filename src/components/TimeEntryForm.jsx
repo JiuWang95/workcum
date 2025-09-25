@@ -107,7 +107,7 @@ const TimeEntryForm = ({ onAddEntry }) => {
 
   return (
     <div className="bg-white rounded-lg shadow p-6">
-      <h2 className="text-xl font-semibold text-gray-700 mb-4">{t('time_entry.add_entry')}</h2>
+      <h2 className="section-heading">{t('time_entry.add_entry')}</h2>
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
           <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="date">

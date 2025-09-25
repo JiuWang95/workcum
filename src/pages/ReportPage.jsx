@@ -49,7 +49,7 @@ const ReportPage = () => {
 
   return (
     <div className="max-w-6xl mx-auto">
-      <h1 className="text-2xl font-bold text-gray-800 mb-6">{t('reports.title')}</h1>
+      <h1 className="page-heading">{t('reports.title')}</h1>
       
       <div className="bg-white rounded-lg shadow p-6 mb-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
@@ -105,7 +105,7 @@ const ReportPage = () => {
         </div>
         
         <div className="bg-indigo-50 rounded-lg p-4 mb-6">
-          <h2 className="text-lg font-semibold text-indigo-800 mb-2">{t('reports.summary')}</h2>
+          <h2 className="subsection-heading">{t('reports.summary')}</h2>
           <p className="text-2xl font-bold text-indigo-600">
             {totalHours}h {remainingMinutes}m
           </p>

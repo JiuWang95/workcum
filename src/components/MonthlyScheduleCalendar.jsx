@@ -140,39 +140,49 @@ const MonthlyScheduleCalendar = ({ currentDate, onDateChange }) => {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow p-6">
-      <div className="grid grid-cols-7 gap-2 mb-4">
+    <div className="bg-white rounded-lg shadow p-4 md:p-6">
+      <div className="grid grid-cols-7 gap-1 mb-2 md:mb-4">
         {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day, index) => (
-          <div key={index} className="text-center font-semibold text-gray-700 py-2">
+          <div key={index} className="text-center font-semibold text-gray-700 py-1 md:py-2 text-xs md:text-sm">
             {day}
           </div>
         ))}
       </div>
       
-      <div className="grid grid-cols-7 gap-2">
+      <div className="grid grid-cols-7 gap-1">
         {calendarDays.map((day, index) => {
           const daySchedules = getScheduleForDate(day);
           const dayTimeEntries = getTimeEntriesForDate(day);
           const isToday = isSameDay(day, new Date());
           const isCurrentMonth = isSameMonth(day, currentDate);
           
+          // Limit the number of items displayed on mobile
+          const maxItemsMobile = 1;
+          const maxItemsDesktop = 2;
+          const isMobile = window.innerWidth < 768;
+          const maxItems = isMobile ? maxItemsMobile : maxItemsDesktop;
+          
+          const totalItems = daySchedules.length + dayTimeEntries.length;
+          const showItems = Math.min(totalItems, maxItems);
+          const hasMoreItems = totalItems > maxItems;
+          
           return (
             <div 
               key={index} 
-              className={`min-h-24 border rounded p-2 cursor-pointer ${
+              className={`min-h-16 md:min-h-24 border rounded p-1 md:p-2 cursor-pointer ${
                 isToday ? 'bg-blue-50 border-blue-300' : isCurrentMonth ? 'border-gray-200' : 'border-gray-100 bg-gray-50'
               }`}
               onClick={() => handleDateClick(day)}
             >
-              <div className={`text-sm font-medium mb-1 ${
+              <div className={`text-xs md:text-sm font-medium mb-1 ${
                 isToday ? 'text-blue-600' : isCurrentMonth ? 'text-gray-700' : 'text-gray-400'
               }`}>
                 {format(day, 'd')}
               </div>
               
-              <div className="space-y-1">
+              <div className="space-y-0.5 md:space-y-1">
                 {/* Display schedules */}
-                {daySchedules.slice(0, 2).map((schedule) => (
+                {daySchedules.slice(0, maxItems).map((schedule) => (
                   <div 
                     key={schedule.id} 
                     className="text-xs bg-indigo-100 text-indigo-800 p-1 rounded truncate"
@@ -181,37 +191,37 @@ const MonthlyScheduleCalendar = ({ currentDate, onDateChange }) => {
                       handleEdit(schedule);
                     }}
                   >
-                    <div className="font-medium">{schedule.title}</div>
-                    <div className="text-indigo-600">
+                    <div className="font-medium truncate">{schedule.title}</div>
+                    <div className="text-indigo-600 text-xs">
                       {formatTime(schedule.startTime)} - {formatTime(schedule.endTime)}
                     </div>
                   </div>
                 ))}
                 
-                {/* Display time entries */}
-                {dayTimeEntries.slice(0, 2).map((entry) => (
+                {/* Display time entries if no schedules or space available */}
+                {daySchedules.length < maxItems && dayTimeEntries.slice(0, maxItems - daySchedules.length).map((entry) => (
                   <div 
                     key={entry.id} 
                     className="text-xs bg-green-100 text-green-800 p-1 rounded truncate"
                   >
-                    <div className="font-medium">{t('time_entry.entry')}</div>
-                    <div className="text-green-600">
+                    <div className="font-medium truncate">{t('time_entry.entry')}</div>
+                    <div className="text-green-600 text-xs">
                       {formatTime(entry.startTime)} - {formatTime(entry.endTime)}
                     </div>
                   </div>
                 ))}
                 
                 {/* Show count if there are more items */}
-                {(daySchedules.length + dayTimeEntries.length) > 4 && (
+                {hasMoreItems && (
                   <div className="text-xs text-gray-500">
-                    +{(daySchedules.length + dayTimeEntries.length) - 4} more
+                    +{totalItems - maxItems} more
                   </div>
                 )}
                 
                 {/* Show placeholder if no items */}
-                {daySchedules.length === 0 && dayTimeEntries.length === 0 && (
-                  <div className="text-xs text-gray-400 italic">
-                    {t('schedule.add_task')}
+                {totalItems === 0 && (
+                  <div className="flex justify-center items-center h-4 md:h-6">
+                    <span className="text-gray-400 text-base md:text-lg font-bold">+</span>
                   </div>
                 )}
               </div>
@@ -223,7 +233,7 @@ const MonthlyScheduleCalendar = ({ currentDate, onDateChange }) => {
       {showModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 w-full max-w-md">
-            <h2 className="text-xl font-bold mb-4">
+            <h2 className="section-heading">
               {formData.id ? t('schedule.edit_schedule') : t('schedule.add_schedule')}
             </h2>
             

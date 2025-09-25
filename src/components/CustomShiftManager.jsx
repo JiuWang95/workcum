@@ -77,7 +77,7 @@ const CustomShiftManager = () => {
   return (
     <div className="bg-white rounded-lg shadow p-6 mb-6">
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-xl font-semibold text-gray-700">{t('time_entry.custom_shift.title')}</h2>
+        <h2 className="section-heading">{t('time_entry.custom_shift.title')}</h2>
         <button
           onClick={() => setShowForm(!showForm)}
           className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"

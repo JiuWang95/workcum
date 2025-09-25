@@ -22,7 +22,7 @@ const SchedulePage = () => {
 
   return (
     <div className="max-w-6xl mx-auto">
-      <h1 className="text-2xl font-bold text-gray-800 mb-6">{t('schedule.title')}</h1>
+      <h1 className="page-heading">{t('schedule.title')}</h1>
       
       <div className="bg-white rounded-lg shadow p-6 mb-8">
         <div className="flex justify-between items-center mb-6">
@@ -34,7 +34,7 @@ const SchedulePage = () => {
           </button>
           
           <div className="text-center">
-            <h2 className="text-xl font-semibold">
+            <h2 className="section-heading">
               {format(currentMonth, 'yyyy MMMM')}
             </h2>
             <button
