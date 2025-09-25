@@ -20,17 +20,12 @@ export default defineConfig({
         display: 'standalone',
         background_color: '#ffffff',
         theme_color: '#3b82f6',
-        icon: 'src/assets/time-tracker-icon.svg',
+        icon: 'src/assets/calendar-icon.svg',
         icons: [
           {
-            src: 'src/assets/time-tracker-icon.svg',
-            sizes: 'any',
-            type: 'image/svg+xml'
-          },
-          {
-            src: 'src/assets/favicon.ico',
+            src: 'src/assets/calendar-icon.svg',
             sizes: '256x256',
-            type: 'image/png'
+            type: 'image/svg+xml'
           }
         ]
       },
