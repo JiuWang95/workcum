@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { format, addMonths, subMonths, isSameDay } from 'date-fns';
 import MonthlyScheduleCalendar from '../components/MonthlyScheduleCalendar';
+import CustomShiftManager from '../components/CustomShiftManager';
 import { useTranslation } from 'react-i18next';
 
 const SchedulePage = () => {
@@ -58,6 +59,8 @@ const SchedulePage = () => {
           onDateChange={setCurrentMonth}
         />
       </div>
+      
+      <CustomShiftManager />
     </div>
   );
 };
