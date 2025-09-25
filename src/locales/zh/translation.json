@@ -43,6 +43,7 @@
       "no_shifts": "暂无自定义班次，请添加一个班次模板",
       "select_shift": "选择班次模板",
       "select_placeholder": "请选择一个班次模板",
+      "select_shift_help": "请选择一个班次模板来快速填充排班信息",
       "validation": {
         "name_required": "请输入班次名称"
       },
@@ -81,7 +82,8 @@
     "delete_confirm": "确定要删除这个排班吗？",
     "validation": {
       "title_required": "请输入任务标题",
-      "end_time_after_start": "结束时间必须晚于开始时间"
+      "end_time_after_start": "结束时间必须晚于开始时间",
+      "shift_required": "请选择一个班次模板"
     },
     "form": {
       "title": "任务标题",

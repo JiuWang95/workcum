@@ -1,0 +1,110 @@
+{
+  "navigation": {
+    "time_tracking": "Time Tracking",
+    "reports": "Reports",
+    "schedule": "Schedule",
+    "settings": "Settings"
+  },
+  "common": {
+    "add": "Add",
+    "edit": "Edit",
+    "delete": "Delete",
+    "save": "Save",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "close": "Close"
+  },
+  "time_entry": {
+    "title": "Time Entries",
+    "recent_entries": "Recent Entries",
+    "no_entries": "No time entries recorded yet",
+    "date": "Date",
+    "shift": "Shift",
+    "custom_shift": {
+      "title": "Custom Shift Management",
+      "shift_name": "Shift Name",
+      "shift_name_placeholder": "e.g., Morning Shift, Evening Shift",
+      "start_time": "Start Time",
+      "end_time": "End Time",
+      "custom_duration": "Custom Duration",
+      "custom_duration_placeholder": "e.g., 8h or 480m",
+      "custom_duration_help": "Enter custom duration, e.g., 8h for 8 hours, 480m for 480 minutes",
+      "hours": "hours",
+      "minutes": "minutes",
+      "add_shift": "Add Shift",
+      "save_shift": "Save Shift",
+      "update_shift": "Update Shift",
+      "cancel": "Cancel",
+      "edit": "Edit",
+      "delete": "Delete",
+      "no_shifts": "No custom shifts available. Please add a shift template.",
+      "select_shift": "Select Shift Template",
+      "select_placeholder": "Select a shift template",
+      "select_shift_help": "Please select a shift template to quickly populate schedule information",
+      "validation": {
+        "name_required": "Please enter a shift name"
+      },
+      "delete_confirm": "Are you sure you want to delete this shift template?"
+    },
+    "duration": "Hours",
+    "notes": "Notes",
+    "add_entry": "Add Time Entry",
+    "edit_entry": "Edit Time Entry",
+    "delete_confirm": "Are you sure you want to delete this time entry?",
+    "validation": {
+      "date_required": "Please select a date",
+      "duration_required": "Please enter a duration"
+    },
+    "custom_shift_placeholder": "e.g., 8h or 480m",
+    "hours": "hours",
+    "minutes": "minutes"
+  },
+  "reports": {
+    "title": "Reports",
+    "summary": "Summary",
+    "details": "Details",
+    "total_duration": "Total Hours",
+    "export": "Export to Excel",
+    "table": {
+      "date": "Date",
+      "shift": "Shift",
+      "duration": "Hours",
+      "notes": "Notes"
+    }
+  },
+  "schedule": {
+    "title": "Schedule",
+    "week": "Week",
+    "no_schedules": "No schedules for this week",
+    "add_schedule": "Add Schedule",
+    "edit_schedule": "Edit Schedule",
+    "delete_confirm": "Are you sure you want to delete this schedule?",
+    "form": {
+      "title": "Title",
+      "date": "Date",
+      "start_time": "Start Time",
+      "end_time": "End Time",
+      "notes": "Notes",
+      "shift_template": "Shift Template"
+    },
+    "select_placeholder": "Select a shift template",
+    "select_shift_help": "Please select a shift template to quickly populate schedule information",
+    "validation": {
+      "title_required": "Please enter a title",
+      "end_time_after_start": "End time must be later than start time",
+      "shift_required": "Please select a shift template"
+    }
+  },
+  "settings": {
+    "title": "Settings",
+    "language": "Language",
+    "theme": "Theme",
+    "data_management": "Data Management",
+    "export_data": "Export Data",
+    "import_data": "Import Data",
+    "delete_all_data": "Delete All Data",
+    "delete_confirm": "Are you sure you want to delete all data? This action cannot be undone.",
+    "import_success": "Data imported successfully",
+    "import_error": "Error importing data. Please check the file format."
+  }
+}

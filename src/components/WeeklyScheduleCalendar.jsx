@@ -82,6 +82,21 @@ const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
       endTime: '10:00',
       selectedShift: '' // Add selectedShift to form data
     });
+    
+    // If there are shifts available, pre-select the first one
+    if (savedShifts.length > 0) {
+      const firstShift = savedShifts[0];
+      setFormData({
+        id: null,
+        title: firstShift.name,
+        notes: firstShift.name,
+        date: format(date, 'yyyy-MM-dd'),
+        startTime: firstShift.startTime,
+        endTime: firstShift.endTime,
+        selectedShift: firstShift.id
+      });
+    }
+    
     setShowModal(true);
   };
 
@@ -99,6 +114,12 @@ const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    
+    // Validate that a shift template is selected
+    if (shifts.length > 0 && !formData.selectedShift) {
+      alert(t('schedule.validation.shift_required') || '请选择一个班次模板');
+      return;
+    }
     
     if (formData.title.trim() === '') {
       alert(t('schedule.validation.title_required'));
@@ -246,43 +267,51 @@ const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
             </h2>
             
             <form onSubmit={handleSubmit}>
-              {/* Shift template selector */}
-              {shifts.length > 0 && (
-                <div className="mb-4">
-                  <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="shiftTemplate">
-                    {t('time_entry.custom_shift.select_shift')}
-                  </label>
-                  <select
-                        id="shiftTemplate"
-                        value={formData.selectedShift}
-                        onChange={(e) => {
-                          const shiftId = e.target.value;
-                          const newFormData = {...formData, selectedShift: shiftId};
-                          
-                          if (shiftId) {
-                            const shift = shifts.find(s => s.id === shiftId);
-                            if (shift) {
-                              newFormData.title = shift.name;
-                              newFormData.startTime = shift.startTime;
-                              newFormData.endTime = shift.endTime;
-                              newFormData.notes = shift.name;
-                            }
-                          }
-                          
-                          setFormData(newFormData);
-                        }}
-                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                      >
-                    <option value="">{t('time_entry.custom_shift.select_placeholder')}</option>
-                    {shifts.map((shift) => (
-                      <option key={shift.id} value={shift.id}>
-                        {shift.name} ({shift.startTime} - {shift.endTime})
-                        {shift.customDuration && ` [${convertDurationToHours(shift.customDuration).toFixed(1)}h]`}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              )}
+              {/* Shift template selector - only option in the modal */}
+              <div className="mb-4">
+                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="shiftTemplate">
+                  {t('time_entry.custom_shift.select_shift')} *
+                </label>
+                <select
+                  id="shiftTemplate"
+                  value={formData.selectedShift}
+                  onChange={(e) => {
+                    const shiftId = e.target.value;
+                    const newFormData = {...formData, selectedShift: shiftId};
+                    
+                    if (shiftId) {
+                      const shift = shifts.find(s => s.id === shiftId);
+                      if (shift) {
+                        newFormData.title = shift.name;
+                        newFormData.startTime = shift.startTime;
+                        newFormData.endTime = shift.endTime;
+                        newFormData.notes = shift.name;
+                      }
+                    } else {
+                      // Reset to default values when no shift is selected
+                      newFormData.title = '';
+                      newFormData.startTime = '09:00';
+                      newFormData.endTime = '10:00';
+                      newFormData.notes = '';
+                    }
+                    
+                    setFormData(newFormData);
+                  }}
+                  className="shadow appearance-none border-2 border-indigo-300 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  required
+                >
+                  <option value="">{t('time_entry.custom_shift.select_placeholder')}</option>
+                  {shifts.map((shift) => (
+                    <option key={shift.id} value={shift.id}>
+                      {shift.name} ({shift.startTime} - {shift.endTime})
+                      {shift.customDuration && ` [${convertDurationToHours(shift.customDuration).toFixed(1)}h]`}
+                    </option>
+                  ))}
+                </select>
+                <p className="text-gray-500 text-xs mt-1">
+                  {t('time_entry.custom_shift.select_shift_help') || '请选择一个班次模板来快速填充排班信息'}
+                </p>
+              </div>
               
               <div className="mb-4">
                 <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="title">
@@ -295,6 +324,7 @@ const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
                   onChange={(e) => setFormData({...formData, title: e.target.value})}
                   className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                   placeholder={t('schedule.form.title_placeholder')}
+                  readOnly={!!formData.selectedShift}
                 />
               </div>
               
@@ -322,6 +352,7 @@ const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
                     value={formData.startTime}
                     onChange={(e) => setFormData({...formData, startTime: e.target.value})}
                     className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    readOnly={!!formData.selectedShift}
                   />
                 </div>
                 
@@ -335,6 +366,7 @@ const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
                     value={formData.endTime}
                     onChange={(e) => setFormData({...formData, endTime: e.target.value})}
                     className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    readOnly={!!formData.selectedShift}
                   />
                 </div>
               </div>
