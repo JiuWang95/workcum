@@ -198,7 +198,7 @@ const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
                   // 获取班次信息
                   const shiftInfo = shifts.find(shift => shift.id === schedule.selectedShift);
                   const shiftName = shiftInfo ? shiftInfo.name : schedule.title;
-                  // 检查是否为跨日期班次
+                  // 检查是否为跨夜班
                   const isOvernight = shiftInfo ? shiftInfo.isOvernight : false;
                   
                   return (

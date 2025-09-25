@@ -12,7 +12,7 @@ const CustomShiftManager = () => {
   const [startTime, setStartTime] = useState('09:00');
   const [endTime, setEndTime] = useState('17:00');
   const [customDuration, setCustomDuration] = useState('');
-  const [isOvernight, setIsOvernight] = useState(false); // 添加跨日期班次标识
+  const [isOvernight, setIsOvernight] = useState(false); // 添加跨夜班标识
 
   // Load shifts from localStorage on component mount
   useEffect(() => {
@@ -39,7 +39,7 @@ const CustomShiftManager = () => {
       startTime,
       endTime,
       customDuration: customDuration || null, // Store custom duration or null if not set
-      isOvernight // 保存跨日期标识
+      isOvernight // 保存跨夜班标识
     };
     
     if (editingShift) {
@@ -56,7 +56,7 @@ const CustomShiftManager = () => {
     setStartTime('09:00');
     setEndTime('17:00');
     setCustomDuration('');
-    setIsOvernight(false); // 重置跨日期标识
+    setIsOvernight(false); // 重置跨夜班标识
     setShowForm(false);
   };
 
@@ -66,7 +66,7 @@ const CustomShiftManager = () => {
     setStartTime(shift.startTime);
     setEndTime(shift.endTime);
     setCustomDuration(shift.customDuration || '');
-    setIsOvernight(shift.isOvernight || false); // 设置跨日期标识
+    setIsOvernight(shift.isOvernight || false); // 设置跨夜班标识
     setShowForm(true);
   };
 
@@ -83,7 +83,7 @@ const CustomShiftManager = () => {
     setStartTime('09:00');
     setEndTime('17:00');
     setCustomDuration('');
-    setIsOvernight(false); // 重置跨日期标识
+    setIsOvernight(false); // 重置跨夜班标识
   };
 
   // Function to convert duration string to hours
@@ -171,7 +171,7 @@ const CustomShiftManager = () => {
             />
           </div>
           
-          {/* 跨日期班次选项放在自定义工时上面 */}
+          {/* 跨夜班选项放在自定义工时上面 */}
           <div className="mb-3">
             <label className="flex items-center">
               <input
