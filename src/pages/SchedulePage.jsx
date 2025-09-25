@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { format, addWeeks, subWeeks, startOfWeek, endOfWeek } from 'date-fns';
+import { format, addWeeks, subWeeks, startOfWeek, endOfWeek, getWeekOfMonth } from 'date-fns';
 import WeeklyScheduleCalendar from '../components/WeeklyScheduleCalendar';
 import { useTranslation } from 'react-i18next';
 
@@ -22,9 +22,8 @@ const SchedulePage = () => {
 
   // Get week range for display
   const getWeekRange = (date) => {
-    const weekStart = startOfWeek(date, { weekStartsOn: 1 });
-    const weekEnd = endOfWeek(date, { weekStartsOn: 1 });
-    return `${format(weekStart, 'MMM d')} - ${format(weekEnd, 'MMM d, yyyy')}`;
+    const weekOfMonth = getWeekOfMonth(date, { weekStartsOn: 1 });
+    return `${format(date, 'MMM')} 第${weekOfMonth}周`;
   };
 
   return (
