@@ -138,22 +138,18 @@ const TimeEntryForm = ({ onAddEntry }) => {
           </div>
         )}
         
-        {/* Custom duration input */}
         <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="customDuration">
-            {t('time_entry.custom_shift.custom_duration')}
+          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="notes">
+            {t('time_entry.shift_name')}
           </label>
           <input
             type="text"
-            id="customDuration"
-            value={customDuration}
-            onChange={(e) => setCustomDuration(e.target.value)}
+            id="notes"
+            value={notes}
+            onChange={(e) => setNotes(e.target.value)}
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            placeholder={t('time_entry.custom_shift.custom_duration_placeholder') || "例如: 8h 或 480m"}
+            placeholder={t('time_entry.shift_name_placeholder')}
           />
-          <p className="text-gray-500 text-xs mt-1">
-            {t('time_entry.custom_shift.custom_duration_help') || "输入自定义工时，例如 8h 表示8小时，480m 表示480分钟"}
-          </p>
         </div>
         
         <div className="grid grid-cols-2 gap-4 mb-4">
@@ -188,18 +184,22 @@ const TimeEntryForm = ({ onAddEntry }) => {
           </div>
         </div>
         
+        {/* Custom duration input */}
         <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="notes">
-            {t('time_entry.shift_name')}
+          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="customDuration">
+            {t('time_entry.custom_shift.custom_duration')}
           </label>
           <input
             type="text"
-            id="notes"
-            value={notes}
-            onChange={(e) => setNotes(e.target.value)}
+            id="customDuration"
+            value={customDuration}
+            onChange={(e) => setCustomDuration(e.target.value)}
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            placeholder={t('time_entry.shift_name_placeholder')}
+            placeholder={t('time_entry.custom_shift.custom_duration_placeholder') || "例如: 8h 或 480m"}
           />
+          <p className="text-gray-500 text-xs mt-1">
+            {t('time_entry.custom_shift.custom_duration_help') || "输入自定义工时，例如 8h 表示8小时，480m 表示480分钟"}
+          </p>
         </div>
         
         <div className="flex items-center justify-between">
