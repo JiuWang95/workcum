@@ -1,13 +1,13 @@
 {
   "app_title": "Work Time Tracker",
   "navigation": {
-    "time_entry": "Time Entry",
+    "time_entry": "Record",
     "reports": "Reports",
     "schedule": "Schedule",
     "data": "Data"
   },
   "time_entry": {
-    "title": "Time Entry",
+    "title": "Record",
     "add_entry": "Add Entry",
     "date": "Date",
     "start_time": "Start Time",

@@ -1,7 +1,7 @@
 {
   "app_title": "工作时间记录系统",
   "navigation": {
-    "time_entry": "时间记录",
+    "time_entry": "记录",
     "reports": "报告",
     "schedule": "排班",
     "data": "数据",
@@ -11,7 +11,7 @@
     }
   },
   "time_entry": {
-    "title": "时间记录",
+    "title": "记录",
     "recent_entries": "最近记录",
     "no_entries": "暂无记录。添加您的第一条时间记录！",
     "date": "日期",
