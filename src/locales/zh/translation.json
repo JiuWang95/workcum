@@ -70,7 +70,7 @@
       "start_time": "开始时间",
       "end_time": "结束时间",
       "duration": "时长",
-      "notes": "备注"
+      "notes": "班次"
     }
   },
   "schedule": {

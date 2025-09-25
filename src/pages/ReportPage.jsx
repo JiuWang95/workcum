@@ -8,8 +8,8 @@ const ReportPage = () => {
   const [entries, setEntries] = useState([]);
   const [schedules, setSchedules] = useState([]);
   const [shifts, setShifts] = useState([]);
-  const [startDate, setStartDate] = useState(format(subDays(new Date(), 6), 'yyyy-MM-dd'));
-  const [endDate, setEndDate] = useState(format(new Date(), 'yyyy-MM-dd'));
+  const [startDate, setStartDate] = useState(format(startOfWeek(new Date(), { weekStartsOn: 1 }), 'yyyy-MM-dd'));
+  const [endDate, setEndDate] = useState(format(endOfWeek(new Date(), { weekStartsOn: 1 }), 'yyyy-MM-dd'));
   const [filteredEntries, setFilteredEntries] = useState([]);
   const [filteredSchedules, setFilteredSchedules] = useState([]);
 
@@ -165,12 +165,12 @@ const ReportPage = () => {
             <table className="min-w-full bg-white">
               <thead>
                 <tr className="bg-gray-100">
-                  <th className="py-2 px-4 text-left">{t('reports.table.date')}</th>
-                  <th className="py-2 px-4 text-left">类型</th>
+                  <th className="py-2 px-4 text-left">{t('reports.table.notes')}</th>
                   <th className="py-2 px-4 text-left">{t('reports.table.start_time')}</th>
                   <th className="py-2 px-4 text-left">{t('reports.table.end_time')}</th>
                   <th className="py-2 px-4 text-left">{t('reports.table.duration')}</th>
-                  <th className="py-2 px-4 text-left">{t('reports.table.notes')}</th>
+                  <th className="py-2 px-4 text-left">{t('reports.table.date')}</th>
+                  <th className="py-2 px-4 text-left">类型</th>
                 </tr>
               </thead>
               <tbody>
@@ -178,14 +178,14 @@ const ReportPage = () => {
                 {filteredEntries.map((entry, index) => {
                   return (
                     <tr key={`entry-${index}`} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
+                      <td className="py-2 px-4 border-b">{entry.notes || t('time_entry.entry')}</td>
+                      <td className="py-2 px-4 border-b">{entry.startTime}</td>
+                      <td className="py-2 px-4 border-b">{entry.endTime}</td>
+                      <td className="py-2 px-4 border-b">{(entry.duration / 60).toFixed(1)}h</td>
                       <td className="py-2 px-4 border-b">{entry.date}</td>
                       <td className="py-2 px-4 border-b">
                         <span className="bg-green-100 text-green-800 text-xs px-2 py-1 rounded">工时记录</span>
                       </td>
-                      <td className="py-2 px-4 border-b">{entry.startTime}</td>
-                      <td className="py-2 px-4 border-b">{entry.endTime}</td>
-                      <td className="py-2 px-4 border-b">{(entry.duration / 60).toFixed(1)}h</td>
-                      <td className="py-2 px-4 border-b">{entry.notes || '-'}</td>
                     </tr>
                   );
                 })}
@@ -207,14 +207,14 @@ const ReportPage = () => {
                   
                   return (
                     <tr key={`schedule-${index}`} className={(filteredEntries.length + index) % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
+                      <td className="py-2 px-4 border-b">{schedule.notes || schedule.title || '-'}</td>
+                      <td className="py-2 px-4 border-b">{schedule.startTime}</td>
+                      <td className="py-2 px-4 border-b">{schedule.endTime}</td>
+                      <td className="py-2 px-4 border-b">{(duration / 60).toFixed(1)}h</td>
                       <td className="py-2 px-4 border-b">{schedule.date}</td>
                       <td className="py-2 px-4 border-b">
                         <span className="bg-indigo-100 text-indigo-800 text-xs px-2 py-1 rounded">排班</span>
                       </td>
-                      <td className="py-2 px-4 border-b">{schedule.startTime}</td>
-                      <td className="py-2 px-4 border-b">{schedule.endTime}</td>
-                      <td className="py-2 px-4 border-b">{(duration / 60).toFixed(1)}h</td>
-                      <td className="py-2 px-4 border-b">{schedule.notes || schedule.title || '-'}</td>
                     </tr>
                   );
                 })}
