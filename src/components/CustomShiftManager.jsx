@@ -128,7 +128,7 @@ const CustomShiftManager = () => {
             />
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
             <div>
               <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="shiftStartTime">
                 {t('time_entry.custom_shift.start_time')}
@@ -156,18 +156,19 @@ const CustomShiftManager = () => {
                 required
               />
             </div>
-            
-            <div>
-              <DurationPicker
-                id="customDuration"
-                label={t('time_entry.custom_shift.custom_duration')}
-                value={customDuration}
-                onChange={setCustomDuration}
-              />
-            </div>
           </div>
           
-          {/* 跨日期班次选项 */}
+          {/* 自定义工时放在开始时间和结束时间下面 */}
+          <div className="mb-4">
+            <DurationPicker
+              id="customDuration"
+              label={t('time_entry.custom_shift.custom_duration')}
+              value={customDuration}
+              onChange={setCustomDuration}
+            />
+          </div>
+          
+          {/* 跨日期班次选项放在自定义工时上面 */}
           <div className="mb-4">
             <label className="flex items-center">
               <input
