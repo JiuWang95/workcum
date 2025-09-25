@@ -26,7 +26,27 @@
       "end_time_after_start": "结束时间必须晚于开始时间"
     },
     "sync_to_schedule": "同步到排班",
-    "sync_success": "时间记录已同步到排班！"
+    "sync_success": "时间记录已同步到排班！",
+    "custom_shift": {
+      "title": "自定义班次管理",
+      "shift_name": "班次名称",
+      "shift_name_placeholder": "例如：早班、晚班",
+      "start_time": "开始时间",
+      "end_time": "结束时间",
+      "add_shift": "添加班次",
+      "save_shift": "保存班次",
+      "update_shift": "更新班次",
+      "cancel": "取消",
+      "edit": "编辑",
+      "delete": "删除",
+      "no_shifts": "暂无自定义班次，请添加一个班次模板",
+      "select_shift": "选择班次模板",
+      "select_placeholder": "请选择一个班次模板",
+      "validation": {
+        "name_required": "请输入班次名称"
+      },
+      "delete_confirm": "确定要删除这个班次模板吗？"
+    }
   },
   "reports": {
     "title": "报告",

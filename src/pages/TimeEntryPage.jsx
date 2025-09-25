@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import TimeEntryForm from '../components/TimeEntryForm';
+import CustomShiftManager from '../components/CustomShiftManager';
 import { useTranslation } from 'react-i18next';
 
 const TimeEntryPage = () => {
@@ -21,6 +22,10 @@ const TimeEntryPage = () => {
   return (
     <div className="max-w-4xl mx-auto">
       <h1 className="text-2xl font-bold text-gray-800 mb-6">{t('time_entry.title')}</h1>
+      
+      {/* Custom Shift Manager */}
+      <CustomShiftManager />
+      
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         <div>
           <TimeEntryForm onAddEntry={handleAddEntry} />

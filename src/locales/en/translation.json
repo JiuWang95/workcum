@@ -21,7 +21,27 @@
     },
     "entry": "Time Entry",
     "sync_to_schedule": "Sync to Schedule",
-    "sync_success": "Time entry synced to schedule!"
+    "sync_success": "Time entry synced to schedule!",
+    "custom_shift": {
+      "title": "Custom Shift Management",
+      "shift_name": "Shift Name",
+      "shift_name_placeholder": "e.g., Morning Shift, Evening Shift",
+      "start_time": "Start Time",
+      "end_time": "End Time",
+      "add_shift": "Add Shift",
+      "save_shift": "Save Shift",
+      "update_shift": "Update Shift",
+      "cancel": "Cancel",
+      "edit": "Edit",
+      "delete": "Delete",
+      "no_shifts": "No custom shifts yet. Add a shift template",
+      "select_shift": "Select Shift Template",
+      "select_placeholder": "Please select a shift template",
+      "validation": {
+        "name_required": "Please enter a shift name"
+      },
+      "delete_confirm": "Are you sure you want to delete this shift template?"
+    }
   },
   "reports": {
     "title": "Reports",

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { format, parse } from 'date-fns';
 import { useTranslation } from 'react-i18next';
 
@@ -9,6 +9,14 @@ const TimeEntryForm = ({ onAddEntry }) => {
   const [endTime, setEndTime] = useState('17:00');
   const [notes, setNotes] = useState('');
   const [syncToSchedule, setSyncToSchedule] = useState(false);
+  const [shifts, setShifts] = useState([]);
+  const [selectedShift, setSelectedShift] = useState('');
+
+  // Load custom shifts from localStorage
+  useEffect(() => {
+    const savedShifts = JSON.parse(localStorage.getItem('customShifts') || '[]');
+    setShifts(savedShifts);
+  }, []);
 
   const calculateDuration = (start, end) => {
     const startDate = parse(start, 'HH:mm', new Date());
@@ -56,6 +64,7 @@ const TimeEntryForm = ({ onAddEntry }) => {
     // Reset form
     setNotes('');
     setSyncToSchedule(false);
+    setSelectedShift('');
   };
 
   const syncEntryToSchedule = (entry) => {
@@ -82,6 +91,20 @@ const TimeEntryForm = ({ onAddEntry }) => {
     alert(t('time_entry.sync_success'));
   };
 
+  const handleShiftChange = (e) => {
+    const shiftId = e.target.value;
+    setSelectedShift(shiftId);
+    
+    if (shiftId) {
+      const shift = shifts.find(s => s.id === shiftId);
+      if (shift) {
+        setStartTime(shift.startTime);
+        setEndTime(shift.endTime);
+        setNotes(shift.name);
+      }
+    }
+  };
+
   return (
     <div className="bg-white rounded-lg shadow p-6">
       <h2 className="text-xl font-semibold text-gray-700 mb-4">{t('time_entry.add_entry')}</h2>
@@ -99,6 +122,28 @@ const TimeEntryForm = ({ onAddEntry }) => {
             required
           />
         </div>
+        
+        {/* Shift template selector */}
+        {shifts.length > 0 && (
+          <div className="mb-4">
+            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="shiftTemplate">
+              {t('time_entry.custom_shift.select_shift')}
+            </label>
+            <select
+              id="shiftTemplate"
+              value={selectedShift}
+              onChange={handleShiftChange}
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            >
+              <option value="">{t('time_entry.custom_shift.select_placeholder')}</option>
+              {shifts.map((shift) => (
+                <option key={shift.id} value={shift.id}>
+                  {shift.name} ({shift.startTime} - {shift.endTime})
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
         
         <div className="grid grid-cols-2 gap-4 mb-4">
           <div>
