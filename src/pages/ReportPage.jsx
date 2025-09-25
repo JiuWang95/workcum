@@ -6,26 +6,70 @@ import { useTranslation } from 'react-i18next';
 const ReportPage = () => {
   const { t } = useTranslation();
   const [entries, setEntries] = useState([]);
+  const [schedules, setSchedules] = useState([]);
+  const [shifts, setShifts] = useState([]);
   const [startDate, setStartDate] = useState(format(subDays(new Date(), 6), 'yyyy-MM-dd'));
   const [endDate, setEndDate] = useState(format(new Date(), 'yyyy-MM-dd'));
   const [filteredEntries, setFilteredEntries] = useState([]);
+  const [filteredSchedules, setFilteredSchedules] = useState([]);
 
-  // Load entries from localStorage on component mount
+  // Load entries and schedules from localStorage on component mount
   useEffect(() => {
     const savedEntries = JSON.parse(localStorage.getItem('timeEntries') || '[]');
+    const savedSchedules = JSON.parse(localStorage.getItem('schedules') || '[]');
+    const savedShifts = JSON.parse(localStorage.getItem('customShifts') || '[]');
     setEntries(savedEntries);
+    setSchedules(savedSchedules);
+    setShifts(savedShifts);
   }, []);
 
-  // Filter entries based on date range
+  // Filter entries and schedules based on date range
   useEffect(() => {
-    const filtered = entries.filter(entry => {
+    const filteredEntries = entries.filter(entry => {
       return entry.date >= startDate && entry.date <= endDate;
     });
-    setFilteredEntries(filtered);
-  }, [entries, startDate, endDate]);
+    
+    const filteredSchedules = schedules.filter(schedule => {
+      return schedule.date >= startDate && schedule.date <= endDate;
+    });
+    
+    setFilteredEntries(filteredEntries);
+    setFilteredSchedules(filteredSchedules);
+  }, [entries, schedules, startDate, endDate]);
 
-  // Calculate total hours
-  const totalMinutes = filteredEntries.reduce((sum, entry) => sum + entry.duration, 0);
+  // Function to convert duration string to hours
+  const convertDurationToHours = (durationStr) => {
+    if (!durationStr) return 0;
+    
+    const hoursMatch = durationStr.match(/(\d+(?:\.\d+)?)h/);
+    const minutesMatch = durationStr.match(/(\d+(?:\.\d+)?)m/);
+    
+    const hours = hoursMatch ? parseFloat(hoursMatch[1]) : 0;
+    const minutes = minutesMatch ? parseFloat(minutesMatch[1]) : 0;
+    
+    return hours + (minutes / 60);
+  };
+
+  // Calculate total hours from both entries and schedules
+  const totalMinutesFromEntries = filteredEntries.reduce((sum, entry) => sum + entry.duration, 0);
+  
+  const totalMinutesFromSchedules = filteredSchedules.reduce((sum, schedule) => {
+    if (schedule.selectedShift) {
+      const shift = shifts.find(s => s.id === schedule.selectedShift);
+      if (shift && shift.customDuration) {
+        return sum + (convertDurationToHours(shift.customDuration) * 60);
+      }
+      
+      // Calculate duration from start and end time if no custom duration
+      const start = new Date(`1970-01-01T${schedule.startTime}:00`);
+      const end = new Date(`1970-01-01T${schedule.endTime}:00`);
+      const duration = (end - start) / (1000 * 60); // Convert to minutes
+      return sum + duration;
+    }
+    return sum;
+  }, 0);
+  
+  const totalMinutes = totalMinutesFromEntries + totalMinutesFromSchedules;
   const totalHours = Math.floor(totalMinutes / 60);
   const remainingMinutes = totalMinutes % 60;
 
@@ -44,7 +88,7 @@ const ReportPage = () => {
 
   // Export to Excel
   const handleExport = () => {
-    exportToExcel(filteredEntries, `time-report-${startDate}-to-${endDate}`);
+    exportToExcel(filteredEntries, filteredSchedules, shifts, `time-report-${startDate}-to-${endDate}`);
   };
 
   return (
@@ -114,7 +158,7 @@ const ReportPage = () => {
           </p>
         </div>
         
-        {filteredEntries.length === 0 ? (
+        {filteredEntries.length === 0 && filteredSchedules.length === 0 ? (
           <p className="text-gray-500 text-center py-8">{t('reports.no_entries')}</p>
         ) : (
           <div className="overflow-x-auto">
@@ -122,6 +166,7 @@ const ReportPage = () => {
               <thead>
                 <tr className="bg-gray-100">
                   <th className="py-2 px-4 text-left">{t('reports.table.date')}</th>
+                  <th className="py-2 px-4 text-left">类型</th>
                   <th className="py-2 px-4 text-left">{t('reports.table.start_time')}</th>
                   <th className="py-2 px-4 text-left">{t('reports.table.end_time')}</th>
                   <th className="py-2 px-4 text-left">{t('reports.table.duration')}</th>
@@ -129,14 +174,47 @@ const ReportPage = () => {
                 </tr>
               </thead>
               <tbody>
+                {/* Display time entries */}
                 {filteredEntries.map((entry, index) => {
                   return (
-                    <tr key={index} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
+                    <tr key={`entry-${index}`} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
                       <td className="py-2 px-4 border-b">{entry.date}</td>
+                      <td className="py-2 px-4 border-b">
+                        <span className="bg-green-100 text-green-800 text-xs px-2 py-1 rounded">工时记录</span>
+                      </td>
                       <td className="py-2 px-4 border-b">{entry.startTime}</td>
                       <td className="py-2 px-4 border-b">{entry.endTime}</td>
                       <td className="py-2 px-4 border-b">{(entry.duration / 60).toFixed(1)}h</td>
                       <td className="py-2 px-4 border-b">{entry.notes || '-'}</td>
+                    </tr>
+                  );
+                })}
+                
+                {/* Display schedules */}
+                {filteredSchedules.map((schedule, index) => {
+                  let duration = 0;
+                  if (schedule.selectedShift) {
+                    const shift = shifts.find(s => s.id === schedule.selectedShift);
+                    if (shift && shift.customDuration) {
+                      duration = convertDurationToHours(shift.customDuration) * 60;
+                    } else {
+                      // Calculate duration from start and end time
+                      const start = new Date(`1970-01-01T${schedule.startTime}:00`);
+                      const end = new Date(`1970-01-01T${schedule.endTime}:00`);
+                      duration = (end - start) / (1000 * 60); // Convert to minutes
+                    }
+                  }
+                  
+                  return (
+                    <tr key={`schedule-${index}`} className={(filteredEntries.length + index) % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
+                      <td className="py-2 px-4 border-b">{schedule.date}</td>
+                      <td className="py-2 px-4 border-b">
+                        <span className="bg-indigo-100 text-indigo-800 text-xs px-2 py-1 rounded">排班</span>
+                      </td>
+                      <td className="py-2 px-4 border-b">{schedule.startTime}</td>
+                      <td className="py-2 px-4 border-b">{schedule.endTime}</td>
+                      <td className="py-2 px-4 border-b">{(duration / 60).toFixed(1)}h</td>
+                      <td className="py-2 px-4 border-b">{schedule.notes || schedule.title || '-'}</td>
                     </tr>
                   );
                 })}
