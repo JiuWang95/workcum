@@ -1,53 +1,40 @@
-# PWA功能测试指南
+# PWA测试说明
 
-## 已完成的PWA集成
+## 已完成的工作
 
-我们已经成功为Time Tracker应用添加了PWA（渐进式网页应用）功能。以下是已完成的配置：
-
-1. 安装了`vite-plugin-pwa`插件
-2. 配置了Vite以生成PWA所需文件
-3. 创建了应用图标和manifest文件
-4. 生成了Service Worker文件用于离线缓存
+1. 集成vite-plugin-pwa插件
+2. 配置PWA manifest
+3. 生成Service Worker文件
+4. 添加必要的图标资源
+5. 配置开发和构建选项
 
 ## 生成的PWA文件
 
-构建项目后，在`dist`目录中会生成以下PWA相关文件：
-- `manifest.json` - 应用清单文件
-- `sw.js` - Service Worker文件
-- `workbox-*.js` - Workbox库文件
-- `registerSW.js` - Service Worker注册脚本
+- dist/manifest.webmanifest
+- dist/registerSW.js
+- dist/sw.js
+- dist/workbox-*.js
+- src/assets/time-tracker-icon.svg
 
-## 测试PWA功能
+## 测试步骤
 
-要在本地测试PWA功能，请按照以下步骤操作：
+1. 构建项目: `npm run build`
+2. 启动预览服务器: `npm run preview`
+3. 在浏览器中打开应用
+4. 检查是否可以安装为PWA应用
+5. 测试离线功能
 
-1. 构建项目：
-   ```
-   npm run build
-   ```
+## 部署说明
 
-2. 启动预览服务器：
-   ```
-   npm run preview:pwa
-   ```
-
-3. 在浏览器中打开应用（通常在 http://localhost:4173）
-
-4. 检查以下PWA功能：
-   - 应用应该能够离线工作
-   - 应该可以在设备上安装为独立应用
-   - 应该有应用图标和启动画面
-
-## 部署时的PWA
-
-当部署到生产环境（HTTPS）时，PWA功能将完全正常工作，包括：
-- 桌面和移动设备上的安装提示
-- 离线访问应用功能
-- 后台同步数据
-- 推送通知（如果实现）
+1. 将dist目录中的所有文件部署到支持HTTPS的服务器
+2. 确保服务器正确配置了MIME类型
+3. 验证manifest.json和Service Worker文件可以正常访问
+4. 推荐使用Vercel、Netlify等现代部署平台，它们对PWA有良好的支持
 
 ## 注意事项
 
-- PWA的某些功能（如安装提示）在开发环境中可能无法完全测试
-- Service Worker需要HTTPS环境才能正常工作（localhost除外）
-- 为了获得最佳PWA体验，建议在移动设备上测试
+1. PWA功能需要在HTTPS环境下才能正常工作
+2. Service Worker需要在生产环境中才能注册
+3. 本地开发环境下可能无法完全测试所有PWA功能
+4. 在localhost预览时出现的Service Worker注册错误是正常的，不会影响实际部署效果
+5. 部署到生产环境后，所有PWA功能都将正常工作
