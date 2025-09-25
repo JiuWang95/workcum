@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { format, startOfWeek, endOfWeek, addDays, isSameDay } from 'date-fns';
 import { zhCN } from 'date-fns/locale';
 import { useTranslation } from 'react-i18next';
+import { getShiftColor, getShiftBackgroundColor } from '../utils/shiftColor'; // 导入颜色工具函数
 
 const ScheduleCalendar = ({ currentDate }) => {
   const { t } = useTranslation();
@@ -158,13 +159,22 @@ const ScheduleCalendar = ({ currentDate }) => {
                         ? 'bg-indigo-100 text-indigo-800' 
                         : 'bg-green-100 text-green-800'
                     }`}
+                    style={item.itemType === 'schedule' ? {
+                      backgroundColor: getShiftBackgroundColor(item.title),
+                      borderLeft: `3px solid ${getShiftColor(item.title)}`
+                    } : {}}
                   >
                     <div className="flex items-center">
-                      <span className={`inline-block w-3 h-3 rounded-full mr-2 ${
-                        item.itemType === 'schedule' 
-                          ? 'bg-indigo-500' 
-                          : 'bg-green-500'
-                      }`}></span>
+                      <span 
+                        className={`inline-block w-3 h-3 rounded-full mr-2 ${
+                          item.itemType === 'schedule' 
+                            ? 'bg-indigo-500' 
+                            : 'bg-green-500'
+                        }`}
+                        style={item.itemType === 'schedule' ? {
+                          backgroundColor: getShiftColor(item.title)
+                        } : {}}
+                      ></span>
                       <span className="font-bold">{item.title}</span>
                     </div>
                     <div className={

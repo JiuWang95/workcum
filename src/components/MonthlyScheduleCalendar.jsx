@@ -14,6 +14,7 @@ import {
 } from 'date-fns';
 import { zhCN } from 'date-fns/locale';
 import { useTranslation } from 'react-i18next';
+import { getShiftColor, getShiftBackgroundColor } from '../utils/shiftColor'; // 导入颜色工具函数
 
 const MonthlyScheduleCalendar = ({ currentDate, onDateChange }) => {
   const { t } = useTranslation();
@@ -195,24 +196,40 @@ const MonthlyScheduleCalendar = ({ currentDate, onDateChange }) => {
               
               <div className="space-y-0.5 md:space-y-1">
                 {/* Display schedules */}
-                {daySchedules.slice(0, maxItems).map((schedule) => (
-                  <div 
-                    key={schedule.id} 
-                    className="text-sm font-semibold bg-indigo-100 text-indigo-800 p-1 rounded truncate"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleEdit(schedule);
-                    }}
-                  >
-                    <div className="flex items-center">
-                      <span className="inline-block w-2 h-2 rounded-full bg-indigo-500 mr-1"></span>
-                      <span className="font-bold truncate">{schedule.title}</span>
+                {daySchedules.slice(0, maxItems).map((schedule) => {
+                  // 获取班次信息
+                  const shiftInfo = shifts.find(shift => shift.id === schedule.selectedShift);
+                  const shiftName = shiftInfo ? shiftInfo.name : schedule.title;
+                  
+                  return (
+                    <div 
+                      key={schedule.id} 
+                      className="text-sm font-semibold p-1 rounded truncate"
+                      style={{
+                        backgroundColor: getShiftBackgroundColor(shiftName),
+                        borderLeft: `2px solid ${getShiftColor(shiftName)}`
+                      }}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleEdit(schedule);
+                      }}
+                    >
+                      <div className="flex items-center">
+                        <span 
+                          className="inline-block w-2 h-2 rounded-full mr-1"
+                          style={{ backgroundColor: getShiftColor(shiftName) }}
+                        ></span>
+                        <span className="font-bold truncate">{shiftName}</span>
+                      </div>
+                      <div 
+                        className="text-xs"
+                        style={{ color: getShiftColor(shiftName) }}
+                      >
+                        {formatTime(schedule.startTime)} - {formatTime(schedule.endTime)}
+                      </div>
                     </div>
-                    <div className="text-indigo-600 text-xs">
-                      {formatTime(schedule.startTime)} - {formatTime(schedule.endTime)}
-                    </div>
-                  </div>
-                ))}
+                  );
+                })}
                 
                 {/* Display time entries if no schedules or space available */}
                 {daySchedules.length < maxItems && dayTimeEntries.slice(0, maxItems - daySchedules.length).map((entry) => (

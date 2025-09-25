@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import DurationPicker from './DurationPicker';
+import { getShiftColor, getShiftBackgroundColor } from '../utils/shiftColor'; // 导入颜色工具函数
 
 const CustomShiftManager = () => {
   const { t } = useTranslation();
@@ -169,29 +170,58 @@ const CustomShiftManager = () => {
       {shifts.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {shifts.map((shift) => (
-            <div key={shift.id} className="border border-gray-200 rounded p-4">
+            <div 
+              key={shift.id} 
+              className="border border-gray-200 rounded-lg p-4 relative overflow-hidden"
+              style={{ 
+                borderLeft: `4px solid ${getShiftColor(shift.name)}`,
+                backgroundColor: getShiftBackgroundColor(shift.name)
+              }}
+            >
+              {/* 颜色标识条 */}
+              <div 
+                className="absolute top-0 left-0 h-full w-1"
+                style={{ backgroundColor: getShiftColor(shift.name) }}
+              ></div>
+              
               <div className="flex justify-between items-start">
                 <div>
-                  <h3 className="font-semibold text-lg text-gray-800">{shift.name}</h3>
-                  <p className="text-gray-600">{shift.startTime} - {shift.endTime}</p>
+                  <h3 
+                    className="font-semibold text-lg text-gray-800 mb-1"
+                    style={{ color: getShiftColor(shift.name) }}
+                  >
+                    {shift.name}
+                  </h3>
+                  <p className="text-gray-600 text-sm">{shift.startTime} - {shift.endTime}</p>
                   {shift.customDuration && (
-                    <p className="text-gray-600 text-sm">{t('time_entry.custom_shift.custom_duration')}: {shift.customDuration}</p>
+                    <p className="text-gray-600 text-xs mt-1">
+                      <span className="font-medium">{t('time_entry.custom_shift.custom_duration')}:</span> {shift.customDuration}
+                    </p>
                   )}
                 </div>
                 <div className="flex space-x-2">
                   <button
                     onClick={() => handleEdit(shift)}
-                    className="text-indigo-600 hover:text-indigo-800"
+                    className="text-indigo-600 hover:text-indigo-800 text-sm"
                   >
                     {t('time_entry.custom_shift.edit')}
                   </button>
                   <button
                     onClick={() => handleDelete(shift.id)}
-                    className="text-red-600 hover:text-red-800"
+                    className="text-red-600 hover:text-red-800 text-sm"
                   >
                     {t('time_entry.custom_shift.delete')}
                   </button>
                 </div>
+              </div>
+              
+              {/* 颜色预览 */}
+              <div className="mt-3 flex items-center">
+                <span className="text-xs text-gray-500 mr-2">{t('time_entry.custom_shift.color_preview')}:</span>
+                <div 
+                  className="w-4 h-4 rounded-full border border-gray-300"
+                  style={{ backgroundColor: getShiftColor(shift.name) }}
+                ></div>
               </div>
             </div>
           ))}

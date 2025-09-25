@@ -45,7 +45,8 @@
       "validation": {
         "name_required": "Please enter a shift name"
       },
-      "delete_confirm": "Are you sure you want to delete this shift template?"
+      "delete_confirm": "Are you sure you want to delete this shift template?",
+      "color_preview": "Color Preview"
     },
     "duration": "Hours",
     "notes": "Notes",
