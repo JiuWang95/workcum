@@ -46,7 +46,9 @@
         "name_required": "Please enter a shift name"
       },
       "delete_confirm": "Are you sure you want to delete this shift template?",
-      "color_preview": "Color Preview"
+      "color_preview": "Color Preview",
+      "overnight_shift": "Overnight Shift",
+      "regular_shift": "Regular Shift"
     },
     "duration": "Hours",
     "notes": "Notes",

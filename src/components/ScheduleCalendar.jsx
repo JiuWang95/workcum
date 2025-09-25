@@ -151,41 +151,53 @@ const ScheduleCalendar = ({ currentDate }) => {
               </div>
               
               <div className="space-y-1">
-                {allItems.slice(0, 3).map((item) => (
-                  <div 
-                    key={item.id} 
-                    className={`text-sm font-semibold p-1 rounded truncate ${
-                      item.itemType === 'schedule' 
-                        ? 'bg-indigo-100 text-indigo-800' 
-                        : 'bg-green-100 text-green-800'
-                    }`}
-                    style={item.itemType === 'schedule' ? {
-                      backgroundColor: getShiftBackgroundColor(item.title),
-                      borderLeft: `3px solid ${getShiftColor(item.title)}`
-                    } : {}}
-                  >
-                    <div className="flex items-center">
-                      <span 
-                        className={`inline-block w-3 h-3 rounded-full mr-2 ${
-                          item.itemType === 'schedule' 
-                            ? 'bg-indigo-500' 
-                            : 'bg-green-500'
-                        }`}
-                        style={item.itemType === 'schedule' ? {
-                          backgroundColor: getShiftColor(item.title)
-                        } : {}}
-                      ></span>
-                      <span className="font-bold">{item.title}</span>
+                {allItems.slice(0, 3).map((item) => {
+                  // 获取班次信息（如果是排班项目）
+                  const shiftInfo = item.itemType === 'schedule' ? 
+                    shifts.find(shift => shift.id === item.selectedShift) : null;
+                  const isOvernight = shiftInfo ? shiftInfo.isOvernight : false;
+                  
+                  return (
+                    <div 
+                      key={item.id} 
+                      className={`text-sm font-semibold p-1 rounded truncate ${
+                        item.itemType === 'schedule' 
+                          ? 'bg-indigo-100 text-indigo-800' 
+                          : 'bg-green-100 text-green-800'
+                      }`}
+                      style={item.itemType === 'schedule' ? {
+                        backgroundColor: getShiftBackgroundColor(item.title),
+                        borderLeft: `3px solid ${getShiftColor(item.title)}`
+                      } : {}}
+                    >
+                      <div className="flex items-center">
+                        <span 
+                          className={`inline-block w-3 h-3 rounded-full mr-2 ${
+                            item.itemType === 'schedule' 
+                              ? 'bg-indigo-500' 
+                              : 'bg-green-500'
+                          }`}
+                          style={item.itemType === 'schedule' ? {
+                            backgroundColor: getShiftColor(item.title)
+                          } : {}}
+                        ></span>
+                        <span className="font-bold">{item.title}</span>
+                        {item.itemType === 'schedule' && isOvernight && (
+                          <span className="ml-1 inline-flex items-center px-1 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                            {t('time_entry.custom_shift.overnight_shift')}
+                          </span>
+                        )}
+                      </div>
+                      <div className={
+                        item.itemType === 'schedule' 
+                          ? 'text-indigo-600' 
+                          : 'text-green-600'
+                      }>
+                        {formatTime(item.startTime)} - {formatTime(item.endTime)}
+                      </div>
                     </div>
-                    <div className={
-                      item.itemType === 'schedule' 
-                        ? 'text-indigo-600' 
-                        : 'text-green-600'
-                    }>
-                      {formatTime(item.startTime)} - {formatTime(item.endTime)}
-                    </div>
-                  </div>
-                ))}
+                  );
+                })}
                 
                 {allItems.length > 3 && (
                   <div className="text-xs text-gray-500">

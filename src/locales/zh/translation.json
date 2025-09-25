@@ -52,7 +52,9 @@
         "name_required": "请输入班次名称"
       },
       "delete_confirm": "确定要删除这个班次模板吗？",
-      "color_preview": "颜色预览"
+      "color_preview": "颜色预览",
+      "overnight_shift": "跨日期班次",
+      "regular_shift": "常规班次"
     }
   },
   "reports": {

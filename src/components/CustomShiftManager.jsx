@@ -12,6 +12,7 @@ const CustomShiftManager = () => {
   const [startTime, setStartTime] = useState('09:00');
   const [endTime, setEndTime] = useState('17:00');
   const [customDuration, setCustomDuration] = useState('');
+  const [isOvernight, setIsOvernight] = useState(false); // 添加跨日期班次标识
 
   // Load shifts from localStorage on component mount
   useEffect(() => {
@@ -37,7 +38,8 @@ const CustomShiftManager = () => {
       name: shiftName,
       startTime,
       endTime,
-      customDuration: customDuration || null // Store custom duration or null if not set
+      customDuration: customDuration || null, // Store custom duration or null if not set
+      isOvernight // 保存跨日期标识
     };
     
     if (editingShift) {
@@ -54,6 +56,7 @@ const CustomShiftManager = () => {
     setStartTime('09:00');
     setEndTime('17:00');
     setCustomDuration('');
+    setIsOvernight(false); // 重置跨日期标识
     setShowForm(false);
   };
 
@@ -63,6 +66,7 @@ const CustomShiftManager = () => {
     setStartTime(shift.startTime);
     setEndTime(shift.endTime);
     setCustomDuration(shift.customDuration || '');
+    setIsOvernight(shift.isOvernight || false); // 设置跨日期标识
     setShowForm(true);
   };
 
@@ -79,6 +83,20 @@ const CustomShiftManager = () => {
     setStartTime('09:00');
     setEndTime('17:00');
     setCustomDuration('');
+    setIsOvernight(false); // 重置跨日期标识
+  };
+
+  // Function to convert duration string to hours
+  const convertDurationToHours = (durationStr) => {
+    if (!durationStr) return 0;
+    
+    const hoursMatch = durationStr.match(/(\d+(?:\.\d+)?)h/);
+    const minutesMatch = durationStr.match(/(\d+(?:\.\d+)?)m/);
+    
+    const hours = hoursMatch ? parseFloat(hoursMatch[1]) : 0;
+    const minutes = minutesMatch ? parseFloat(minutesMatch[1]) : 0;
+    
+    return hours + (minutes / 60);
   };
 
   return (
@@ -149,6 +167,19 @@ const CustomShiftManager = () => {
             </div>
           </div>
           
+          {/* 跨日期班次选项 */}
+          <div className="mb-4">
+            <label className="flex items-center">
+              <input
+                type="checkbox"
+                checked={isOvernight}
+                onChange={(e) => setIsOvernight(e.target.checked)}
+                className="form-checkbox h-5 w-5 text-indigo-600"
+              />
+              <span className="ml-2 text-gray-700">{t('time_entry.custom_shift.overnight_shift')}</span>
+            </label>
+          </div>
+          
           <div className="flex items-center justify-between">
             <button
               type="button"
@@ -168,7 +199,7 @@ const CustomShiftManager = () => {
       )}
       
       {shifts.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="space-y-4">
           {shifts.map((shift) => (
             <div 
               key={shift.id} 
@@ -178,28 +209,57 @@ const CustomShiftManager = () => {
                 backgroundColor: getShiftBackgroundColor(shift.name)
               }}
             >
-              {/* 颜色标识条 */}
-              <div 
-                className="absolute top-0 left-0 h-full w-1"
-                style={{ backgroundColor: getShiftColor(shift.name) }}
-              ></div>
-              
-              <div className="flex justify-between items-start">
-                <div>
+              <div className="grid grid-cols-1 md:grid-cols-5 gap-4 items-center">
+                {/* 班次名称 */}
+                <div className="md:col-span-1">
                   <h3 
-                    className="font-semibold text-lg text-gray-800 mb-1"
+                    className="font-semibold text-lg text-gray-800"
                     style={{ color: getShiftColor(shift.name) }}
                   >
                     {shift.name}
+                    {shift.isOvernight && (
+                      <span className="ml-2 inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                        {t('time_entry.custom_shift.overnight_shift')}
+                      </span>
+                    )}
                   </h3>
-                  <p className="text-gray-600 text-sm">{shift.startTime} - {shift.endTime}</p>
-                  {shift.customDuration && (
-                    <p className="text-gray-600 text-xs mt-1">
-                      <span className="font-medium">{t('time_entry.custom_shift.custom_duration')}:</span> {shift.customDuration}
+                </div>
+                
+                {/* 开始时间，结束时间 */}
+                <div className="md:col-span-1">
+                  <p className="text-gray-600 text-sm">
+                    {shift.startTime} - {shift.endTime}
+                  </p>
+                </div>
+                
+                {/* 工时时长 */}
+                <div className="md:col-span-1">
+                  {shift.customDuration ? (
+                    <p className="text-gray-600 text-sm">
+                      {convertDurationToHours(shift.customDuration).toFixed(1)}h
+                    </p>
+                  ) : (
+                    <p className="text-gray-400 text-sm italic">
+                      {t('time_entry.custom_shift.custom_duration')}
                     </p>
                   )}
                 </div>
-                <div className="flex space-x-2">
+                
+                {/* 跨日期标识 */}
+                <div className="md:col-span-1">
+                  {shift.isOvernight ? (
+                    <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                      {t('time_entry.custom_shift.overnight_shift')}
+                    </span>
+                  ) : (
+                    <span className="text-gray-400 text-sm italic">
+                      {t('time_entry.custom_shift.regular_shift')}
+                    </span>
+                  )}
+                </div>
+                
+                {/* 操作按钮 */}
+                <div className="md:col-span-1 flex justify-end space-x-2">
                   <button
                     onClick={() => handleEdit(shift)}
                     className="text-indigo-600 hover:text-indigo-800 text-sm"

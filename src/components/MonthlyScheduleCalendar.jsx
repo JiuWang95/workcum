@@ -200,6 +200,8 @@ const MonthlyScheduleCalendar = ({ currentDate, onDateChange }) => {
                   // 获取班次信息
                   const shiftInfo = shifts.find(shift => shift.id === schedule.selectedShift);
                   const shiftName = shiftInfo ? shiftInfo.name : schedule.title;
+                  // 检查是否为跨日期班次
+                  const isOvernight = shiftInfo ? shiftInfo.isOvernight : false;
                   
                   return (
                     <div 
@@ -220,6 +222,11 @@ const MonthlyScheduleCalendar = ({ currentDate, onDateChange }) => {
                           style={{ backgroundColor: getShiftColor(shiftName) }}
                         ></span>
                         <span className="font-bold truncate">{shiftName}</span>
+                        {isOvernight && (
+                          <span className="ml-1 inline-flex items-center px-1 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                            {t('time_entry.custom_shift.overnight_shift')}
+                          </span>
+                        )}
                       </div>
                       <div 
                         className="text-xs"
