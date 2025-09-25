@@ -18,6 +18,7 @@ const MonthlyScheduleCalendar = ({ currentDate, onDateChange }) => {
   const { t } = useTranslation();
   const [schedules, setSchedules] = useState([]);
   const [timeEntries, setTimeEntries] = useState([]);
+  const [shifts, setShifts] = useState([]); // Add shifts state
   const [showModal, setShowModal] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
   const [formData, setFormData] = useState({
@@ -26,7 +27,8 @@ const MonthlyScheduleCalendar = ({ currentDate, onDateChange }) => {
     notes: '',
     date: '',
     startTime: '09:00',
-    endTime: '10:00'
+    endTime: '10:00',
+    selectedShift: '' // Add selectedShift to form data
   });
 
   // Load schedules from localStorage
@@ -39,6 +41,12 @@ const MonthlyScheduleCalendar = ({ currentDate, onDateChange }) => {
   useEffect(() => {
     const savedEntries = JSON.parse(localStorage.getItem('timeEntries') || '[]');
     setTimeEntries(savedEntries);
+  }, []);
+
+  // Load custom shifts from localStorage
+  useEffect(() => {
+    const savedShifts = JSON.parse(localStorage.getItem('customShifts') || '[]');
+    setShifts(savedShifts);
   }, []);
 
   // Save schedules to localStorage whenever they change
@@ -67,6 +75,9 @@ const MonthlyScheduleCalendar = ({ currentDate, onDateChange }) => {
   const calendarDays = getCalendarDays(currentDate);
 
   const handleDateClick = (date) => {
+    // Load custom shifts from localStorage
+    const savedShifts = JSON.parse(localStorage.getItem('customShifts') || '[]');
+    
     setSelectedDate(date);
     setFormData({
       id: null,
@@ -74,7 +85,8 @@ const MonthlyScheduleCalendar = ({ currentDate, onDateChange }) => {
       notes: '',
       date: format(date, 'yyyy-MM-dd'),
       startTime: '09:00',
-      endTime: '10:00'
+      endTime: '10:00',
+      selectedShift: '' // Add selectedShift to form data
     });
     setShowModal(true);
   };
@@ -238,6 +250,44 @@ const MonthlyScheduleCalendar = ({ currentDate, onDateChange }) => {
             </h2>
             
             <form onSubmit={handleSubmit}>
+              {/* Shift template selector */}
+              {shifts.length > 0 && (
+                <div className="mb-4">
+                  <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="shiftTemplate">
+                    {t('time_entry.custom_shift.select_shift')}
+                  </label>
+                  <select
+                        id="shiftTemplate"
+                        value={formData.selectedShift}
+                        onChange={(e) => {
+                          const shiftId = e.target.value;
+                          const newFormData = {...formData, selectedShift: shiftId};
+                          
+                          if (shiftId) {
+                            const shift = shifts.find(s => s.id === shiftId);
+                            if (shift) {
+                              newFormData.title = shift.name;
+                              newFormData.startTime = shift.startTime;
+                              newFormData.endTime = shift.endTime;
+                              newFormData.notes = shift.name;
+                            }
+                          }
+                          
+                          setFormData(newFormData);
+                        }}
+                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                      >
+                    <option value="">{t('time_entry.custom_shift.select_placeholder')}</option>
+                    {shifts.map((shift) => (
+                      <option key={shift.id} value={shift.id}>
+                        {shift.name} ({shift.startTime} - {shift.endTime})
+                        {shift.customDuration && ` [${shift.customDuration}]`}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              )}
+              
               <div className="mb-4">
                 <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="title">
                   {t('schedule.form.title')}
