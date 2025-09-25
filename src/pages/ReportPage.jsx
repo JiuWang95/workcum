@@ -161,66 +161,143 @@ const ReportPage = () => {
         {filteredEntries.length === 0 && filteredSchedules.length === 0 ? (
           <p className="text-gray-500 text-center py-8">{t('reports.no_entries')}</p>
         ) : (
-          <div className="overflow-x-auto">
-            <table className="min-w-full bg-white">
-              <thead>
-                <tr className="bg-gray-100">
-                  <th className="py-2 px-4 text-left">{t('reports.table.notes')}</th>
-                  <th className="py-2 px-4 text-left">{t('reports.table.start_time')}</th>
-                  <th className="py-2 px-4 text-left">{t('reports.table.end_time')}</th>
-                  <th className="py-2 px-4 text-left">{t('reports.table.duration')}</th>
-                  <th className="py-2 px-4 text-left">{t('reports.table.date')}</th>
-                  <th className="py-2 px-4 text-left">类型</th>
-                </tr>
-              </thead>
-              <tbody>
-                {/* Display time entries */}
-                {filteredEntries.map((entry, index) => {
-                  return (
-                    <tr key={`entry-${index}`} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
-                      <td className="py-2 px-4 border-b">{entry.notes || t('time_entry.entry')}</td>
-                      <td className="py-2 px-4 border-b">{entry.startTime}</td>
-                      <td className="py-2 px-4 border-b">{entry.endTime}</td>
-                      <td className="py-2 px-4 border-b">{(entry.duration / 60).toFixed(1)}h</td>
-                      <td className="py-2 px-4 border-b">{entry.date}</td>
-                      <td className="py-2 px-4 border-b">
-                        <span className="bg-green-100 text-green-800 text-xs px-2 py-1 rounded">工时记录</span>
-                      </td>
-                    </tr>
-                  );
-                })}
-                
-                {/* Display schedules */}
-                {filteredSchedules.map((schedule, index) => {
-                  let duration = 0;
-                  if (schedule.selectedShift) {
-                    const shift = shifts.find(s => s.id === schedule.selectedShift);
-                    if (shift && shift.customDuration) {
-                      duration = convertDurationToHours(shift.customDuration) * 60;
-                    } else {
-                      // Calculate duration from start and end time
-                      const start = new Date(`1970-01-01T${schedule.startTime}:00`);
-                      const end = new Date(`1970-01-01T${schedule.endTime}:00`);
-                      duration = (end - start) / (1000 * 60); // Convert to minutes
-                    }
-                  }
+          <>
+            {/* Desktop Table View */}
+            <div className="hidden md:block overflow-x-auto">
+              <table className="min-w-full bg-white">
+                <thead>
+                  <tr className="bg-gray-100">
+                    <th className="py-2 px-4 text-left">{t('reports.table.notes')}</th>
+                    <th className="py-2 px-4 text-left">{t('reports.table.start_time')}</th>
+                    <th className="py-2 px-4 text-left">{t('reports.table.end_time')}</th>
+                    <th className="py-2 px-4 text-left">{t('reports.table.duration')}</th>
+                    <th className="py-2 px-4 text-left">{t('reports.table.date')}</th>
+                    <th className="py-2 px-4 text-left">类型</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {/* Display time entries */}
+                  {filteredEntries.map((entry, index) => {
+                    return (
+                      <tr key={`entry-${index}`} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
+                        <td className="py-2 px-4 border-b">{entry.notes || t('time_entry.entry')}</td>
+                        <td className="py-2 px-4 border-b">{entry.startTime}</td>
+                        <td className="py-2 px-4 border-b">{entry.endTime}</td>
+                        <td className="py-2 px-4 border-b">{(entry.duration / 60).toFixed(1)}h</td>
+                        <td className="py-2 px-4 border-b">{entry.date}</td>
+                        <td className="py-2 px-4 border-b">
+                          <span className="bg-green-100 text-green-800 text-xs px-2 py-1 rounded">工时记录</span>
+                        </td>
+                      </tr>
+                    );
+                  })}
                   
-                  return (
-                    <tr key={`schedule-${index}`} className={(filteredEntries.length + index) % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
-                      <td className="py-2 px-4 border-b">{schedule.notes || schedule.title || '-'}</td>
-                      <td className="py-2 px-4 border-b">{schedule.startTime}</td>
-                      <td className="py-2 px-4 border-b">{schedule.endTime}</td>
-                      <td className="py-2 px-4 border-b">{(duration / 60).toFixed(1)}h</td>
-                      <td className="py-2 px-4 border-b">{schedule.date}</td>
-                      <td className="py-2 px-4 border-b">
-                        <span className="bg-indigo-100 text-indigo-800 text-xs px-2 py-1 rounded">排班</span>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
+                  {/* Display schedules */}
+                  {filteredSchedules.map((schedule, index) => {
+                    let duration = 0;
+                    if (schedule.selectedShift) {
+                      const shift = shifts.find(s => s.id === schedule.selectedShift);
+                      if (shift && shift.customDuration) {
+                        duration = convertDurationToHours(shift.customDuration) * 60;
+                      } else {
+                        // Calculate duration from start and end time
+                        const start = new Date(`1970-01-01T${schedule.startTime}:00`);
+                        const end = new Date(`1970-01-01T${schedule.endTime}:00`);
+                        duration = (end - start) / (1000 * 60); // Convert to minutes
+                      }
+                    }
+                    
+                    return (
+                      <tr key={`schedule-${index}`} className={(filteredEntries.length + index) % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
+                        <td className="py-2 px-4 border-b">{schedule.notes || schedule.title || '-'}</td>
+                        <td className="py-2 px-4 border-b">{schedule.startTime}</td>
+                        <td className="py-2 px-4 border-b">{schedule.endTime}</td>
+                        <td className="py-2 px-4 border-b">{(duration / 60).toFixed(1)}h</td>
+                        <td className="py-2 px-4 border-b">{schedule.date}</td>
+                        <td className="py-2 px-4 border-b">
+                          <span className="bg-indigo-100 text-indigo-800 text-xs px-2 py-1 rounded">排班</span>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+            
+            {/* Mobile Card View */}
+            <div className="md:hidden space-y-4">
+              {/* Display time entries as cards */}
+              {filteredEntries.map((entry, index) => (
+                <div key={`entry-${index}`} className="bg-white rounded-lg shadow p-4 border-l-4 border-green-500">
+                  <div className="flex justify-between items-start mb-2">
+                    <h3 className="font-bold text-lg">{entry.notes || t('time_entry.entry')}</h3>
+                    <span className="bg-green-100 text-green-800 text-xs px-2 py-1 rounded">工时记录</span>
+                  </div>
+                  <div className="grid grid-cols-2 gap-2 text-sm">
+                    <div>
+                      <span className="font-medium">开始时间:</span>
+                      <span className="ml-1">{entry.startTime}</span>
+                    </div>
+                    <div>
+                      <span className="font-medium">结束时间:</span>
+                      <span className="ml-1">{entry.endTime}</span>
+                    </div>
+                    <div>
+                      <span className="font-medium">工时:</span>
+                      <span className="ml-1">{(entry.duration / 60).toFixed(1)}h</span>
+                    </div>
+                    <div>
+                      <span className="font-medium">日期:</span>
+                      <span className="ml-1">{entry.date}</span>
+                    </div>
+                  </div>
+                </div>
+              ))}
+              
+              {/* Display schedules as cards */}
+              {filteredSchedules.map((schedule, index) => {
+                let duration = 0;
+                if (schedule.selectedShift) {
+                  const shift = shifts.find(s => s.id === schedule.selectedShift);
+                  if (shift && shift.customDuration) {
+                    duration = convertDurationToHours(shift.customDuration) * 60;
+                  } else {
+                    // Calculate duration from start and end time
+                    const start = new Date(`1970-01-01T${schedule.startTime}:00`);
+                    const end = new Date(`1970-01-01T${schedule.endTime}:00`);
+                    duration = (end - start) / (1000 * 60); // Convert to minutes
+                  }
+                }
+                
+                return (
+                  <div key={`schedule-${index}`} className="bg-white rounded-lg shadow p-4 border-l-4 border-indigo-500">
+                    <div className="flex justify-between items-start mb-2">
+                      <h3 className="font-bold text-lg">{schedule.notes || schedule.title || '-'}</h3>
+                      <span className="bg-indigo-100 text-indigo-800 text-xs px-2 py-1 rounded">排班</span>
+                    </div>
+                    <div className="grid grid-cols-2 gap-2 text-sm">
+                      <div>
+                        <span className="font-medium">开始时间:</span>
+                        <span className="ml-1">{schedule.startTime}</span>
+                      </div>
+                      <div>
+                        <span className="font-medium">结束时间:</span>
+                        <span className="ml-1">{schedule.endTime}</span>
+                      </div>
+                      <div>
+                        <span className="font-medium">工时:</span>
+                        <span className="ml-1">{(duration / 60).toFixed(1)}h</span>
+                      </div>
+                      <div>
+                        <span className="font-medium">日期:</span>
+                        <span className="ml-1">{schedule.date}</span>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </>
         )}
       </div>
     </div>
