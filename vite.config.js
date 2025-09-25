@@ -16,16 +16,21 @@ export default defineConfig({
         name: 'SYwork',
         short_name: 'SYwork',
         description: 'A simple time tracking and scheduling application',
-        start_url: '.',
+        start_url: '/',
         display: 'standalone',
         background_color: '#ffffff',
         theme_color: '#3b82f6',
-        icon: 'src/assets/calendar-icon.svg',
+        // 使用public目录中的图标
         icons: [
           {
-            src: 'src/assets/calendar-icon.svg',
-            sizes: '256x256',
-            type: 'image/svg+xml'
+            src: 'calendar-icon-192.png',
+            sizes: '192x192',
+            type: 'image/png'
+          },
+          {
+            src: 'calendar-icon-512.png',
+            sizes: '512x512',
+            type: 'image/png'
           }
         ]
       },
