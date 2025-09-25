@@ -88,62 +88,6 @@ const DataPage = () => {
     <div className="max-w-4xl mx-auto">
       <h1 className="page-heading">{t('data.title')}</h1>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div className="bg-white rounded-lg shadow p-6">
-          <h2 className="section-heading">{t('data.export.title')}</h2>
-          <p className="text-gray-600 mb-4">
-            {t('data.export.description')}
-          </p>
-          <button
-            onClick={handleExportAllData}
-            className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 px-4 rounded"
-          >
-            {t('data.export.button')}
-          </button>
-          {exportStatus && (
-            <div className="mt-4 p-2 bg-emerald-100 text-emerald-700 rounded">
-              {exportStatus}
-            </div>
-          )}
-        </div>
-        
-        <div className="bg-white rounded-lg shadow p-6">
-          <h2 className="section-heading">{t('data.import.title')}</h2>
-          <p className="text-gray-600 mb-4">
-            {t('data.import.description')}
-          </p>
-          <input
-            type="file"
-            accept=".json"
-            onChange={handleImportData}
-            className="block w-full text-sm text-gray-500
-              file:mr-4 file:py-2 file:px-4
-              file:rounded file:border-0
-              file:text-sm file:font-semibold
-              file:bg-indigo-50 file:text-indigo-700
-              hover:file:bg-indigo-100"
-          />
-          {importStatus && (
-            <div className="mt-4 p-2 bg-indigo-100 text-indigo-700 rounded">
-              {importStatus}
-            </div>
-          )}
-        </div>
-      </div>
-      
-      <div className="mt-8 bg-white rounded-lg shadow p-6">
-        <h2 className="section-heading">{t('data.danger_zone.title')}</h2>
-        <p className="text-gray-600 mb-4">
-          {t('data.danger_zone.description')}
-        </p>
-        <button
-          onClick={handleClearAllData}
-          className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-        >
-          {t('data.danger_zone.button')}
-        </button>
-      </div>
-
       {/* Project Information Section */}
       <div className="mt-8 bg-white rounded-lg shadow p-6">
         <h2 className="section-heading">项目信息</h2>
@@ -216,6 +160,62 @@ const DataPage = () => {
             联系乐乐
           </button>
         </div>
+      </div>
+      
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
+        <div className="bg-white rounded-lg shadow p-6">
+          <h2 className="section-heading">{t('data.export.title')}</h2>
+          <p className="text-gray-600 mb-4">
+            {t('data.export.description')}
+          </p>
+          <button
+            onClick={handleExportAllData}
+            className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 px-4 rounded"
+          >
+            {t('data.export.button')}
+          </button>
+          {exportStatus && (
+            <div className="mt-4 p-2 bg-emerald-100 text-emerald-700 rounded">
+              {exportStatus}
+            </div>
+          )}
+        </div>
+        
+        <div className="bg-white rounded-lg shadow p-6">
+          <h2 className="section-heading">{t('data.import.title')}</h2>
+          <p className="text-gray-600 mb-4">
+            {t('data.import.description')}
+          </p>
+          <input
+            type="file"
+            accept=".json"
+            onChange={handleImportData}
+            className="block w-full text-sm text-gray-500
+              file:mr-4 file:py-2 file:px-4
+              file:rounded file:border-0
+              file:text-sm file:font-semibold
+              file:bg-indigo-50 file:text-indigo-700
+              hover:file:bg-indigo-100"
+          />
+          {importStatus && (
+            <div className="mt-4 p-2 bg-indigo-100 text-indigo-700 rounded">
+              {importStatus}
+            </div>
+          )}
+        </div>
+      </div>
+      
+      <div className="mt-8 bg-white rounded-lg shadow p-6">
+        <h2 className="section-heading">{t('data.danger_zone.title')}</h2>
+        <p className="text-gray-600 mb-4">
+          {t('data.danger_zone.description')}
+        </p>
+        <button
+          onClick={handleClearAllData}
+          className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+        >
+          {t('data.danger_zone.button')}
+        </button>
       </div>
     </div>
   );
