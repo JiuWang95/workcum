@@ -1,0 +1,16 @@
+{
+  "name": "Time Tracker",
+  "short_name": "TimeTracker",
+  "description": "A simple time tracking and scheduling application",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#3b82f6",
+  "icons": [
+    {
+      "src": "src/assets/favicon.ico",
+      "sizes": "256x256",
+      "type": "image/png"
+    }
+  ]
+}
