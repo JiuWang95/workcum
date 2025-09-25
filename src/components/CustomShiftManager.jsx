@@ -203,44 +203,43 @@ const CustomShiftManager = () => {
       )}
       
       {shifts.length > 0 ? (
-        // 减少班次项的间距以适应移动端
-        <div className="space-y-3">
+        // 进一步优化班次项的显示，只显示核心信息以减小高度
+        <div className="space-y-2">
           {shifts.map((shift) => (
             <div 
               key={shift.id} 
-              className="border border-gray-200 rounded-lg p-3 relative overflow-hidden"
+              className="border border-gray-200 rounded-lg p-2 relative overflow-hidden flex justify-between items-center"
               style={{ 
                 borderLeft: `3px solid ${getShiftColor(shift.name)}`,
                 backgroundColor: getShiftBackgroundColor(shift.name)
               }}
             >
-              <div className="grid grid-cols-1 md:grid-cols-5 gap-2 items-center">
-                {/* 班次名称 */}
-                <div className="md:col-span-1">
+              {/* 左侧：班次名称和类型标识 */}
+              <div className="flex items-center">
+                <div 
+                  className="w-3 h-3 rounded-full border border-gray-300 mr-2 flex-shrink-0"
+                  style={{ backgroundColor: getShiftColor(shift.name) }}
+                ></div>
+                <div>
                   <h3 
                     className="font-semibold text-gray-800 text-sm"
                     style={{ color: getShiftColor(shift.name) }}
                   >
                     {shift.name}
-                    {shift.isOvernight && (
-                      <span className="ml-1 inline-flex items-center px-1.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
-                        {t('time_entry.custom_shift.overnight_shift')}
-                      </span>
-                    )}
                   </h3>
+                  {/* 类型标识：普通班次或跨夜班 */}
+                  <span className="text-xs text-gray-500">
+                    {shift.isOvernight ? t('time_entry.custom_shift.overnight_shift') : t('time_entry.custom_shift.regular_shift')}
+                  </span>
                 </div>
-                
-                {/* 开始时间，结束时间 */}
-                <div className="md:col-span-1">
-                  <p className="text-gray-600 text-xs">
-                    {shift.startTime} - {shift.endTime}
-                  </p>
-                </div>
-                
+              </div>
+              
+              {/* 右侧：时长信息和操作按钮 */}
+              <div className="flex items-center">
                 {/* 工时时长 */}
-                <div className="md:col-span-1">
+                <div className="text-right mr-2">
                   {shift.customDuration ? (
-                    <p className="text-gray-600 text-xs">
+                    <p className="text-gray-600 text-xs font-medium">
                       {convertDurationToHours(shift.customDuration).toFixed(1)}h
                     </p>
                   ) : (
@@ -248,23 +247,14 @@ const CustomShiftManager = () => {
                       {t('time_entry.custom_shift.custom_duration')}
                     </p>
                   )}
-                </div>
-                
-                {/* 跨日期标识 */}
-                <div className="md:col-span-1">
-                  {shift.isOvernight ? (
-                    <span className="inline-flex items-center px-1.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
-                      {t('time_entry.custom_shift.overnight_shift')}
-                    </span>
-                  ) : (
-                    <span className="text-gray-400 text-xs italic">
-                      {t('time_entry.custom_shift.regular_shift')}
-                    </span>
-                  )}
+                  {/* 显示时间范围 */}
+                  <p className="text-gray-500 text-xs">
+                    {shift.startTime}-{shift.endTime}
+                  </p>
                 </div>
                 
                 {/* 操作按钮 */}
-                <div className="md:col-span-1 flex justify-end space-x-1">
+                <div className="flex flex-col space-y-1">
                   <button
                     onClick={() => handleEdit(shift)}
                     className="text-indigo-600 hover:text-indigo-800 text-xs"
@@ -278,15 +268,6 @@ const CustomShiftManager = () => {
                     {t('time_entry.custom_shift.delete')}
                   </button>
                 </div>
-              </div>
-              
-              {/* 颜色预览 */}
-              <div className="mt-2 flex items-center">
-                <span className="text-xs text-gray-500 mr-1">{t('time_entry.custom_shift.color_preview')}:</span>
-                <div 
-                  className="w-3 h-3 rounded-full border border-gray-300"
-                  style={{ backgroundColor: getShiftColor(shift.name) }}
-                ></div>
               </div>
             </div>
           ))}
