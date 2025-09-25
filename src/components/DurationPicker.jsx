@@ -41,6 +41,17 @@ const DurationPicker = ({ value, onChange, id, label, className = "" }) => {
     setMinutes(parsed.minutes);
   }, [value]);
   
+  // 生成小时选项 (0-24)
+  const hourOptions = Array.from({ length: 25 }, (_, i) => (
+    <option key={i} value={i}>{i}</option>
+  ));
+  
+  // 生成分钟选项 (0-59，步长为5)
+  const minuteOptions = Array.from({ length: 12 }, (_, i) => {
+    const min = i * 5;
+    return <option key={min} value={min}>{min}</option>;
+  });
+  
   return (
     <div className={`flex flex-col ${className}`}>
       {label && (
@@ -53,30 +64,27 @@ const DurationPicker = ({ value, onChange, id, label, className = "" }) => {
           <label className="block text-gray-700 text-xs mb-1" htmlFor={`${id}-hours`}>
             {t('time_entry.custom_shift.hours')}
           </label>
-          <input
-            type="number"
+          <select
             id={`${id}-hours`}
-            min="0"
-            max="24"
             value={hours}
             onChange={(e) => setHours(parseInt(e.target.value) || 0)}
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          />
+          >
+            {hourOptions}
+          </select>
         </div>
         <div className="flex-1">
           <label className="block text-gray-700 text-xs mb-1" htmlFor={`${id}-minutes`}>
             {t('time_entry.custom_shift.minutes')}
           </label>
-          <input
-            type="number"
+          <select
             id={`${id}-minutes`}
-            min="0"
-            max="59"
-            step="5"
             value={minutes}
             onChange={(e) => setMinutes(parseInt(e.target.value) || 0)}
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          />
+          >
+            {minuteOptions}
+          </select>
         </div>
       </div>
     </div>
