@@ -165,9 +165,9 @@ const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow p-4 md:p-6">
+    <div className="bg-white rounded-lg shadow p-2 md:p-6">
       {/* Week view: Each date occupies a separate row with vertical arrangement */}
-      <div className="space-y-4">
+      <div className="space-y-2 md:space-y-4">
         {weekDays.map((day, index) => {
           const daySchedules = getScheduleForDate(day);
           const dayTimeEntries = getTimeEntriesForDate(day);
@@ -176,40 +176,40 @@ const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
           return (
             <div 
               key={index} 
-              className={`border rounded-lg p-4 cursor-pointer ${
+              className={`border rounded-lg p-2 md:p-4 cursor-pointer ${
                 isToday ? 'bg-blue-50 border-blue-300' : 'border-gray-200'
               }`}
               onClick={() => handleDateClick(day)}
             >
               {/* Date header */}
-              <div className={`text-lg font-medium mb-3 flex items-center ${
+              <div className={`text-sm md:text-lg font-medium mb-2 md:mb-3 flex items-center ${
                 isToday ? 'text-blue-600' : 'text-gray-700'
               }`}>
-                <span className="mr-2">{format(day, 'EEE', { locale: zhCN })}</span>
-                <span className="text-xl">{format(day, 'd', { locale: zhCN })}</span>
-                <span className="ml-2 text-sm">{format(day, 'MMMM', { locale: zhCN })}</span>
+                <span className="mr-1 md:mr-2">{format(day, 'EEE', { locale: zhCN })}</span>
+                <span className="text-base md:text-xl">{format(day, 'd', { locale: zhCN })}</span>
+                <span className="ml-1 md:ml-2 text-xs md:text-sm">{format(day, 'MMMM', { locale: zhCN })}</span>
               </div>
               
               {/* Vertical arrangement of schedules and time entries */}
-              <div className="space-y-2">
+              <div className="space-y-1 md:space-y-2">
                 {/* Display schedules */}
                 {daySchedules.map((schedule) => (
                   <div 
                       key={schedule.id} 
-                      className="text-sm font-semibold bg-indigo-100 text-indigo-800 p-3 rounded-lg"
+                      className="text-xs md:text-sm font-semibold bg-indigo-100 text-indigo-800 p-2 md:p-3 rounded-lg"
                       onClick={(e) => {
                         e.stopPropagation();
                         handleEdit(schedule);
                       }}
                     >
                       <div className="flex items-center">
-                        <span className="inline-block w-3 h-3 rounded-full bg-indigo-500 mr-2"></span>
-                        <span className="font-bold">{schedule.title}</span>
+                        <span className="inline-block w-2 h-2 md:w-3 md:h-3 rounded-full bg-indigo-500 mr-1 md:mr-2"></span>
+                        <span className="font-bold truncate">{schedule.title}</span>
                       </div>
-                      <div className="text-indigo-600 text-sm mt-1">
+                      <div className="text-indigo-600 text-xs md:text-sm mt-1">
                         {formatTime(schedule.startTime)} - {formatTime(schedule.endTime)}
                         {schedule.selectedShift && shifts.find(s => s.id === schedule.selectedShift)?.customDuration && (
-                          <span className="ml-2">
+                          <span className="ml-1 md:ml-2">
                             [{convertDurationToHours(shifts.find(s => s.id === schedule.selectedShift).customDuration).toFixed(1)}h]
                           </span>
                         )}
@@ -221,13 +221,13 @@ const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
                 {dayTimeEntries.map((entry) => (
                   <div 
                     key={entry.id} 
-                    className="text-sm font-semibold bg-green-100 text-green-800 p-3 rounded-lg"
+                    className="text-xs md:text-sm font-semibold bg-green-100 text-green-800 p-2 md:p-3 rounded-lg"
                   >
-                    <div className="font-bold">{entry.notes || t('time_entry.entry')}</div>
-                    <div className="text-green-600 text-sm mt-1">
+                    <div className="font-bold truncate">{entry.notes || t('time_entry.entry')}</div>
+                    <div className="text-green-600 text-xs md:text-sm mt-1">
                       {formatTime(entry.startTime)} - {formatTime(entry.endTime)}
                       {entry.duration && (
-                        <span className="ml-2">
+                        <span className="ml-1 md:ml-2">
                           [{(entry.duration / 60).toFixed(1)}h]
                         </span>
                       )}
