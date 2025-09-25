@@ -40,6 +40,20 @@ const TimeEntryPage = () => {
     localStorage.setItem('schedules', JSON.stringify(newSchedules));
   };
 
+  const handleDeleteEntry = (id) => {
+    if (window.confirm(t('time_entry.delete_confirm'))) {
+      // 删除时间记录
+      const newEntries = entries.filter(entry => entry.id !== id);
+      setEntries(newEntries);
+      localStorage.setItem('timeEntries', JSON.stringify(newEntries));
+      
+      // 同时从日历中删除
+      const newSchedules = schedules.filter(schedule => schedule.id !== `entry-${id}`);
+      setSchedules(newSchedules);
+      localStorage.setItem('schedules', JSON.stringify(newSchedules));
+    }
+  };
+
   // Function to convert duration string to hours
   const convertDurationToHours = (durationStr) => {
     if (!durationStr) return 0;
@@ -111,26 +125,47 @@ const TimeEntryPage = () => {
                 {allRecords.slice(0, 8).map((record, index) => (
                   <li key={index} className="p-4">
                     <div className="flex justify-between items-start">
-                      <div>
-                        <span className="font-medium">{record.date}</span>
-                        <span className={`ml-2 text-xs px-2 py-1 rounded ${
-                          record.type === 'entry' 
-                            ? 'bg-green-100 text-green-800' 
-                            : 'bg-indigo-100 text-indigo-800'
-                        }`}>
-                          {record.type === 'entry' ? '工时记录' : '排班'}
-                        </span>
+                      <div className="flex-1">
+                        {/* 第一排：班次名称 */}
+                        <div className="inline-block bg-indigo-100 text-indigo-800 px-3 py-1 rounded-lg">
+                          <span className="text-lg font-bold">
+                            {record.notes || (record.type === 'entry' ? t('time_entry.entry') : record.title)}
+                          </span>
+                        </div>
+                        
+                        {/* 第二排：开始结束时间 */}
+                        <div className="text-sm text-gray-600 mt-1">
+                          {record.startTime} - {record.endTime}
+                        </div>
+                        
+                        {/* 第三排：日期 */}
+                        <div className="flex items-center mt-1">
+                          <span className="text-sm text-gray-500">{record.date}</span>
+                          <span className={`ml-2 text-xs px-2 py-1 rounded ${
+                            record.type === 'entry' 
+                              ? 'bg-green-100 text-green-800' 
+                              : 'bg-indigo-100 text-indigo-800'
+                          }`}>
+                            {record.type === 'entry' ? '工时记录' : '排班'}
+                          </span>
+                        </div>
                       </div>
-                      <span className="text-indigo-600">{record.displayDuration} {t('time_entry.duration')}</span>
-                    </div>
-                    <div className="mt-1 text-sm text-gray-600">
-                      {record.startTime} - {record.endTime}
-                    </div>
-                    {record.notes && (
-                      <div className="mt-2 text-sm text-gray-500">
-                        {record.notes}
+                      
+                      <div className="flex flex-col items-end space-y-2">
+                        <span className="text-indigo-600">{record.displayDuration} {t('time_entry.duration')}</span>
+                        {record.type === 'entry' && (
+                          <button 
+                            onClick={() => handleDeleteEntry(record.id)}
+                            className="text-red-500 hover:text-red-700"
+                            title={t('time_entry.delete')}
+                          >
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                              <path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd" />
+                            </svg>
+                          </button>
+                        )}
                       </div>
-                    )}
+                    </div>
                   </li>
                 ))}
               </ul>
