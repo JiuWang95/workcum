@@ -4,11 +4,7 @@
     "time_entry": "记录",
     "reports": "报告",
     "schedule": "排班",
-    "data": "数据",
-    "language": {
-      "en": "EN",
-      "zh": "中文"
-    }
+    "data": "数据"
   },
   "time_entry": {
     "title": "记录",
