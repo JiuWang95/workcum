@@ -9,6 +9,7 @@ const CustomShiftManager = () => {
   const [shiftName, setShiftName] = useState('');
   const [startTime, setStartTime] = useState('09:00');
   const [endTime, setEndTime] = useState('17:00');
+  const [customDuration, setCustomDuration] = useState('');
 
   // Load shifts from localStorage on component mount
   useEffect(() => {
@@ -33,7 +34,8 @@ const CustomShiftManager = () => {
       id: editingShift ? editingShift.id : Date.now().toString(),
       name: shiftName,
       startTime,
-      endTime
+      endTime,
+      customDuration: customDuration || null // Store custom duration or null if not set
     };
     
     if (editingShift) {
@@ -49,6 +51,7 @@ const CustomShiftManager = () => {
     setShiftName('');
     setStartTime('09:00');
     setEndTime('17:00');
+    setCustomDuration('');
     setShowForm(false);
   };
 
@@ -57,6 +60,7 @@ const CustomShiftManager = () => {
     setShiftName(shift.name);
     setStartTime(shift.startTime);
     setEndTime(shift.endTime);
+    setCustomDuration(shift.customDuration || '');
     setShowForm(true);
   };
 
@@ -72,6 +76,7 @@ const CustomShiftManager = () => {
     setShiftName('');
     setStartTime('09:00');
     setEndTime('17:00');
+    setCustomDuration('');
   };
 
   return (
@@ -103,7 +108,7 @@ const CustomShiftManager = () => {
             />
           </div>
           
-          <div className="grid grid-cols-2 gap-4 mb-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
             <div>
               <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="shiftStartTime">
                 {t('time_entry.custom_shift.start_time')}
@@ -129,6 +134,20 @@ const CustomShiftManager = () => {
                 onChange={(e) => setEndTime(e.target.value)}
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 required
+              />
+            </div>
+            
+            <div>
+              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="customDuration">
+                {t('time_entry.custom_shift.custom_duration')}
+              </label>
+              <input
+                type="text"
+                id="customDuration"
+                value={customDuration}
+                onChange={(e) => setCustomDuration(e.target.value)}
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                placeholder="例如: 8h 或 480m"
               />
             </div>
           </div>
@@ -159,6 +178,9 @@ const CustomShiftManager = () => {
                 <div>
                   <h3 className="font-semibold text-lg text-gray-800">{shift.name}</h3>
                   <p className="text-gray-600">{shift.startTime} - {shift.endTime}</p>
+                  {shift.customDuration && (
+                    <p className="text-gray-600 text-sm">{t('time_entry.custom_shift.custom_duration')}: {shift.customDuration}</p>
+                  )}
                 </div>
                 <div className="flex space-x-2">
                   <button

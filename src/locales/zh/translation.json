@@ -33,6 +33,7 @@
       "shift_name_placeholder": "例如：早班、晚班",
       "start_time": "开始时间",
       "end_time": "结束时间",
+      "custom_duration": "自定义工时",
       "add_shift": "添加班次",
       "save_shift": "保存班次",
       "update_shift": "更新班次",

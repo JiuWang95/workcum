@@ -28,6 +28,7 @@
       "shift_name_placeholder": "e.g., Morning Shift, Evening Shift",
       "start_time": "Start Time",
       "end_time": "End Time",
+      "custom_duration": "Custom Duration",
       "add_shift": "Add Shift",
       "save_shift": "Save Shift",
       "update_shift": "Update Shift",
