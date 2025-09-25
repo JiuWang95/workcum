@@ -1,9 +1,9 @@
 {
-  "app_title": "时间追踪器",
+  "app_title": "工作时间记录系统",
   "navigation": {
     "time_entry": "时间记录",
-    "reports": "报表",
-    "schedule": "日程",
+    "reports": "报告",
+    "schedule": "排班",
     "data": "数据",
     "language": {
       "en": "EN",
@@ -19,13 +19,17 @@
     "end_time": "结束时间",
     "duration": "时长",
     "notes": "备注",
+    "notes_placeholder": "请输入备注信息...",
     "add_entry": "添加记录",
+    "entry": "时间记录",
     "validation": {
       "end_time_after_start": "结束时间必须晚于开始时间"
-    }
+    },
+    "sync_to_schedule": "同步到排班",
+    "sync_success": "时间记录已同步到排班！"
   },
   "reports": {
-    "title": "报表",
+    "title": "报告",
     "generate_report": "生成报表",
     "export_excel": "导出到Excel",
     "from_date": "开始日期",
@@ -44,14 +48,16 @@
     }
   },
   "schedule": {
-    "title": "日程",
+    "title": "排班",
+    "previous_month": "上月",
+    "next_month": "下月",
     "previous_week": "上周",
     "next_week": "下周",
     "today": "今天",
     "add_task": "+ 添加任务",
-    "edit_schedule": "编辑日程",
-    "add_schedule": "添加日程",
-    "delete_confirm": "确定要删除这个日程吗？",
+    "edit_schedule": "编辑排班",
+    "add_schedule": "添加排班",
+    "delete_confirm": "确定要删除这个排班吗？",
     "validation": {
       "title_required": "请输入任务标题",
       "end_time_after_start": "结束时间必须晚于开始时间"

@@ -1,0 +1,62 @@
+{
+  "app_title": "Work Time Tracker",
+  "navigation": {
+    "time_entry": "Time Entry",
+    "reports": "Reports",
+    "schedule": "Schedule",
+    "data": "Data"
+  },
+  "time_entry": {
+    "title": "Time Entry",
+    "add_entry": "Add Entry",
+    "date": "Date",
+    "start_time": "Start Time",
+    "end_time": "End Time",
+    "duration": "Duration",
+    "notes": "Notes",
+    "notes_placeholder": "Enter notes...",
+    "recent_entries": "Recent Entries",
+    "validation": {
+      "end_time_after_start": "End time must be after start time"
+    },
+    "entry": "Time Entry",
+    "sync_to_schedule": "Sync to Schedule",
+    "sync_success": "Time entry synced to schedule!"
+  },
+  "reports": {
+    "title": "Reports",
+    "daily_summary": "Daily Summary",
+    "total_duration": "Total Duration",
+    "day": "day",
+    "entries": "entries"
+  },
+  "schedule": {
+    "title": "Schedule",
+    "previous_week": "Previous Week",
+    "next_week": "Next Week",
+    "today": "Today",
+    "add_schedule": "Add Schedule",
+    "edit_schedule": "Edit Schedule",
+    "schedule_title": "Title",
+    "date": "Date",
+    "start_time": "Start Time",
+    "end_time": "End Time",
+    "notes": "Notes",
+    "delete": "Delete",
+    "cancel": "Cancel",
+    "save": "Save",
+    "no_schedules": "No schedules available",
+    "previous_month": "Previous Month",
+    "next_month": "Next Month"
+  },
+  "data": {
+    "title": "Data",
+    "export": "Export Data",
+    "import": "Import Data",
+    "clear": "Clear Data",
+    "export_success": "Data exported successfully",
+    "import_success": "Data imported successfully",
+    "clear_confirm": "Are you sure you want to clear all data? This action cannot be undone.",
+    "clear_success": "Data cleared successfully"
+  }
+}
