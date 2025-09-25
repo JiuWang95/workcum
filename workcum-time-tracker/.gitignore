@@ -1,6 +1,9 @@
 # Dependencies
 node_modules/
 
+# Spec workflow
+.spec-workflow/
+
 # Build outputs
 /dist/
 /build/
