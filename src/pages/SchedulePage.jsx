@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { format, addWeeks, subWeeks, startOfWeek, endOfWeek } from 'date-fns';
 import WeeklyScheduleCalendar from '../components/WeeklyScheduleCalendar';
-import CustomShiftManager from '../components/CustomShiftManager';
 import { useTranslation } from 'react-i18next';
 
 const SchedulePage = () => {
@@ -66,8 +65,6 @@ const SchedulePage = () => {
           onDateChange={setCurrentWeek}
         />
       </div>
-      
-      <CustomShiftManager />
     </div>
   );
 };

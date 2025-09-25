@@ -24,6 +24,20 @@ const TimeEntryPage = () => {
     const newEntries = [...entries, entry];
     setEntries(newEntries);
     localStorage.setItem('timeEntries', JSON.stringify(newEntries));
+    
+    // 同步到日历中
+    const scheduleEntry = {
+      id: `entry-${entry.id}`,
+      date: entry.date,
+      startTime: entry.startTime,
+      endTime: entry.endTime,
+      title: entry.notes || t('time_entry.entry'), // 使用班次名称作为标题
+      type: 'entry'
+    };
+    
+    const newSchedules = [...schedules, scheduleEntry];
+    setSchedules(newSchedules);
+    localStorage.setItem('schedules', JSON.stringify(newSchedules));
   };
 
   // Function to convert duration string to hours

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { format, startOfWeek, endOfWeek, addDays, isSameDay } from 'date-fns';
+import { zhCN } from 'date-fns/locale';
 import { useTranslation } from 'react-i18next';
 
 const ScheduleCalendar = ({ currentDate }) => {
@@ -99,6 +100,14 @@ const ScheduleCalendar = ({ currentDate }) => {
     );
   };
 
+  // 获取指定日期的时间记录
+  const getTimeEntriesForDate = (date) => {
+    // 过滤出类型为'entry'的记录作为时间记录
+    return schedules.filter(schedule => 
+      schedule.type === 'entry' && isSameDay(new Date(schedule.date), date)
+    );
+  };
+
   const formatTime = (time) => {
     const [hours, minutes] = time.split(':');
     return `${hours}:${minutes}`;
@@ -107,7 +116,7 @@ const ScheduleCalendar = ({ currentDate }) => {
   return (
     <div className="bg-white rounded-lg shadow p-6">
       <div className="grid grid-cols-7 gap-2 mb-4">
-        {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((day, index) => (
+        {['一', '二', '三', '四', '五', '六', '日'].map((day, index) => (
           <div key={index} className="text-center font-semibold text-gray-700 py-2">
             {day}
           </div>
@@ -117,7 +126,14 @@ const ScheduleCalendar = ({ currentDate }) => {
       <div className="grid grid-cols-7 gap-2">
         {days.map((day, index) => {
           const daySchedules = getScheduleForDate(day);
+          const dayTimeEntries = getTimeEntriesForDate(day);
           const isToday = isSameDay(day, new Date());
+          
+          // 合并排班和时间记录，并按类型分组显示
+          const allItems = [
+            ...daySchedules.map(item => ({...item, itemType: 'schedule'})),
+            ...dayTimeEntries.map(item => ({...item, itemType: 'entry'}))
+          ];
           
           return (
             <div 
@@ -130,29 +146,37 @@ const ScheduleCalendar = ({ currentDate }) => {
               <div className={`text-sm font-medium mb-1 ${
                 isToday ? 'text-blue-600' : 'text-gray-500'
               }`}>
-                {format(day, 'd')}
+                {format(day, 'd', { locale: zhCN })}
               </div>
               
               <div className="space-y-1">
-                {daySchedules.slice(0, 3).map((schedule) => (
+                {allItems.slice(0, 3).map((item) => (
                   <div 
-                    key={schedule.id} 
-                    className="text-xs bg-indigo-100 text-indigo-800 p-1 rounded truncate"
+                    key={item.id} 
+                    className={`text-sm font-semibold p-1 rounded truncate ${
+                      item.itemType === 'schedule' 
+                        ? 'bg-indigo-100 text-indigo-800' 
+                        : 'bg-green-100 text-green-800'
+                    }`}
                   >
-                    <div className="font-medium">{schedule.title}</div>
-                    <div className="text-indigo-600">
-                      {formatTime(schedule.startTime)} - {formatTime(schedule.endTime)}
+                    <div className="font-bold">{item.title}</div>
+                    <div className={
+                      item.itemType === 'schedule' 
+                        ? 'text-indigo-600' 
+                        : 'text-green-600'
+                    }>
+                      {formatTime(item.startTime)} - {formatTime(item.endTime)}
                     </div>
                   </div>
                 ))}
                 
-                {daySchedules.length > 3 && (
+                {allItems.length > 3 && (
                   <div className="text-xs text-gray-500">
-                    +{daySchedules.length - 3} more
+                    +{allItems.length - 3} more
                   </div>
                 )}
                 
-                {daySchedules.length === 0 && (
+                {allItems.length === 0 && (
                   <div className="text-xs text-gray-400 italic">
                     {t('schedule.add_task')}
                   </div>

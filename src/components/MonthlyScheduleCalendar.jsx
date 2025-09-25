@@ -12,6 +12,7 @@ import {
   subMonths,
   getDaysInMonth
 } from 'date-fns';
+import { zhCN } from 'date-fns/locale';
 import { useTranslation } from 'react-i18next';
 
 const MonthlyScheduleCalendar = ({ currentDate, onDateChange }) => {
@@ -154,7 +155,7 @@ const MonthlyScheduleCalendar = ({ currentDate, onDateChange }) => {
   return (
     <div className="bg-white rounded-lg shadow p-4 md:p-6">
       <div className="grid grid-cols-7 gap-1 mb-2 md:mb-4">
-        {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day, index) => (
+        {['日', '一', '二', '三', '四', '五', '六'].map((day, index) => (
           <div key={index} className="text-center font-semibold text-gray-700 py-1 md:py-2 text-xs md:text-sm">
             {day}
           </div>
@@ -189,7 +190,7 @@ const MonthlyScheduleCalendar = ({ currentDate, onDateChange }) => {
               <div className={`text-xs md:text-sm font-medium mb-1 ${
                 isToday ? 'text-blue-600' : isCurrentMonth ? 'text-gray-700' : 'text-gray-400'
               }`}>
-                {format(day, 'd')}
+                {format(day, 'd', { locale: zhCN })}
               </div>
               
               <div className="space-y-0.5 md:space-y-1">
@@ -197,13 +198,13 @@ const MonthlyScheduleCalendar = ({ currentDate, onDateChange }) => {
                 {daySchedules.slice(0, maxItems).map((schedule) => (
                   <div 
                     key={schedule.id} 
-                    className="text-xs bg-indigo-100 text-indigo-800 p-1 rounded truncate"
+                    className="text-sm font-semibold bg-indigo-100 text-indigo-800 p-1 rounded truncate"
                     onClick={(e) => {
                       e.stopPropagation();
                       handleEdit(schedule);
                     }}
                   >
-                    <div className="font-medium truncate">{schedule.title}</div>
+                    <div className="font-bold truncate">{schedule.title}</div>
                     <div className="text-indigo-600 text-xs">
                       {formatTime(schedule.startTime)} - {formatTime(schedule.endTime)}
                     </div>
@@ -214,9 +215,9 @@ const MonthlyScheduleCalendar = ({ currentDate, onDateChange }) => {
                 {daySchedules.length < maxItems && dayTimeEntries.slice(0, maxItems - daySchedules.length).map((entry) => (
                   <div 
                     key={entry.id} 
-                    className="text-xs bg-green-100 text-green-800 p-1 rounded truncate"
+                    className="text-sm font-semibold bg-green-100 text-green-800 p-1 rounded truncate"
                   >
-                    <div className="font-medium truncate">{t('time_entry.entry')}</div>
+                    <div className="font-bold truncate">{entry.notes || t('time_entry.entry')}</div>
                     <div className="text-green-600 text-xs">
                       {formatTime(entry.startTime)} - {formatTime(entry.endTime)}
                     </div>

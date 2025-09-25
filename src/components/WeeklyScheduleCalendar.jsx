@@ -8,6 +8,7 @@ import {
   addWeeks,
   subWeeks
 } from 'date-fns';
+import { zhCN } from 'date-fns/locale';
 import { useTranslation } from 'react-i18next';
 
 const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
@@ -184,9 +185,9 @@ const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
               <div className={`text-lg font-medium mb-3 flex items-center ${
                 isToday ? 'text-blue-600' : 'text-gray-700'
               }`}>
-                <span className="mr-2">{format(day, 'EEE')}</span>
-                <span className="text-xl">{format(day, 'd')}</span>
-                <span className="ml-2 text-sm">{format(day, 'MMMM')}</span>
+                <span className="mr-2">{format(day, 'EEE', { locale: zhCN })}</span>
+                <span className="text-xl">{format(day, 'd', { locale: zhCN })}</span>
+                <span className="ml-2 text-sm">{format(day, 'MMMM', { locale: zhCN })}</span>
               </div>
               
               {/* Vertical arrangement of schedules and time entries */}
@@ -194,32 +195,32 @@ const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
                 {/* Display schedules */}
                 {daySchedules.map((schedule) => (
                   <div 
-                    key={schedule.id} 
-                    className="text-sm bg-indigo-100 text-indigo-800 p-3 rounded-lg"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleEdit(schedule);
-                    }}
-                  >
-                    <div className="font-medium">{schedule.title}</div>
-                    <div className="text-indigo-600 text-sm mt-1">
-                      {formatTime(schedule.startTime)} - {formatTime(schedule.endTime)}
-                      {schedule.selectedShift && shifts.find(s => s.id === schedule.selectedShift)?.customDuration && (
-                        <span className="ml-2">
-                          [{convertDurationToHours(shifts.find(s => s.id === schedule.selectedShift).customDuration).toFixed(1)}h]
-                        </span>
-                      )}
+                      key={schedule.id} 
+                      className="text-sm font-semibold bg-indigo-100 text-indigo-800 p-3 rounded-lg"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleEdit(schedule);
+                      }}
+                    >
+                      <div className="font-bold">{schedule.title}</div>
+                      <div className="text-indigo-600 text-sm mt-1">
+                        {formatTime(schedule.startTime)} - {formatTime(schedule.endTime)}
+                        {schedule.selectedShift && shifts.find(s => s.id === schedule.selectedShift)?.customDuration && (
+                          <span className="ml-2">
+                            [{convertDurationToHours(shifts.find(s => s.id === schedule.selectedShift).customDuration).toFixed(1)}h]
+                          </span>
+                        )}
+                      </div>
                     </div>
-                  </div>
                 ))}
                 
                 {/* Display time entries */}
                 {dayTimeEntries.map((entry) => (
                   <div 
                     key={entry.id} 
-                    className="text-sm bg-green-100 text-green-800 p-3 rounded-lg"
+                    className="text-sm font-semibold bg-green-100 text-green-800 p-3 rounded-lg"
                   >
-                    <div className="font-medium">{t('time_entry.entry')}</div>
+                    <div className="font-bold">{entry.notes || t('time_entry.entry')}</div>
                     <div className="text-green-600 text-sm mt-1">
                       {formatTime(entry.startTime)} - {formatTime(entry.endTime)}
                       {entry.duration && (
