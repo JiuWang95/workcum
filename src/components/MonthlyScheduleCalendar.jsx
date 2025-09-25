@@ -204,7 +204,10 @@ const MonthlyScheduleCalendar = ({ currentDate, onDateChange }) => {
                       handleEdit(schedule);
                     }}
                   >
-                    <div className="font-bold truncate">{schedule.title}</div>
+                    <div className="flex items-center">
+                      <span className="inline-block w-2 h-2 rounded-full bg-indigo-500 mr-1"></span>
+                      <span className="font-bold truncate">{schedule.title}</span>
+                    </div>
                     <div className="text-indigo-600 text-xs">
                       {formatTime(schedule.startTime)} - {formatTime(schedule.endTime)}
                     </div>

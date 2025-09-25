@@ -202,7 +202,10 @@ const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
                         handleEdit(schedule);
                       }}
                     >
-                      <div className="font-bold">{schedule.title}</div>
+                      <div className="flex items-center">
+                        <span className="inline-block w-3 h-3 rounded-full bg-indigo-500 mr-2"></span>
+                        <span className="font-bold">{schedule.title}</span>
+                      </div>
                       <div className="text-indigo-600 text-sm mt-1">
                         {formatTime(schedule.startTime)} - {formatTime(schedule.endTime)}
                         {schedule.selectedShift && shifts.find(s => s.id === schedule.selectedShift)?.customDuration && (

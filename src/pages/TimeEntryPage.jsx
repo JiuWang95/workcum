@@ -40,17 +40,26 @@ const TimeEntryPage = () => {
     localStorage.setItem('schedules', JSON.stringify(newSchedules));
   };
 
-  const handleDeleteEntry = (id) => {
-    if (window.confirm(t('time_entry.delete_confirm'))) {
+  const handleDeleteEntry = (id, type) => {
+    if (type === 'schedule') {
+      // 删除排班记录
+      if (window.confirm(t('schedule.delete_confirm'))) {
+        const newSchedules = schedules.filter(schedule => schedule.id !== id);
+        setSchedules(newSchedules);
+        localStorage.setItem('schedules', JSON.stringify(newSchedules));
+      }
+    } else {
       // 删除时间记录
-      const newEntries = entries.filter(entry => entry.id !== id);
-      setEntries(newEntries);
-      localStorage.setItem('timeEntries', JSON.stringify(newEntries));
-      
-      // 同时从日历中删除
-      const newSchedules = schedules.filter(schedule => schedule.id !== `entry-${id}`);
-      setSchedules(newSchedules);
-      localStorage.setItem('schedules', JSON.stringify(newSchedules));
+      if (window.confirm(t('time_entry.delete_confirm'))) {
+        const newEntries = entries.filter(entry => entry.id !== id);
+        setEntries(newEntries);
+        localStorage.setItem('timeEntries', JSON.stringify(newEntries));
+        
+        // 同时从日历中删除
+        const newSchedules = schedules.filter(schedule => schedule.id !== `entry-${id}`);
+        setSchedules(newSchedules);
+        localStorage.setItem('schedules', JSON.stringify(newSchedules));
+      }
     }
   };
 
@@ -108,10 +117,10 @@ const TimeEntryPage = () => {
         <div className="lg:col-span-2">
           <div className="space-y-8">
             <div>
-              <TimeEntryForm onAddEntry={handleAddEntry} />
+              <CustomShiftManager />
             </div>
             <div>
-              <CustomShiftManager />
+              <TimeEntryForm onAddEntry={handleAddEntry} />
             </div>
           </div>
         </div>
@@ -153,17 +162,18 @@ const TimeEntryPage = () => {
                       
                       <div className="flex flex-col items-end space-y-2">
                         <span className="text-indigo-600">{record.displayDuration} {t('time_entry.duration')}</span>
-                        {record.type === 'entry' && (
-                          <button 
-                            onClick={() => handleDeleteEntry(record.id)}
-                            className="text-red-500 hover:text-red-700"
-                            title={t('time_entry.delete')}
-                          >
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                              <path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd" />
-                            </svg>
-                          </button>
-                        )}
+                        <button 
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleDeleteEntry(record.id, record.type);
+                          }}
+                          className="text-red-500 hover:text-red-700"
+                          title={t('time_entry.delete')}
+                        >
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd" />
+                          </svg>
+                        </button>
                       </div>
                     </div>
                   </li>

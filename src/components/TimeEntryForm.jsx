@@ -88,7 +88,6 @@ const TimeEntryForm = ({ onAddEntry }) => {
       if (shift) {
         setStartTime(shift.startTime);
         setEndTime(shift.endTime);
-        setNotes(shift.name);
         setCustomDuration(shift.customDuration || '');
       }
     } else {

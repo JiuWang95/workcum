@@ -159,7 +159,14 @@ const ScheduleCalendar = ({ currentDate }) => {
                         : 'bg-green-100 text-green-800'
                     }`}
                   >
-                    <div className="font-bold">{item.title}</div>
+                    <div className="flex items-center">
+                      <span className={`inline-block w-3 h-3 rounded-full mr-2 ${
+                        item.itemType === 'schedule' 
+                          ? 'bg-indigo-500' 
+                          : 'bg-green-500'
+                      }`}></span>
+                      <span className="font-bold">{item.title}</span>
+                    </div>
                     <div className={
                       item.itemType === 'schedule' 
                         ? 'text-indigo-600' 
