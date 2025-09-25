@@ -13,8 +13,8 @@ export default defineConfig({
         type: 'module'
       },
       manifest: {
-        name: 'Time Tracker',
-        short_name: 'TimeTracker',
+        name: 'SYwork',
+        short_name: 'SYwork',
         description: 'A simple time tracking and scheduling application',
         start_url: '.',
         display: 'standalone',
