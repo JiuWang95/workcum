@@ -13,7 +13,7 @@
     "date": "日期",
     "start_time": "开始时间",
     "end_time": "结束时间",
-    "duration": "时长",
+    "duration": "小时",
     "notes": "备注",
     "notes_placeholder": "请输入备注信息...",
     "add_entry": "添加记录",

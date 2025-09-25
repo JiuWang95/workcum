@@ -107,7 +107,7 @@ const ReportPage = () => {
         <div className="bg-indigo-50 rounded-lg p-4 mb-6">
           <h2 className="subsection-heading">{t('reports.summary')}</h2>
           <p className="text-2xl font-bold text-indigo-600">
-            {totalHours}h {remainingMinutes}m
+            {(totalMinutes / 60).toFixed(1)}h
           </p>
           <p className="text-gray-600">
             {t('reports.total_time_tracked', { startDate, endDate })}
@@ -130,14 +130,12 @@ const ReportPage = () => {
               </thead>
               <tbody>
                 {filteredEntries.map((entry, index) => {
-                  const hours = Math.floor(entry.duration / 60);
-                  const minutes = entry.duration % 60;
                   return (
                     <tr key={index} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
                       <td className="py-2 px-4 border-b">{entry.date}</td>
                       <td className="py-2 px-4 border-b">{entry.startTime}</td>
                       <td className="py-2 px-4 border-b">{entry.endTime}</td>
-                      <td className="py-2 px-4 border-b">{hours}h {minutes}m</td>
+                      <td className="py-2 px-4 border-b">{(entry.duration / 60).toFixed(1)}h</td>
                       <td className="py-2 px-4 border-b">{entry.notes || '-'}</td>
                     </tr>
                   );

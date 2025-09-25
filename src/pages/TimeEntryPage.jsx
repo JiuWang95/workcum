@@ -37,7 +37,7 @@ const TimeEntryPage = () => {
                   <li key={index} className="p-4">
                     <div className="flex justify-between">
                       <span className="font-medium">{entry.date}</span>
-                      <span className="text-indigo-600">{entry.duration} {t('time_entry.duration')}</span>
+                      <span className="text-indigo-600">{(entry.duration / 60).toFixed(1)} {t('time_entry.duration')}</span>
                     </div>
                     <div className="mt-1 text-sm text-gray-600">
                       {entry.startTime} - {entry.endTime}

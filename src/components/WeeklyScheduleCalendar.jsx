@@ -219,7 +219,7 @@ const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
                       {formatTime(entry.startTime)} - {formatTime(entry.endTime)}
                       {entry.duration && (
                         <span className="ml-2">
-                          [{entry.duration.toFixed(1)}h]
+                          [{(entry.duration / 60).toFixed(1)}h]
                         </span>
                       )}
                     </div>
