@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { format, parse } from 'date-fns';
+import { useTranslation } from 'react-i18next';
 
 const TimeEntryForm = ({ onAddEntry }) => {
+  const { t } = useTranslation();
   const [date, setDate] = useState(format(new Date(), 'yyyy-MM-dd'));
   const [startTime, setStartTime] = useState('09:00');
   const [endTime, setEndTime] = useState('17:00');
@@ -28,7 +30,7 @@ const TimeEntryForm = ({ onAddEntry }) => {
     const endDateTime = parse(endTime, 'HH:mm', new Date());
     
     if (endDateTime <= startDateTime) {
-      alert('End time must be after start time');
+      alert(t('time_entry.validation.end_time_after_start'));
       return;
     }
     
@@ -51,11 +53,11 @@ const TimeEntryForm = ({ onAddEntry }) => {
 
   return (
     <div className="bg-white rounded-lg shadow p-6">
-      <h2 className="text-xl font-semibold text-gray-700 mb-4">Add Time Entry</h2>
+      <h2 className="text-xl font-semibold text-gray-700 mb-4">{t('time_entry.add_entry')}</h2>
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
           <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="date">
-            Date
+            {t('time_entry.date')}
           </label>
           <input
             type="date"
@@ -70,7 +72,7 @@ const TimeEntryForm = ({ onAddEntry }) => {
         <div className="grid grid-cols-2 gap-4 mb-4">
           <div>
             <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="startTime">
-              Start Time
+              {t('time_entry.start_time')}
             </label>
             <input
               type="time"
@@ -84,7 +86,7 @@ const TimeEntryForm = ({ onAddEntry }) => {
           
           <div>
             <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="endTime">
-              End Time
+              {t('time_entry.end_time')}
             </label>
             <input
               type="time"
@@ -99,7 +101,7 @@ const TimeEntryForm = ({ onAddEntry }) => {
         
         <div className="mb-4">
           <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="notes">
-            Notes
+            {t('time_entry.notes')}
           </label>
           <textarea
             id="notes"
@@ -115,7 +117,7 @@ const TimeEntryForm = ({ onAddEntry }) => {
             type="submit"
             className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
           >
-            Add Entry
+            {t('time_entry.add_entry')}
           </button>
         </div>
       </form>

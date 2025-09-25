@@ -1,4 +1,4 @@
-# 排班计算器 (Time Tracker)
+# 排班计算器 (Schedule Calculator)
 
 一个使用 React、Tailwind CSS 和 Vite 构建的简洁、优雅的排班计算器 Web 应用程序。
 
@@ -63,6 +63,34 @@ npm run build
 - Netlify
 - Vercel
 - Cloudflare Pages
+
+#### Cloudflare Pages 部署指南
+
+要将此应用程序部署到 Cloudflare Pages，请按照以下步骤操作：
+
+1. **推送代码到 GitHub**：
+   将您的代码推送到 GitHub 仓库（如果您还没有的话）。
+
+2. **登录 Cloudflare Dashboard**：
+   访问 [Cloudflare Dashboard](https://dash.cloudflare.com/) 并登录您的账户。
+
+3. **创建 Pages 项目**：
+   - 在左侧菜单中选择 "Workers & Pages"
+   - 点击 "Create application" > "Pages" > "Connect to Git"
+
+4. **连接到 Git 仓库**：
+   - 选择您的 GitHub 账户和对应的仓库
+   - 选择您要部署的分支（通常是 main 或 master）
+
+5. **配置构建设置**：
+   - **构建命令**: `npm run build`
+   - **构建输出目录**: `dist`
+   - **根目录**: 保持为空（默认为仓库根目录）
+
+6. **部署**：
+   点击 "Save and Deploy" 开始部署过程。
+
+部署完成后，Cloudflare 会为您提供一个 `.pages.dev` 的临时 URL 来访问您的应用程序。您也可以配置自定义域名。
 
 ## 使用说明
 

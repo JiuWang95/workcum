@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { format, startOfWeek, endOfWeek, addDays, isSameDay } from 'date-fns';
 import ScheduleCalendar from '../components/ScheduleCalendar';
+import { useTranslation } from 'react-i18next';
 
 const SchedulePage = () => {
+  const { t } = useTranslation();
   const [currentWeek, setCurrentWeek] = useState(new Date());
   const [schedules, setSchedules] = useState([]);
 
@@ -88,7 +90,7 @@ const SchedulePage = () => {
 
   return (
     <div className="max-w-6xl mx-auto">
-      <h1 className="text-2xl font-bold text-gray-800 mb-6">Weekly Schedule</h1>
+      <h1 className="text-2xl font-bold text-gray-800 mb-6">{t('schedule.title')}</h1>
       
       <div className="bg-white rounded-lg shadow p-6 mb-8">
         <div className="flex justify-between items-center mb-6">
@@ -96,7 +98,7 @@ const SchedulePage = () => {
             onClick={goToPreviousWeek}
             className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded"
           >
-            Previous Week
+            {t('schedule.previous_week')}
           </button>
           
           <div className="text-center">
@@ -107,7 +109,7 @@ const SchedulePage = () => {
               onClick={goToToday}
               className="text-indigo-600 hover:text-indigo-800 text-sm mt-1"
             >
-              Today
+              {t('schedule.today')}
             </button>
           </div>
           
@@ -115,7 +117,7 @@ const SchedulePage = () => {
             onClick={goToNextWeek}
             className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded"
           >
-            Next Week
+            {t('schedule.next_week')}
           </button>
         </div>
         

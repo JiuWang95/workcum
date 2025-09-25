@@ -1,261 +1,278 @@
-import React, { useState } from 'react';
-import { format, isSameDay } from 'date-fns';
+import React, { useState, useEffect } from 'react';
+import { format, startOfWeek, endOfWeek, addDays, isSameDay } from 'date-fns';
+import { useTranslation } from 'react-i18next';
 
-const ScheduleCalendar = ({ weekDates, schedule, onUpdateSchedule }) => {
-  const [editingTask, setEditingTask] = useState(null);
-  const [newTask, setNewTask] = useState({
+const ScheduleCalendar = ({ currentDate }) => {
+  const { t } = useTranslation();
+  const [schedules, setSchedules] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [formData, setFormData] = useState({
     id: null,
     title: '',
-    startTime: '',
-    endTime: '',
-    notes: ''
+    notes: '',
+    date: '',
+    startTime: '09:00',
+    endTime: '10:00'
   });
 
-  const getDaySchedule = (date) => {
-    const dateStr = format(date, 'yyyy-MM-dd');
-    return schedule.days.find(day => day.date === dateStr) || { date: dateStr, tasks: [] };
-  };
+  // Load schedules from localStorage
+  useEffect(() => {
+    const savedSchedules = JSON.parse(localStorage.getItem('schedules') || '[]');
+    setSchedules(savedSchedules);
+  }, []);
 
-  const handleAddTask = (date) => {
-    setEditingTask({ date, taskId: null });
-    setNewTask({
+  // Save schedules to localStorage whenever they change
+  useEffect(() => {
+    localStorage.setItem('schedules', JSON.stringify(schedules));
+  }, [schedules]);
+
+  const weekStart = startOfWeek(currentDate, { weekStartsOn: 1 });
+  const weekEnd = endOfWeek(currentDate, { weekStartsOn: 1 });
+  const days = [];
+  let day = weekStart;
+  
+  while (day <= weekEnd) {
+    days.push(new Date(day));
+    day = addDays(day, 1);
+  }
+
+  const handleDateClick = (date) => {
+    setSelectedDate(date);
+    setFormData({
       id: null,
       title: '',
-      startTime: '',
-      endTime: '',
-      notes: ''
+      notes: '',
+      date: format(date, 'yyyy-MM-dd'),
+      startTime: '09:00',
+      endTime: '10:00'
     });
+    setShowModal(true);
   };
 
-  const handleEditTask = (date, task) => {
-    setEditingTask({ date, taskId: task.id });
-    setNewTask({ ...task });
+  const handleEdit = (schedule) => {
+    setSelectedDate(new Date(schedule.date));
+    setFormData(schedule);
+    setShowModal(true);
   };
 
-  const handleSaveTask = () => {
-    if (!newTask.title) return;
+  const handleDelete = (id) => {
+    if (window.confirm(t('schedule.delete_confirm'))) {
+      setSchedules(schedules.filter(schedule => schedule.id !== id));
+    }
+  };
 
-    const dateStr = format(editingTask.date, 'yyyy-MM-dd');
+  const handleSubmit = (e) => {
+    e.preventDefault();
     
-    // Create updated schedule
-    const updatedDays = schedule.days.map(day => {
-      if (day.date === dateStr) {
-        let updatedTasks;
-        
-        if (editingTask.taskId) {
-          // Update existing task
-          updatedTasks = day.tasks.map(task => 
-            task.id === editingTask.taskId ? { ...newTask } : task
-          );
-        } else {
-          // Add new task
-          const taskWithId = { ...newTask, id: Date.now().toString() };
-          updatedTasks = [...day.tasks, taskWithId];
-        }
-        
-        return { ...day, tasks: updatedTasks };
-      }
-      return day;
-    });
-
-    const updatedSchedule = { ...schedule, days: updatedDays };
-    onUpdateSchedule(updatedSchedule);
-
-    // Reset form
-    setEditingTask(null);
-    setNewTask({
-      id: null,
-      title: '',
-      startTime: '',
-      endTime: '',
-      notes: ''
-    });
-  };
-
-  const handleDeleteTask = (date, taskId) => {
-    const dateStr = format(date, 'yyyy-MM-dd');
+    if (formData.title.trim() === '') {
+      alert(t('schedule.validation.title_required'));
+      return;
+    }
     
-    const updatedDays = schedule.days.map(day => {
-      if (day.date === dateStr) {
-        const updatedTasks = day.tasks.filter(task => task.id !== taskId);
-        return { ...day, tasks: updatedTasks };
-      }
-      return day;
-    });
-
-    const updatedSchedule = { ...schedule, days: updatedDays };
-    onUpdateSchedule(updatedSchedule);
+    if (formData.startTime >= formData.endTime) {
+      alert(t('schedule.validation.end_time_after_start'));
+      return;
+    }
+    
+    const newSchedule = {
+      ...formData,
+      id: formData.id || Date.now()
+    };
+    
+    if (formData.id) {
+      // Update existing schedule
+      setSchedules(schedules.map(schedule => 
+        schedule.id === formData.id ? newSchedule : schedule
+      ));
+    } else {
+      // Add new schedule
+      setSchedules([...schedules, newSchedule]);
+    }
+    
+    setShowModal(false);
   };
 
-  const handleCancelEdit = () => {
-    setEditingTask(null);
-    setNewTask({
-      id: null,
-      title: '',
-      startTime: '',
-      endTime: '',
-      notes: ''
-    });
+  const getScheduleForDate = (date) => {
+    return schedules.filter(schedule => 
+      isSameDay(new Date(schedule.date), date)
+    );
+  };
+
+  const formatTime = (time) => {
+    const [hours, minutes] = time.split(':');
+    return `${hours}:${minutes}`;
   };
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-7 gap-4">
-      {weekDates.map((date, index) => {
-        const daySchedule = getDaySchedule(date);
-        const isToday = isSameDay(date, new Date());
-        
-        return (
-          <div 
-            key={index} 
-            className={`border rounded-lg p-3 ${isToday ? 'border-indigo-500 bg-indigo-50' : 'border-gray-200'}`}
-          >
-            <div className={`text-center font-semibold mb-2 ${isToday ? 'text-indigo-700' : 'text-gray-700'}`}>
-              <div className="text-sm">{format(date, 'EEE')}</div>
-              <div className="text-lg">{format(date, 'd')}</div>
-            </div>
-            
-            <div className="space-y-2 mb-3">
-              {daySchedule.tasks.map(task => (
-                <div 
-                  key={task.id} 
-                  className="bg-white border border-gray-200 rounded p-2 text-sm"
-                >
-                  {editingTask && editingTask.taskId === task.id ? (
-                    <div className="space-y-2">
-                      <input
-                        type="text"
-                        value={newTask.title}
-                        onChange={(e) => setNewTask({ ...newTask, title: e.target.value })}
-                        className="w-full p-1 border rounded text-sm"
-                        placeholder="Task title"
-                      />
-                      <div className="flex space-x-1">
-                        <input
-                          type="time"
-                          value={newTask.startTime}
-                          onChange={(e) => setNewTask({ ...newTask, startTime: e.target.value })}
-                          className="w-full p-1 border rounded text-sm"
-                        />
-                        <input
-                          type="time"
-                          value={newTask.endTime}
-                          onChange={(e) => setNewTask({ ...newTask, endTime: e.target.value })}
-                          className="w-full p-1 border rounded text-sm"
-                        />
-                      </div>
-                      <textarea
-                        value={newTask.notes}
-                        onChange={(e) => setNewTask({ ...newTask, notes: e.target.value })}
-                        className="w-full p-1 border rounded text-sm"
-                        placeholder="Notes"
-                        rows="2"
-                      />
-                      <div className="flex space-x-1">
-                        <button
-                          onClick={handleSaveTask}
-                          className="flex-1 bg-indigo-600 text-white text-xs py-1 rounded"
-                        >
-                          Save
-                        </button>
-                        <button
-                          onClick={handleCancelEdit}
-                          className="flex-1 bg-gray-300 text-gray-700 text-xs py-1 rounded"
-                        >
-                          Cancel
-                        </button>
-                      </div>
+    <div className="bg-white rounded-lg shadow p-6">
+      <div className="grid grid-cols-7 gap-2 mb-4">
+        {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((day, index) => (
+          <div key={index} className="text-center font-semibold text-gray-700 py-2">
+            {day}
+          </div>
+        ))}
+      </div>
+      
+      <div className="grid grid-cols-7 gap-2">
+        {days.map((day, index) => {
+          const daySchedules = getScheduleForDate(day);
+          const isToday = isSameDay(day, new Date());
+          
+          return (
+            <div 
+              key={index} 
+              className={`min-h-32 border rounded p-2 cursor-pointer ${
+                isToday ? 'bg-blue-50 border-blue-300' : 'border-gray-200'
+              }`}
+              onClick={() => handleDateClick(day)}
+            >
+              <div className={`text-sm font-medium mb-1 ${
+                isToday ? 'text-blue-600' : 'text-gray-500'
+              }`}>
+                {format(day, 'd')}
+              </div>
+              
+              <div className="space-y-1">
+                {daySchedules.slice(0, 3).map((schedule) => (
+                  <div 
+                    key={schedule.id} 
+                    className="text-xs bg-indigo-100 text-indigo-800 p-1 rounded truncate"
+                  >
+                    <div className="font-medium">{schedule.title}</div>
+                    <div className="text-indigo-600">
+                      {formatTime(schedule.startTime)} - {formatTime(schedule.endTime)}
                     </div>
-                  ) : (
-                    <div>
-                      <div className="font-medium">{task.title}</div>
-                      {task.startTime && task.endTime && (
-                        <div className="text-gray-600 text-xs">
-                          {task.startTime} - {task.endTime}
-                        </div>
-                      )}
-                      {task.notes && (
-                        <div className="text-gray-500 text-xs mt-1">
-                          {task.notes}
-                        </div>
-                      )}
-                      <div className="flex space-x-1 mt-1">
-                        <button
-                          onClick={() => handleEditTask(date, task)}
-                          className="text-xs text-indigo-600 hover:text-indigo-800"
-                        >
-                          Edit
-                        </button>
-                        <button
-                          onClick={() => handleDeleteTask(date, task.id)}
-                          className="text-xs text-red-600 hover:text-red-800"
-                        >
-                          Delete
-                        </button>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              ))}
+                  </div>
+                ))}
+                
+                {daySchedules.length > 3 && (
+                  <div className="text-xs text-gray-500">
+                    +{daySchedules.length - 3} more
+                  </div>
+                )}
+                
+                {daySchedules.length === 0 && (
+                  <div className="text-xs text-gray-400 italic">
+                    {t('schedule.add_task')}
+                  </div>
+                )}
+              </div>
             </div>
+          );
+        })}
+      </div>
+
+      {showModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 w-full max-w-md">
+            <h2 className="text-xl font-bold mb-4">
+              {formData.id ? t('schedule.edit_schedule') : t('schedule.add_schedule')}
+            </h2>
             
-            {(!editingTask || !isSameDay(editingTask.date, date)) && (
-              <button
-                onClick={() => handleAddTask(date)}
-                className="w-full py-1 text-sm text-indigo-600 hover:text-indigo-800 border border-dashed border-indigo-300 rounded"
-              >
-                + Add Task
-              </button>
-            )}
-            
-            {editingTask && isSameDay(editingTask.date, date) && !editingTask.taskId && (
-              <div className="bg-white border border-gray-200 rounded p-2 space-y-2">
+            <form onSubmit={handleSubmit}>
+              <div className="mb-4">
+                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="title">
+                  {t('schedule.form.title')}
+                </label>
                 <input
                   type="text"
-                  value={newTask.title}
-                  onChange={(e) => setNewTask({ ...newTask, title: e.target.value })}
-                  className="w-full p-1 border rounded text-sm"
-                  placeholder="Task title"
+                  id="title"
+                  value={formData.title}
+                  onChange={(e) => setFormData({...formData, title: e.target.value})}
+                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  placeholder={t('schedule.form.title_placeholder')}
                 />
-                <div className="flex space-x-1">
+              </div>
+              
+              <div className="mb-4">
+                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="date">
+                  {t('schedule.form.date')}
+                </label>
+                <input
+                  type="date"
+                  id="date"
+                  value={formData.date}
+                  onChange={(e) => setFormData({...formData, date: e.target.value})}
+                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                />
+              </div>
+              
+              <div className="grid grid-cols-2 gap-4 mb-4">
+                <div>
+                  <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="startTime">
+                    {t('schedule.form.start_time')}
+                  </label>
                   <input
                     type="time"
-                    value={newTask.startTime}
-                    onChange={(e) => setNewTask({ ...newTask, startTime: e.target.value })}
-                    className="w-full p-1 border rounded text-sm"
-                  />
-                  <input
-                    type="time"
-                    value={newTask.endTime}
-                    onChange={(e) => setNewTask({ ...newTask, endTime: e.target.value })}
-                    className="w-full p-1 border rounded text-sm"
+                    id="startTime"
+                    value={formData.startTime}
+                    onChange={(e) => setFormData({...formData, startTime: e.target.value})}
+                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                   />
                 </div>
+                
+                <div>
+                  <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="endTime">
+                    {t('schedule.form.end_time')}
+                  </label>
+                  <input
+                    type="time"
+                    id="endTime"
+                    value={formData.endTime}
+                    onChange={(e) => setFormData({...formData, endTime: e.target.value})}
+                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  />
+                </div>
+              </div>
+              
+              <div className="mb-6">
+                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="notes">
+                  {t('schedule.form.notes')}
+                </label>
                 <textarea
-                  value={newTask.notes}
-                  onChange={(e) => setNewTask({ ...newTask, notes: e.target.value })}
-                  className="w-full p-1 border rounded text-sm"
-                  placeholder="Notes"
-                  rows="2"
+                  id="notes"
+                  value={formData.notes}
+                  onChange={(e) => setFormData({...formData, notes: e.target.value})}
+                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  placeholder={t('schedule.form.notes_placeholder')}
+                  rows="3"
                 />
-                <div className="flex space-x-1">
+              </div>
+              
+              <div className="flex justify-between">
+                <div>
+                  {formData.id && (
+                    <button
+                      type="button"
+                      onClick={() => handleDelete(formData.id)}
+                      className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                    >
+                      {t('schedule.form.delete')}
+                    </button>
+                  )}
+                </div>
+                
+                <div className="flex space-x-2">
                   <button
-                    onClick={handleSaveTask}
-                    className="flex-1 bg-indigo-600 text-white text-xs py-1 rounded"
+                    type="button"
+                    onClick={() => setShowModal(false)}
+                    className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded"
                   >
-                    Save
+                    {t('schedule.form.cancel')}
                   </button>
                   <button
-                    onClick={handleCancelEdit}
-                    className="flex-1 bg-gray-300 text-gray-700 text-xs py-1 rounded"
+                    type="submit"
+                    className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded"
                   >
-                    Cancel
+                    {t('schedule.form.save')}
                   </button>
                 </div>
               </div>
-            )}
+            </form>
           </div>
-        );
-      })}
+        </div>
+      )}
     </div>
   );
 };

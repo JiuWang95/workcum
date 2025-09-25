@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import TimeEntryForm from '../components/TimeEntryForm';
+import { useTranslation } from 'react-i18next';
 
 const TimeEntryPage = () => {
+  const { t } = useTranslation();
   const [entries, setEntries] = useState([]);
 
   // Load entries from localStorage on component mount
@@ -18,15 +20,15 @@ const TimeEntryPage = () => {
 
   return (
     <div className="max-w-4xl mx-auto">
-      <h1 className="text-2xl font-bold text-gray-800 mb-6">Time Entry</h1>
+      <h1 className="text-2xl font-bold text-gray-800 mb-6">{t('time_entry.title')}</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         <div>
           <TimeEntryForm onAddEntry={handleAddEntry} />
         </div>
         <div>
-          <h2 className="text-xl font-semibold text-gray-700 mb-4">Recent Entries</h2>
+          <h2 className="text-xl font-semibold text-gray-700 mb-4">{t('time_entry.recent_entries')}</h2>
           {entries.length === 0 ? (
-            <p className="text-gray-500">No entries yet. Add your first time entry!</p>
+            <p className="text-gray-500">{t('time_entry.no_entries')}</p>
           ) : (
             <div className="bg-white rounded-lg shadow overflow-hidden">
               <ul className="divide-y divide-gray-200">
@@ -34,7 +36,7 @@ const TimeEntryPage = () => {
                   <li key={index} className="p-4">
                     <div className="flex justify-between">
                       <span className="font-medium">{entry.date}</span>
-                      <span className="text-indigo-600">{entry.duration} minutes</span>
+                      <span className="text-indigo-600">{entry.duration} {t('time_entry.duration')}</span>
                     </div>
                     <div className="mt-1 text-sm text-gray-600">
                       {entry.startTime} - {entry.endTime}

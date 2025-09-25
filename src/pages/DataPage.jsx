@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 const DataPage = () => {
+  const { t } = useTranslation();
   const [importStatus, setImportStatus] = useState('');
   const [exportStatus, setExportStatus] = useState('');
 
@@ -29,10 +31,10 @@ const DataPage = () => {
       linkElement.setAttribute('download', exportFileDefaultName);
       linkElement.click();
       
-      setExportStatus('Data exported successfully!');
+      setExportStatus(t('data.export.success'));
       setTimeout(() => setExportStatus(''), 3000);
     } catch (error) {
-      setExportStatus('Error exporting data: ' + error.message);
+      setExportStatus(t('data.export.error') + error.message);
       setTimeout(() => setExportStatus(''), 3000);
     }
   };
@@ -49,20 +51,20 @@ const DataPage = () => {
         
         // Validate data structure
         if (!data.timeEntries || !data.schedules) {
-          throw new Error('Invalid data format');
+          throw new Error(t('data.import.invalid_format'));
         }
         
         // Save to localStorage
         localStorage.setItem('timeEntries', JSON.stringify(data.timeEntries));
         localStorage.setItem('schedules', JSON.stringify(data.schedules));
         
-        setImportStatus('Data imported successfully!');
+        setImportStatus(t('data.import.success'));
         setTimeout(() => setImportStatus(''), 3000);
         
         // Reset file input
         event.target.value = '';
       } catch (error) {
-        setImportStatus('Error importing data: ' + error.message);
+        setImportStatus(t('data.import.error') + error.message);
         setTimeout(() => setImportStatus(''), 3000);
         
         // Reset file input
@@ -74,29 +76,29 @@ const DataPage = () => {
 
   // Clear all data
   const handleClearAllData = () => {
-    if (window.confirm('Are you sure you want to clear all data? This action cannot be undone.')) {
+    if (window.confirm(t('data.clear_confirm'))) {
       localStorage.removeItem('timeEntries');
       localStorage.removeItem('schedules');
-      setImportStatus('All data cleared successfully!');
+      setImportStatus(t('data.clear_success'));
       setTimeout(() => setImportStatus(''), 3000);
     }
   };
 
   return (
     <div className="max-w-4xl mx-auto">
-      <h1 className="text-2xl font-bold text-gray-800 mb-6">Data Management</h1>
+      <h1 className="text-2xl font-bold text-gray-800 mb-6">{t('data.title')}</h1>
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         <div className="bg-white rounded-lg shadow p-6">
-          <h2 className="text-xl font-semibold text-gray-700 mb-4">Export Data</h2>
+          <h2 className="text-xl font-semibold text-gray-700 mb-4">{t('data.export.title')}</h2>
           <p className="text-gray-600 mb-4">
-            Export all your time entries and schedules to a JSON file for backup or transfer.
+            {t('data.export.description')}
           </p>
           <button
             onClick={handleExportAllData}
             className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 px-4 rounded"
           >
-            Export All Data
+            {t('data.export.button')}
           </button>
           {exportStatus && (
             <div className="mt-4 p-2 bg-emerald-100 text-emerald-700 rounded">
@@ -106,9 +108,9 @@ const DataPage = () => {
         </div>
         
         <div className="bg-white rounded-lg shadow p-6">
-          <h2 className="text-xl font-semibold text-gray-700 mb-4">Import Data</h2>
+          <h2 className="text-xl font-semibold text-gray-700 mb-4">{t('data.import.title')}</h2>
           <p className="text-gray-600 mb-4">
-            Import data from a previously exported JSON file to restore your time entries and schedules.
+            {t('data.import.description')}
           </p>
           <input
             type="file"
@@ -130,15 +132,15 @@ const DataPage = () => {
       </div>
       
       <div className="mt-8 bg-white rounded-lg shadow p-6">
-        <h2 className="text-xl font-semibold text-gray-700 mb-4">Danger Zone</h2>
+        <h2 className="text-xl font-semibold text-gray-700 mb-4">{t('data.danger_zone.title')}</h2>
         <p className="text-gray-600 mb-4">
-          Clear all data from your browser's storage. This action cannot be undone.
+          {t('data.danger_zone.description')}
         </p>
         <button
           onClick={handleClearAllData}
           className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
         >
-          Clear All Data
+          {t('data.danger_zone.button')}
         </button>
       </div>
     </div>

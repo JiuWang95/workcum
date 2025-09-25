@@ -1,0 +1,102 @@
+{
+  "app_title": "时间追踪器",
+  "navigation": {
+    "time_entry": "时间记录",
+    "reports": "报表",
+    "schedule": "日程",
+    "data": "数据",
+    "language": {
+      "en": "EN",
+      "zh": "中文"
+    }
+  },
+  "time_entry": {
+    "title": "时间记录",
+    "recent_entries": "最近记录",
+    "no_entries": "暂无记录。添加您的第一条时间记录！",
+    "date": "日期",
+    "start_time": "开始时间",
+    "end_time": "结束时间",
+    "duration": "时长",
+    "notes": "备注",
+    "add_entry": "添加记录",
+    "validation": {
+      "end_time_after_start": "结束时间必须晚于开始时间"
+    }
+  },
+  "reports": {
+    "title": "报表",
+    "generate_report": "生成报表",
+    "export_excel": "导出到Excel",
+    "from_date": "开始日期",
+    "to_date": "结束日期",
+    "this_week": "本周",
+    "this_month": "本月",
+    "summary": "汇总",
+    "total_time_tracked": "从 {{startDate}} 到 {{endDate}} 的总时间",
+    "no_entries": "所选日期范围内没有记录",
+    "table": {
+      "date": "日期",
+      "start_time": "开始时间",
+      "end_time": "结束时间",
+      "duration": "时长",
+      "notes": "备注"
+    }
+  },
+  "schedule": {
+    "title": "日程",
+    "previous_week": "上周",
+    "next_week": "下周",
+    "today": "今天",
+    "add_task": "+ 添加任务",
+    "edit_schedule": "编辑日程",
+    "add_schedule": "添加日程",
+    "delete_confirm": "确定要删除这个日程吗？",
+    "validation": {
+      "title_required": "请输入任务标题",
+      "end_time_after_start": "结束时间必须晚于开始时间"
+    },
+    "form": {
+      "title": "任务标题",
+      "title_placeholder": "团队会议",
+      "date": "日期",
+      "start_time": "开始时间",
+      "end_time": "结束时间",
+      "notes": "备注",
+      "notes_placeholder": "详细信息...",
+      "delete": "删除",
+      "cancel": "取消",
+      "save": "保存"
+    }
+  },
+  "data": {
+    "title": "数据管理",
+    "export_data": "导出数据",
+    "import_data": "导入数据",
+    "export_success": "数据导出成功！",
+    "import_success": "数据导入成功！",
+    "import_error": "导入数据时出错。请检查文件格式。",
+    "export": {
+      "title": "导出数据",
+      "description": "将所有时间跟踪数据导出为JSON文件以备份或传输。",
+      "button": "导出数据",
+      "success": "数据导出成功！",
+      "error": "导出数据时出错："
+    },
+    "import": {
+      "title": "导入数据",
+      "description": "从JSON文件导入时间跟踪数据。这将覆盖您当前的数据。",
+      "button": "导入数据",
+      "success": "数据导入成功！",
+      "error": "导入数据时出错：",
+      "invalid_format": "无效的数据格式"
+    },
+    "danger_zone": {
+      "title": "危险操作",
+      "description": "清除浏览器本地存储中的所有数据。此操作无法撤销。",
+      "button": "清除所有数据"
+    },
+    "clear_confirm": "确定要删除所有数据吗？此操作无法撤销。",
+    "clear_success": "所有数据已清除。"
+  }
+}

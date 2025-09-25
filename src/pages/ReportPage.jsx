@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { format, subDays, startOfWeek, endOfWeek, startOfMonth, endOfMonth } from 'date-fns';
 import { exportToExcel } from '../utils/export';
+import { useTranslation } from 'react-i18next';
 
 const ReportPage = () => {
+  const { t } = useTranslation();
   const [entries, setEntries] = useState([]);
   const [startDate, setStartDate] = useState(format(subDays(new Date(), 6), 'yyyy-MM-dd'));
   const [endDate, setEndDate] = useState(format(new Date(), 'yyyy-MM-dd'));
@@ -47,13 +49,13 @@ const ReportPage = () => {
 
   return (
     <div className="max-w-6xl mx-auto">
-      <h1 className="text-2xl font-bold text-gray-800 mb-6">Time Reports</h1>
+      <h1 className="text-2xl font-bold text-gray-800 mb-6">{t('reports.title')}</h1>
       
       <div className="bg-white rounded-lg shadow p-6 mb-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
           <div>
             <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="startDate">
-              Start Date
+              {t('reports.from_date')}
             </label>
             <input
               type="date"
@@ -66,7 +68,7 @@ const ReportPage = () => {
           
           <div>
             <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="endDate">
-              End Date
+              {t('reports.to_date')}
             </label>
             <input
               type="date"
@@ -82,13 +84,13 @@ const ReportPage = () => {
               onClick={setThisWeek}
               className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded mr-2"
             >
-              This Week
+              {t('reports.this_week')}
             </button>
             <button
               onClick={setThisMonth}
               className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded"
             >
-              This Month
+              {t('reports.this_month')}
             </button>
           </div>
           
@@ -97,33 +99,33 @@ const ReportPage = () => {
               onClick={handleExport}
               className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 px-4 rounded w-full"
             >
-              Export to Excel
+              {t('reports.export_excel')}
             </button>
           </div>
         </div>
         
         <div className="bg-indigo-50 rounded-lg p-4 mb-6">
-          <h2 className="text-lg font-semibold text-indigo-800 mb-2">Summary</h2>
+          <h2 className="text-lg font-semibold text-indigo-800 mb-2">{t('reports.summary')}</h2>
           <p className="text-2xl font-bold text-indigo-600">
             {totalHours}h {remainingMinutes}m
           </p>
           <p className="text-gray-600">
-            Total time tracked from {startDate} to {endDate}
+            {t('reports.total_time_tracked', { startDate, endDate })}
           </p>
         </div>
         
         {filteredEntries.length === 0 ? (
-          <p className="text-gray-500 text-center py-8">No entries found for the selected date range.</p>
+          <p className="text-gray-500 text-center py-8">{t('reports.no_entries')}</p>
         ) : (
           <div className="overflow-x-auto">
             <table className="min-w-full bg-white">
               <thead>
                 <tr className="bg-gray-100">
-                  <th className="py-2 px-4 text-left">Date</th>
-                  <th className="py-2 px-4 text-left">Start Time</th>
-                  <th className="py-2 px-4 text-left">End Time</th>
-                  <th className="py-2 px-4 text-left">Duration</th>
-                  <th className="py-2 px-4 text-left">Notes</th>
+                  <th className="py-2 px-4 text-left">{t('reports.table.date')}</th>
+                  <th className="py-2 px-4 text-left">{t('reports.table.start_time')}</th>
+                  <th className="py-2 px-4 text-left">{t('reports.table.end_time')}</th>
+                  <th className="py-2 px-4 text-left">{t('reports.table.duration')}</th>
+                  <th className="py-2 px-4 text-left">{t('reports.table.notes')}</th>
                 </tr>
               </thead>
               <tbody>
