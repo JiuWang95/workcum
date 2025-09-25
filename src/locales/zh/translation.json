@@ -16,6 +16,8 @@
     "duration": "小时",
     "notes": "备注",
     "notes_placeholder": "请输入备注信息...",
+    "shift_name": "班次名称",
+    "shift_name_placeholder": "选择班次模板将自动填充名称",
     "add_entry": "添加记录",
     "entry": "时间记录",
     "validation": {

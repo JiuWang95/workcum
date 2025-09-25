@@ -8,7 +8,6 @@ const TimeEntryForm = ({ onAddEntry }) => {
   const [startTime, setStartTime] = useState('09:00');
   const [endTime, setEndTime] = useState('17:00');
   const [notes, setNotes] = useState('');
-  const [syncToSchedule, setSyncToSchedule] = useState(false);
   const [shifts, setShifts] = useState([]);
   const [selectedShift, setSelectedShift] = useState('');
   const [customDuration, setCustomDuration] = useState('');
@@ -72,41 +71,13 @@ const TimeEntryForm = ({ onAddEntry }) => {
     
     onAddEntry(newEntry);
     
-    // Sync to schedule if requested
-    if (syncToSchedule) {
-      syncEntryToSchedule(newEntry);
-    }
-    
     // Reset form
     setNotes('');
-    setSyncToSchedule(false);
     setSelectedShift('');
     setCustomDuration('');
   };
 
-  const syncEntryToSchedule = (entry) => {
-    // Load existing schedules from localStorage
-    const savedSchedules = JSON.parse(localStorage.getItem('schedules') || '[]');
-    
-    // Create a new schedule task based on the time entry
-    const newSchedule = {
-      id: Date.now().toString() + '_schedule',
-      title: t('time_entry.entry') + ': ' + (entry.notes || t('time_entry.entry')),
-      notes: entry.notes || '',
-      date: entry.date,
-      startTime: entry.startTime,
-      endTime: entry.endTime
-    };
-    
-    // Add the new schedule to the list
-    const updatedSchedules = [...savedSchedules, newSchedule];
-    
-    // Save updated schedules to localStorage
-    localStorage.setItem('schedules', JSON.stringify(updatedSchedules));
-    
-    // Show confirmation
-    alert(t('time_entry.sync_success'));
-  };
+
 
   const handleShiftChange = (e) => {
     const shiftId = e.target.value;
@@ -219,28 +190,16 @@ const TimeEntryForm = ({ onAddEntry }) => {
         
         <div className="mb-4">
           <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="notes">
-            {t('time_entry.notes')}
+            {t('time_entry.shift_name')}
           </label>
-          <textarea
+          <input
+            type="text"
             id="notes"
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            rows="3"
-            placeholder={t('time_entry.notes_placeholder')}
+            placeholder={t('time_entry.shift_name_placeholder')}
           />
-        </div>
-        
-        <div className="mb-4">
-          <label className="flex items-center">
-            <input
-              type="checkbox"
-              checked={syncToSchedule}
-              onChange={(e) => setSyncToSchedule(e.target.checked)}
-              className="form-checkbox h-4 w-4 text-indigo-600 transition duration-150 ease-in-out"
-            />
-            <span className="ml-2 text-gray-700">{t('time_entry.sync_to_schedule')}</span>
-          </label>
         </div>
         
         <div className="flex items-center justify-between">
