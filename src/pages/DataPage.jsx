@@ -162,6 +162,11 @@ const DataPage = () => {
         </div>
       </div>
       
+      {/* Data Management Section */}
+      <div className="mt-8">
+        <h2 className="page-heading">数据管理</h2>
+      </div>
+      
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
         <div className="bg-white rounded-lg shadow p-6">
           <h2 className="section-heading">{t('data.export.title')}</h2>
