@@ -115,10 +115,10 @@ const DataPage = () => {
   return (
     <div className="max-w-4xl mx-auto">
       <div className="flex justify-between items-center">
-        <h1 className="page-heading">{t('data.title')}</h1>
+        <h1 className="page-heading my-0">{t('data.title')}</h1>
         <button 
           onClick={toggleLanguage}
-          className="bg-indigo-100 hover:bg-indigo-200 text-indigo-700 font-medium py-1 px-3 rounded-full text-sm transition-colors"
+          className="bg-indigo-100 hover:bg-indigo-200 text-indigo-700 font-medium py-1 px-3 rounded-full text-sm transition-colors self-start mt-2"
         >
           {i18n.language === 'zh' ? 'EN' : '中文'}
         </button>
