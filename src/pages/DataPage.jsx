@@ -1,24 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import InstructionsModal from '../components/InstructionsModal';
 
 const DataPage = () => {
   const { t, i18n } = useTranslation();
-  const [showInstructions, setShowInstructions] = useState(false);
-
-  useEffect(() => {
-    // 检查用户是否已经看过使用说明
-    const hasSeenInstructions = localStorage.getItem('hasSeenInstructions');
-    if (!hasSeenInstructions) {
-      setShowInstructions(true);
-    }
-  }, []);
-
-  const handleCloseInstructions = () => {
-    setShowInstructions(false);
-    // 记录用户已经看过使用说明
-    localStorage.setItem('hasSeenInstructions', 'true');
-  };
 
   const toggleLanguage = () => {
     const newLang = i18n.language === 'zh' ? 'en' : 'zh';
