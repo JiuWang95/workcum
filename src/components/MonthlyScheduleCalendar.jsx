@@ -222,8 +222,8 @@ const MonthlyScheduleCalendar = ({ currentDate, onDateChange }) => {
                       key={schedule.id} 
                       className="text-sm font-semibold p-1 rounded truncate"
                       style={{
-                        backgroundColor: getShiftBackgroundColor(shiftName),
-                        borderLeft: `2px solid ${getShiftColor(shiftName)}`
+                        backgroundColor: getShiftBackgroundColor(shiftType),
+                        borderLeft: `2px solid ${getShiftColor(shiftType)}`
                       }}
                       onClick={(e) => {
                         e.stopPropagation();
@@ -233,7 +233,7 @@ const MonthlyScheduleCalendar = ({ currentDate, onDateChange }) => {
                       <div className="flex items-center">
                         <span 
                           className="inline-block w-2 h-2 rounded-full mr-1"
-                          style={{ backgroundColor: getShiftColor(shiftName) }}
+                          style={{ backgroundColor: getShiftColor(shiftType) }}
                         ></span>
                         <span className="font-bold truncate">{shiftName}</span>
                         {shiftType === 'overnight' && (
@@ -249,7 +249,7 @@ const MonthlyScheduleCalendar = ({ currentDate, onDateChange }) => {
                       </div>
                       <div 
                         className="text-xs"
-                        style={{ color: getShiftColor(shiftName) }}
+                        style={{ color: getShiftColor(shiftType) }}
                       >
                         {formatTime(schedule.startTime)} - {formatTime(schedule.endTime)}
                       </div>

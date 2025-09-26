@@ -255,20 +255,20 @@ const CustomShiftManager = () => {
               key={shift.id} 
               className="border border-gray-200 rounded-lg p-2 relative overflow-hidden flex justify-between items-center"
               style={{ 
-                borderLeft: `3px solid ${getShiftColor(shift.name)}`,
-                backgroundColor: getShiftBackgroundColor(shift.name)
+                borderLeft: `3px solid ${getShiftColor(shift.shiftType)}`,
+                backgroundColor: getShiftBackgroundColor(shift.shiftType)
               }}
             >
               {/* 左侧：班次名称和类型标识 */}
               <div className="flex items-center">
                 <div 
                   className="w-3 h-3 rounded-full border border-gray-300 mr-2 flex-shrink-0"
-                  style={{ backgroundColor: getShiftColor(shift.name) }}
+                  style={{ backgroundColor: getShiftColor(shift.shiftType) }}
                 ></div>
                 <div>
                   <h3 
                     className="font-semibold text-gray-800 text-sm"
-                    style={{ color: getShiftColor(shift.name) }}
+                    style={{ color: getShiftColor(shift.shiftType) }}
                   >
                     {shift.name}
                   </h3>

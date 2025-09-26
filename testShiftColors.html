@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>班次颜色测试</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        .shift-test {
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid;
+        }
+        .color-box {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            margin: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <h1>班次颜色测试</h1>
+    <div id="shiftColors"></div>
+
+    <script>
+        // 模拟班次类型到颜色的映射
+        const shiftTypeToColorMap = {
+            'day': { // 白天班 - 蓝色
+                hue: 220,
+                saturation: 80,
+                lightness: 50,
+                bgLightness: 90
+            },
+            'overnight': { // 跨夜班 - 紫色
+                hue: 280,
+                saturation: 80,
+                lightness: 50,
+                bgLightness: 90
+            },
+            'rest': { // 休息日 - 绿色
+                hue: 120,
+                saturation: 80,
+                lightness: 50,
+                bgLightness: 90
+            },
+            'regular': { // 常规班次 - 橙色
+                hue: 30,
+                saturation: 80,
+                lightness: 50,
+                bgLightness: 90
+            }
+        };
+
+        // 根据班次类型生成颜色
+        function getShiftColor(shiftType) {
+            // 如果没有提供班次类型，默认使用白天班
+            if (!shiftType) {
+                shiftType = 'day';
+            }
+            
+            // 如果班次类型不在映射中，默认使用白天班
+            const colorConfig = shiftTypeToColorMap[shiftType] || shiftTypeToColorMap['day'];
+            
+            return `hsl(${colorConfig.hue}, ${colorConfig.saturation}%, ${colorConfig.lightness}%)`;
+        }
+
+        // 根据班次类型生成浅色背景色
+        function getShiftBackgroundColor(shiftType) {
+            // 如果没有提供班次类型，默认使用白天班
+            if (!shiftType) {
+                shiftType = 'day';
+            }
+            
+            // 如果班次类型不在映射中，默认使用白天班
+            const colorConfig = shiftTypeToColorMap[shiftType] || shiftTypeToColorMap['day'];
+            
+            return `hsl(${colorConfig.hue}, ${colorConfig.saturation}%, ${colorConfig.bgLightness}%)`;
+        }
+
+        // 测试班次类型
+        const testShifts = [
+            { type: 'day', name: '白天班' },
+            { type: 'overnight', name: '跨夜班' },
+            { type: 'rest', name: '休息日' },
+            { type: 'regular', name: '常规班次' }
+        ];
+
+        // 创建测试元素
+        const container = document.getElementById('shiftColors');
+        
+        testShifts.forEach(shift => {
+            const shiftDiv = document.createElement('div');
+            shiftDiv.className = 'shift-test';
+            shiftDiv.style.borderLeftColor = getShiftColor(shift.type);
+            shiftDiv.style.backgroundColor = getShiftBackgroundColor(shift.type);
+            
+            shiftDiv.innerHTML = `
+                <h3 style="color: ${getShiftColor(shift.type)}; margin-top: 0;">${shift.name}</h3>
+                <div>
+                    <p>文字颜色: <span class="color-box" style="background-color: ${getShiftColor(shift.type)};"></span></p>
+                    <p>背景颜色: <span class="color-box" style="background-color: ${getShiftBackgroundColor(shift.type)};"></span></p>
+                </div>
+            `;
+            
+            container.appendChild(shiftDiv);
+        });
+    </script>
+</body>
+</html>

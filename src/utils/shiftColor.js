@@ -1,40 +1,58 @@
 /**
- * 根据班次名称生成确定性颜色
- * 使用哈希算法确保相同名称的班次在所有视图中显示一致的颜色
+ * 根据班次类型生成确定性颜色
+ * 使用预定义的颜色映射确保相同类型的班次在所有视图中显示一致的颜色
  */
 
-// 生成哈希值的函数
-const hashCode = (str) => {
-  let hash = 0;
-  for (let i = 0; i < str.length; i++) {
-    const char = str.charCodeAt(i);
-    hash = (hash << 5) - hash + char;
-    hash = hash & hash; // 转换为32位整数
+// 班次类型到颜色的映射
+const shiftTypeToColorMap = {
+  'day': { // 白天班 - 蓝色
+    hue: 220,
+    saturation: 80,
+    lightness: 50,
+    bgLightness: 90
+  },
+  'overnight': { // 跨夜班 - 紫色
+    hue: 280,
+    saturation: 80,
+    lightness: 50,
+    bgLightness: 90
+  },
+  'rest': { // 休息日 - 绿色
+    hue: 120,
+    saturation: 80,
+    lightness: 50,
+    bgLightness: 90
+  },
+  'regular': { // 常规班次 - 橙色
+    hue: 30,
+    saturation: 80,
+    lightness: 50,
+    bgLightness: 90
   }
-  return Math.abs(hash);
 };
 
-// 将哈希值转换为HSL颜色
-const hashToHSL = (hash) => {
-  const hue = hash % 360;
-  const saturation = 70 + (hash % 30); // 70-99%
-  const lightness = 40 + (hash % 20);  // 40-59%
-  return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+// 根据班次类型生成颜色
+export const getShiftColor = (shiftType) => {
+  // 如果没有提供班次类型，默认使用白天班
+  if (!shiftType) {
+    shiftType = 'day';
+  }
+  
+  // 如果班次类型不在映射中，默认使用白天班
+  const colorConfig = shiftTypeToColorMap[shiftType] || shiftTypeToColorMap['day'];
+  
+  return `hsl(${colorConfig.hue}, ${colorConfig.saturation}%, ${colorConfig.lightness}%)`;
 };
 
-// 根据班次名称生成颜色
-export const getShiftColor = (shiftName) => {
-  if (!shiftName) return 'hsl(220, 70%, 45%)'; // 默认蓝色
-  const hash = hashCode(shiftName);
-  return hashToHSL(hash);
-};
-
-// 根据班次名称生成浅色背景色
-export const getShiftBackgroundColor = (shiftName) => {
-  if (!shiftName) return 'hsl(220, 70%, 90%)'; // 默认浅蓝色
-  const hash = hashCode(shiftName);
-  const hue = hash % 360;
-  const saturation = 50 + (hash % 30); // 50-79%
-  const lightness = 85 + (hash % 10);  // 85-94%
-  return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+// 根据班次类型生成浅色背景色
+export const getShiftBackgroundColor = (shiftType) => {
+  // 如果没有提供班次类型，默认使用白天班
+  if (!shiftType) {
+    shiftType = 'day';
+  }
+  
+  // 如果班次类型不在映射中，默认使用白天班
+  const colorConfig = shiftTypeToColorMap[shiftType] || shiftTypeToColorMap['day'];
+  
+  return `hsl(${colorConfig.hue}, ${colorConfig.saturation}%, ${colorConfig.bgLightness}%)`;
 };

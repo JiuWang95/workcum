@@ -220,8 +220,8 @@ const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
                       key={schedule.id} 
                       className="text-xs md:text-sm font-semibold p-2 md:p-3 rounded-lg"
                       style={{
-                        backgroundColor: getShiftBackgroundColor(shiftName),
-                        borderLeft: `3px solid ${getShiftColor(shiftName)}`
+                        backgroundColor: getShiftBackgroundColor(shiftType),
+                        borderLeft: `3px solid ${getShiftColor(shiftType)}`
                       }}
                       onClick={(e) => {
                         e.stopPropagation();
@@ -231,7 +231,7 @@ const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
                       <div className="flex items-center">
                         <span 
                           className="inline-block w-2 h-2 md:w-3 md:h-3 rounded-full mr-1 md:mr-2"
-                          style={{ backgroundColor: getShiftColor(shiftName) }}
+                          style={{ backgroundColor: getShiftColor(shiftType) }}
                         ></span>
                         <span className="font-bold truncate">{shiftName}</span>
                         {shiftType === 'overnight' && (
@@ -247,7 +247,7 @@ const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
                       </div>
                       <div 
                         className="text-xs md:text-sm mt-1"
-                        style={{ color: getShiftColor(shiftName) }}
+                        style={{ color: getShiftColor(shiftType) }}
                       >
                         {formatTime(schedule.startTime)} - {formatTime(schedule.endTime)}
                         {schedule.selectedShift && shifts.find(s => s.id === schedule.selectedShift)?.customDuration && (
