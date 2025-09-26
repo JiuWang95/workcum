@@ -12,11 +12,13 @@ const DataPage = () => {
       // Get all data from localStorage
       const timeEntries = JSON.parse(localStorage.getItem('timeEntries') || '[]');
       const schedules = JSON.parse(localStorage.getItem('schedules') || '[]');
+      const customShifts = JSON.parse(localStorage.getItem('customShifts') || '[]');
       
       // Create data object
       const data = {
         timeEntries,
         schedules,
+        customShifts,
         exportDate: new Date().toISOString()
       };
       
@@ -57,6 +59,10 @@ const DataPage = () => {
         // Save to localStorage
         localStorage.setItem('timeEntries', JSON.stringify(data.timeEntries));
         localStorage.setItem('schedules', JSON.stringify(data.schedules));
+        // Check if customShifts exists in the imported data, if not, keep existing data
+        if (data.customShifts !== undefined) {
+          localStorage.setItem('customShifts', JSON.stringify(data.customShifts));
+        }
         
         setImportStatus(t('data.import.success'));
         setTimeout(() => setImportStatus(''), 3000);
@@ -79,6 +85,7 @@ const DataPage = () => {
     if (window.confirm(t('data.clear_confirm'))) {
       localStorage.removeItem('timeEntries');
       localStorage.removeItem('schedules');
+      localStorage.removeItem('customShifts');
       setImportStatus(t('data.clear_success'));
       setTimeout(() => setImportStatus(''), 3000);
     }
