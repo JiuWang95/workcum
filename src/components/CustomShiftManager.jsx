@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import DurationPicker from './DurationPicker';
 import { getShiftColor, getShiftBackgroundColor } from '../utils/shiftColor'; // 导入颜色工具函数
@@ -12,8 +12,11 @@ const CustomShiftManager = () => {
   const [startTime, setStartTime] = useState('09:00');
   const [endTime, setEndTime] = useState('17:00');
   const [customDuration, setCustomDuration] = useState('');
-  // 将isOvernight改为shiftType枚举
-  const [shiftType, setShiftType] = useState('day'); // 默认为白天班
+  const [shiftType, setShiftType] = useState('day'); // 添加班次类型状态
+  
+  // 拖动排序相关状态
+  const [draggedItem, setDraggedItem] = useState(null);
+  const [draggedOver, setDraggedOver] = useState(null);
 
   // Load shifts from localStorage on component mount
   useEffect(() => {
@@ -99,6 +102,59 @@ const CustomShiftManager = () => {
     const minutes = minutesMatch ? parseFloat(minutesMatch[1]) : 0;
     
     return hours + (minutes / 60);
+  };
+
+  // 拖动排序相关函数
+  const handleDragStart = (e, shift) => {
+    setDraggedItem(shift);
+    e.dataTransfer.effectAllowed = 'move';
+    // 添加视觉反馈
+    e.target.classList.add('opacity-50');
+  };
+
+  const handleDragEnd = (e) => {
+    // 移除视觉反馈
+    e.target.classList.remove('opacity-50');
+    setDraggedItem(null);
+    setDraggedOver(null);
+  };
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+  };
+
+  const handleDragEnter = (e, shift) => {
+    e.preventDefault();
+    setDraggedOver(shift.id);
+  };
+
+  const handleDragLeave = (e) => {
+    // 检查是否真的离开了元素
+    if (e.relatedTarget && !e.currentTarget.contains(e.relatedTarget)) {
+      setDraggedOver(null);
+    }
+  };
+
+  const handleDrop = (e, targetShift) => {
+    e.preventDefault();
+    
+    if (draggedItem && draggedItem.id !== targetShift.id) {
+      // 重新排列班次
+      const newShifts = [...shifts];
+      const draggedIndex = newShifts.findIndex(s => s.id === draggedItem.id);
+      const targetIndex = newShifts.findIndex(s => s.id === targetShift.id);
+      
+      // 移除拖动项
+      const [removed] = newShifts.splice(draggedIndex, 1);
+      // 在目标位置插入
+      newShifts.splice(targetIndex, 0, removed);
+      
+      setShifts(newShifts);
+    }
+    
+    setDraggedItem(null);
+    setDraggedOver(null);
   };
 
   // 获取班次类型显示文本
@@ -253,11 +309,20 @@ const CustomShiftManager = () => {
           {shifts.map((shift) => (
             <div 
               key={shift.id} 
-              className="border border-gray-200 rounded-lg p-2 relative overflow-hidden flex justify-between items-center"
+              className={`border border-gray-200 rounded-lg p-2 relative overflow-hidden flex justify-between items-center transition-all duration-200 ${
+                draggedOver === shift.id ? 'bg-blue-50 ring-2 ring-blue-200' : ''
+              }`}
               style={{ 
                 borderLeft: `3px solid ${getShiftColor(shift.shiftType)}`,
                 backgroundColor: getShiftBackgroundColor(shift.shiftType)
               }}
+              draggable
+              onDragStart={(e) => handleDragStart(e, shift)}
+              onDragEnd={handleDragEnd}
+              onDragOver={handleDragOver}
+              onDragEnter={(e) => handleDragEnter(e, shift)}
+              onDragLeave={handleDragLeave}
+              onDrop={(e) => handleDrop(e, shift)}
             >
               {/* 左侧：班次名称和类型标识 */}
               <div className="flex items-center">
