@@ -65,7 +65,7 @@ const Layout = () => {
         </nav>
 
       {/* Mobile Navigation */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white shadow-lg">
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white shadow-lg z-50">
         <div className="flex justify-around items-center p-3">
           <Link to="/schedule" className={getMobileLinkClass("/schedule")}>
             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">

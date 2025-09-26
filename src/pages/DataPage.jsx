@@ -328,7 +328,7 @@ const DataPage = () => {
         </div>
         
         {/* Import Data Card */}
-        <div className="bg-gradient-to-r from-indigo-50 to-blue-50 rounded-xl shadow-md overflow-hidden">
+        <div className="bg-gradient-to-r from-indigo-50 to-blue-50 rounded-xl shadow-md overflow-hidden relative z-0">
           <div className="p-1 bg-gradient-to-r from-indigo-500 to-blue-600"></div>
           <div className="p-4 md:p-6">
             <div className="flex items-start">
