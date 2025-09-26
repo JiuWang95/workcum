@@ -164,11 +164,11 @@ const MonthlyScheduleCalendar = ({ currentDate, onDateChange }) => {
                         <div 
                           className="w-full h-full flex items-start justify-start p-0.5 rounded truncate"
                           style={{
-                            background: `linear-gradient(to bottom right, #dcfce7 50%, #dcfce7 50%)`
+                            background: `linear-gradient(to bottom right, #fed7aa 50%, #fed7aa 50%)`
                           }}
                         >
                           <div className="text-[0.7rem] sm:text-sm md:text-base truncate p-0.5 rounded bg-white bg-opacity-80">
-                            <span className="font-bold">{dayTimeEntries[0].notes || t('time_entry.entry')}</span>
+                            <span className="font-bold">{t('time_entry.entry')}</span>
                           </div>
                         </div>
                       )

@@ -163,7 +163,7 @@ const ScheduleCalendar = ({ currentDate }) => {
                       className={`text-sm font-semibold p-1 rounded truncate ${
                         item.itemType === 'schedule' 
                           ? 'bg-indigo-100 text-indigo-800' 
-                          : 'bg-green-100 text-green-800'
+                          : 'bg-orange-100 text-orange-800'
                       }`}
                       style={item.itemType === 'schedule' ? {
                         backgroundColor: getShiftBackgroundColor(item.title),
@@ -175,25 +175,21 @@ const ScheduleCalendar = ({ currentDate }) => {
                           className={`inline-block w-3 h-3 rounded-full mr-2 ${
                             item.itemType === 'schedule' 
                               ? 'bg-indigo-500' 
-                              : 'bg-green-500'
+                              : 'bg-orange-500'
                           }`}
                           style={item.itemType === 'schedule' ? {
                             backgroundColor: getShiftColor(item.title)
                           } : {}}
                         ></span>
-                        <span className="font-bold">{item.title}</span>
-                        {item.itemType === 'schedule' && isOvernight && (
-                          <span className="ml-1 inline-flex items-center px-1 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
-                            {t('time_entry.custom_shift.overnight_shift')}
+                        <span className="truncate">{item.title || item.notes || '-'}</span>
+                      </div>
+                      <div className="text-orange-600 text-[0.5rem] sm:text-[0.6rem] mt-0.5">
+                        {formatTime(item.startTime)} - {formatTime(item.endTime)}
+                        {item.duration && (
+                          <span className="ml-1">
+                            [{(item.duration / 60).toFixed(1)}h]
                           </span>
                         )}
-                      </div>
-                      <div className={
-                        item.itemType === 'schedule' 
-                          ? 'text-indigo-600' 
-                          : 'text-green-600'
-                      }>
-                        {formatTime(item.startTime)} - {formatTime(item.endTime)}
                       </div>
                     </div>
                   );

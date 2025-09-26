@@ -315,7 +315,7 @@ const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
                 {dayTimeEntries.map((entry) => (
                   <div 
                     key={entry.id} 
-                    className="text-[0.6rem] sm:text-xs md:text-sm font-semibold bg-green-100 text-green-800 p-1.5 sm:p-2 rounded-md flex-shrink-0 w-full sm:w-auto cursor-pointer hover:bg-green-200 transition-colors"
+                    className="text-[0.6rem] sm:text-xs md:text-sm font-semibold bg-orange-100 text-orange-800 p-1.5 sm:p-2 rounded-md flex-shrink-0 w-full sm:w-auto cursor-pointer hover:bg-orange-200 transition-colors"
                     onClick={(e) => {
                       e.stopPropagation();
                       setSelectedEntry(entry);
@@ -323,7 +323,7 @@ const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
                     }}
                   >
                     <div className="font-bold truncate text-[0.6rem] sm:text-xs">{entry.notes || t('time_entry.entry')}</div>
-                    <div className="text-green-600 text-[0.5rem] sm:text-[0.6rem] mt-0.5">
+                    <div className="text-orange-600 text-[0.5rem] sm:text-[0.6rem] mt-0.5">
                       {formatTime(entry.startTime)} - {formatTime(entry.endTime)}
                       {entry.duration && (
                         <span className="ml-1">

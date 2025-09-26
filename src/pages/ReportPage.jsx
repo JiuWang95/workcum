@@ -289,7 +289,7 @@ const ReportPage = () => {
                             <td className="py-2 px-4 border-b">{(record.duration / 60).toFixed(1)}h</td>
                             <td className="py-2 px-4 border-b">{record.date}</td>
                             <td className="py-2 px-4 border-b">
-                              <span className="bg-green-100 text-green-800 text-xs px-2 py-1 rounded">工时记录</span>
+                              <span className="bg-orange-100 text-orange-800 text-xs px-2 py-1 rounded">工时记录</span>
                             </td>
                           </tr>
                         );
@@ -355,10 +355,10 @@ const ReportPage = () => {
                   if (record.type === 'entry') {
                     // 时间记录
                     return (
-                      <div key={`entry-${record.id}`} className="bg-white rounded-lg shadow p-4 border-l-4 border-green-500">
+                      <div key={`entry-${record.id}`} className="bg-white rounded-lg shadow p-4 border-l-4 border-orange-500">
                         <div className="flex justify-between items-start mb-2">
                           <h3 className="font-bold text-lg md:text-xl">{record.notes || t('time_entry.entry')}</h3>
-                          <span className="bg-green-100 text-green-800 text-xs px-2 py-1 rounded">工时记录</span>
+                          <span className="bg-orange-100 text-orange-800 text-xs px-2 py-1 rounded">工时记录</span>
                         </div>
                         <div className="grid grid-cols-2 gap-2 text-sm">
                           <div>
