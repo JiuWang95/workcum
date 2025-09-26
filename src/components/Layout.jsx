@@ -21,12 +21,6 @@ const Layout = () => {
             <Link to="/" className="text-gray-700 hover:text-indigo-600">{t('navigation.time_entry')}</Link>
             <Link to="/reports" className="text-gray-700 hover:text-indigo-600">{t('navigation.reports')}</Link>
             <Link to="/data" className="text-gray-700 hover:text-indigo-600">{t('navigation.data')}</Link>
-            <button 
-              onClick={toggleLanguage}
-              className="bg-indigo-100 hover:bg-indigo-200 text-indigo-700 font-medium py-1 px-3 rounded-full text-sm transition-colors"
-            >
-              {i18n.language === 'zh' ? 'EN' : '中文'}
-            </button>
           </div>
         </div>
       </nav>
