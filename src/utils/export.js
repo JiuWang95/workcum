@@ -39,7 +39,10 @@ export const exportToExcel = (entries, schedules, shifts, filename) => {
   // 2. Format schedules data for Excel
   const formattedSchedules = schedules.map(schedule => {
     let duration = 0;
-    if (schedule.selectedShift) {
+    // 优先使用排班记录中保存的自定义工时
+    if (schedule.customDuration !== undefined && schedule.customDuration !== null && schedule.customDuration !== "") {
+      duration = convertDurationToHours(schedule.customDuration) * 60;
+    } else if (schedule.selectedShift) {
       const shift = shifts.find(s => s.id === schedule.selectedShift);
       // 修改逻辑：如果自定义工时存在（即使是0），也使用自定义工时
       if (shift && shift.customDuration !== undefined && shift.customDuration !== null && shift.customDuration !== "") {

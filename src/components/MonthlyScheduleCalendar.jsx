@@ -118,9 +118,19 @@ const MonthlyScheduleCalendar = ({ currentDate, onDateChange }) => {
       return;
     }
     
+    // 如果选择了班次模板，确保自定义工时也被保存
+    let customDuration = formData.customDuration || null;
+    if (formData.selectedShift) {
+      const selectedShiftData = shifts.find(shift => shift.id === formData.selectedShift);
+      if (selectedShiftData && selectedShiftData.customDuration) {
+        customDuration = selectedShiftData.customDuration;
+      }
+    }
+    
     const newSchedule = {
       ...formData,
-      id: formData.id || Date.now()
+      id: formData.id || Date.now(),
+      customDuration: customDuration
     };
     
     if (formData.id) {

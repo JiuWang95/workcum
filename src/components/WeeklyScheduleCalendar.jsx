@@ -119,7 +119,9 @@ const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
       title: selectedShiftData.name,
       startTime: selectedShiftData.startTime,
       endTime: selectedShiftData.endTime,
-      notes: selectedShiftData.name
+      notes: selectedShiftData.name,
+      // 保存自定义工时信息
+      customDuration: selectedShiftData.customDuration || null
     };
     
     if (formData.id) {

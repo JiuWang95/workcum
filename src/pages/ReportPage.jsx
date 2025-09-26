@@ -214,7 +214,10 @@ const ReportPage = () => {
                       } else {
                         // 排班记录
                         let duration = 0;
-                        if (record.selectedShift) {
+                        // 优先使用排班记录中保存的自定义工时
+                        if (record.customDuration) {
+                          duration = convertDurationToHours(record.customDuration) * 60;
+                        } else if (record.selectedShift) {
                           const shift = shifts.find(s => s.id === record.selectedShift);
                           if (shift && shift.customDuration) {
                             duration = convertDurationToHours(shift.customDuration) * 60;
@@ -298,7 +301,10 @@ const ReportPage = () => {
                   } else {
                     // 排班记录
                     let duration = 0;
-                    if (record.selectedShift) {
+                    // 优先使用排班记录中保存的自定义工时
+                    if (record.customDuration) {
+                      duration = convertDurationToHours(record.customDuration) * 60;
+                    } else if (record.selectedShift) {
                       const shift = shifts.find(s => s.id === record.selectedShift);
                       if (shift && shift.customDuration) {
                         duration = convertDurationToHours(shift.customDuration) * 60;
