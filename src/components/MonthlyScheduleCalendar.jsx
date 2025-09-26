@@ -132,28 +132,106 @@ const MonthlyScheduleCalendar = ({ currentDate, onDateChange }) => {
                 <span className="text-xs sm:text-sm md:text-base">{format(day, 'd', { locale: zhCN })}</span>
               </div>
               
-              <div className="flex-1 overflow-hidden">
-                {daySchedules.slice(0, 2).map((schedule) => {
-                  const shiftInfo = shifts.find(shift => shift.id === schedule.selectedShift);
-                  const shiftName = shiftInfo ? shiftInfo.name : schedule.title;
-                  const shiftType = shiftInfo ? shiftInfo.shiftType : 'day';
-                  
-                  return (
-                    <div 
-                      key={schedule.id}
-                      className="text-[0.7rem] sm:text-sm md:text-base truncate mb-0.5 p-0.5 rounded"
-                      style={{
-                        backgroundColor: getShiftBackgroundColor(shiftType)
-                      }}
-                    >
-                      <span className="font-bold">{shiftName}</span>
-                    </div>
-                  );
-                })}
+              <div className="flex-1 overflow-hidden relative">
+                {/* Diagonal split display for multiple items */}
+                {(daySchedules.length + dayTimeEntries.length) >= 2 ? (
+                  <div className="absolute inset-0 flex">
+                    {/* First item (schedule) */}
+                    {daySchedules.length > 0 ? (
+                      (() => {
+                        const firstSchedule = daySchedules[0];
+                        const shiftInfo = shifts.find(shift => shift.id === firstSchedule.selectedShift);
+                        const shiftName = shiftInfo ? shiftInfo.name : firstSchedule.title;
+                        const shiftType = shiftInfo ? shiftInfo.shiftType : 'day';
+                        const bgColor = getShiftBackgroundColor(shiftType);
+                        
+                        return (
+                          <div 
+                            className="w-full h-full flex items-start justify-start p-0.5 rounded truncate"
+                            style={{
+                              background: `linear-gradient(to bottom right, ${bgColor} 50%, ${dayTimeEntries.length > 0 ? '#dcfce7' : bgColor} 50%)`
+                            }}
+                          >
+                            <div className="text-[0.7rem] sm:text-sm md:text-base truncate p-0.5 rounded bg-white bg-opacity-80">
+                              <span className="font-bold">{shiftName}</span>
+                            </div>
+                          </div>
+                        );
+                      })()
+                    ) : (
+                      // First item (time entry)
+                      dayTimeEntries.length > 0 && (
+                        <div 
+                          className="w-full h-full flex items-start justify-start p-0.5 rounded truncate"
+                          style={{
+                            background: `linear-gradient(to bottom right, #dcfce7 50%, #dcfce7 50%)`
+                          }}
+                        >
+                          <div className="text-[0.7rem] sm:text-sm md:text-base truncate p-0.5 rounded bg-white bg-opacity-80">
+                            <span className="font-bold">{dayTimeEntries[0].notes || t('time_entry.entry')}</span>
+                          </div>
+                        </div>
+                      )
+                    )}
+                    
+                    {/* Second item (time entry or additional schedule) */}
+                    {dayTimeEntries.length > 0 ? (
+                      <div className="text-[0.7rem] sm:text-sm md:text-base truncate p-0.5 rounded absolute bottom-0 right-0 bg-white bg-opacity-80">
+                        <span className="font-bold">{dayTimeEntries[0].notes || t('time_entry.entry')}</span>
+                      </div>
+                    ) : daySchedules.length > 1 ? (
+                      (() => {
+                        const secondSchedule = daySchedules[1];
+                        const shiftInfo = shifts.find(shift => shift.id === secondSchedule.selectedShift);
+                        const shiftName = shiftInfo ? shiftInfo.name : secondSchedule.title;
+                        
+                        return (
+                          <div className="text-[0.7rem] sm:text-sm md:text-base truncate p-0.5 rounded absolute bottom-0 right-0 bg-white bg-opacity-80">
+                            <span className="font-bold">{shiftName}</span>
+                          </div>
+                        );
+                      })()
+                    ) : null}
+                  </div>
+                ) : (
+                  // Single item display
+                  <>
+                    {/* Display schedules */}
+                    {daySchedules.slice(0, 1).map((schedule) => {
+                      const shiftInfo = shifts.find(shift => shift.id === schedule.selectedShift);
+                      const shiftName = shiftInfo ? shiftInfo.name : schedule.title;
+                      const shiftType = shiftInfo ? shiftInfo.shiftType : 'day';
+                      
+                      return (
+                        <div 
+                          key={schedule.id}
+                          className="text-[0.7rem] sm:text-sm md:text-base truncate mb-0.5 p-0.5 rounded"
+                          style={{
+                            backgroundColor: getShiftBackgroundColor(shiftType)
+                          }}
+                        >
+                          <span className="font-bold">{shiftName}</span>
+                        </div>
+                      );
+                    })}
+                    
+                    {/* Display time entries */}
+                    {dayTimeEntries.slice(0, 1).map((entry) => {
+                      return (
+                        <div 
+                          key={entry.id}
+                          className="text-[0.7rem] sm:text-sm md:text-base truncate mb-0.5 p-0.5 rounded bg-green-100 text-green-800"
+                        >
+                          <span className="font-bold">{entry.notes || t('time_entry.entry')}</span>
+                        </div>
+                      );
+                    })}
+                  </>
+                )}
                 
-                {daySchedules.length > 2 && (
-                  <div className="text-[0.5rem] sm:text-xs md:text-sm text-gray-500 truncate">
-                    +{daySchedules.length - 2} {t('schedule.more_items')}
+                {(daySchedules.length + dayTimeEntries.length) > 2 && (
+                  <div className="text-[0.5rem] sm:text-xs md:text-sm text-gray-500 truncate relative z-10">
+                    +{(daySchedules.length + dayTimeEntries.length) - 2} {t('schedule.more_items')}
                   </div>
                 )}
               </div>
