@@ -174,7 +174,7 @@ const CustomShiftManager = () => {
   return (
     // 移除高度限制和滚动条，让容器随内容自动扩展
     // 移除 pb-20 以避免不必要的底部空白
-    <div className="bg-white rounded-lg shadow p-4 mb-6">
+    <div className="bg-white rounded-lg shadow p-4 mb-6 max-h-[60vh] md:max-h-[70vh] overflow-y-auto">
       <div className="flex justify-between items-center mb-4">
         <h2 className="section-heading">{t('time_entry.custom_shift.title')}</h2>
         <button
@@ -325,20 +325,20 @@ const CustomShiftManager = () => {
               onDrop={(e) => handleDrop(e, shift)}
             >
               {/* 左侧：班次名称和类型标识 */}
-              <div className="flex items-center">
+              <div className="flex items-center min-w-0">
                 <div 
                   className="w-3 h-3 rounded-full border border-gray-300 mr-2 flex-shrink-0"
                   style={{ backgroundColor: getShiftColor(shift.shiftType) }}
                 ></div>
-                <div>
+                <div className="min-w-0">
                   <h3 
-                    className="font-semibold text-gray-800 text-sm md:text-base"
+                    className="font-semibold text-gray-800 text-sm md:text-base truncate"
                     style={{ color: getShiftColor(shift.shiftType) }}
                   >
                     {shift.name}
                   </h3>
                   {/* 类型标识：显示班次类型 */}
-                  <span className="text-xs md:text-sm text-gray-500">
+                  <span className="text-xs md:text-sm text-gray-500 truncate">
                     {getShiftTypeText(shift.shiftType || 'day')}
                   </span>
                 </div>
@@ -347,7 +347,7 @@ const CustomShiftManager = () => {
               {/* 右侧：时长信息和操作按钮 */}
               <div className="flex items-center">
                 {/* 工时时长 */}
-                <div className="text-right mr-2">
+                <div className="text-right mr-2 hidden sm:block">
                   {shift.customDuration ? (
                     <p className="text-gray-600 text-xs md:text-sm font-medium">
                       {convertDurationToHours(shift.customDuration).toFixed(1)}h

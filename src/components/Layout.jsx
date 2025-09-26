@@ -95,7 +95,7 @@ const Layout = () => {
       </nav>
 
       {/* Main Content */}
-      <main className="container mx-auto p-4 md:pb-4 pb-20">
+      <main className="container mx-auto p-4 md:pb-4 pb-24">
         <Outlet />
       </main>
     </div>
