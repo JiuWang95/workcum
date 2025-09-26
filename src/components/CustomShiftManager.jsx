@@ -12,7 +12,8 @@ const CustomShiftManager = () => {
   const [startTime, setStartTime] = useState('09:00');
   const [endTime, setEndTime] = useState('17:00');
   const [customDuration, setCustomDuration] = useState('');
-  const [isOvernight, setIsOvernight] = useState(false); // 添加跨夜班标识
+  // 将isOvernight改为shiftType枚举
+  const [shiftType, setShiftType] = useState('day'); // 默认为白天班
 
   // Load shifts from localStorage on component mount
   useEffect(() => {
@@ -39,7 +40,7 @@ const CustomShiftManager = () => {
       startTime,
       endTime,
       customDuration: customDuration || null, // Store custom duration or null if not set
-      isOvernight // 保存跨夜班标识
+      shiftType // 保存班次类型枚举
     };
     
     if (editingShift) {
@@ -56,7 +57,7 @@ const CustomShiftManager = () => {
     setStartTime('09:00');
     setEndTime('17:00');
     setCustomDuration('');
-    setIsOvernight(false); // 重置跨夜班标识
+    setShiftType('day'); // 重置为默认值
     setShowForm(false);
   };
 
@@ -66,7 +67,8 @@ const CustomShiftManager = () => {
     setStartTime(shift.startTime);
     setEndTime(shift.endTime);
     setCustomDuration(shift.customDuration || '');
-    setIsOvernight(shift.isOvernight || false); // 设置跨夜班标识
+    // 设置班次类型，如果不存在则默认为day
+    setShiftType(shift.shiftType || 'day');
     setShowForm(true);
   };
 
@@ -83,7 +85,7 @@ const CustomShiftManager = () => {
     setStartTime('09:00');
     setEndTime('17:00');
     setCustomDuration('');
-    setIsOvernight(false); // 重置跨夜班标识
+    setShiftType('day'); // 重置为默认值
   };
 
   // Function to convert duration string to hours
@@ -97,6 +99,20 @@ const CustomShiftManager = () => {
     const minutes = minutesMatch ? parseFloat(minutesMatch[1]) : 0;
     
     return hours + (minutes / 60);
+  };
+
+  // 获取班次类型显示文本
+  const getShiftTypeText = (type) => {
+    switch (type) {
+      case 'day':
+        return t('time_entry.custom_shift.day_shift');
+      case 'rest':
+        return t('time_entry.custom_shift.rest_day');
+      case 'overnight':
+        return t('time_entry.custom_shift.overnight_shift');
+      default:
+        return t('time_entry.custom_shift.day_shift');
+    }
   };
 
   return (
@@ -171,17 +187,46 @@ const CustomShiftManager = () => {
             />
           </div>
           
-          {/* 跨夜班选项放在自定义工时上面 */}
+          {/* 班次类型选择选项 */}
           <div className="mb-3">
-            <label className="flex items-center">
-              <input
-                type="checkbox"
-                checked={isOvernight}
-                onChange={(e) => setIsOvernight(e.target.checked)}
-                className="form-checkbox h-4 w-4 text-indigo-600"
-              />
-              <span className="ml-2 text-gray-700 text-sm">{t('time_entry.custom_shift.overnight_shift')}</span>
+            <label className="block text-gray-700 text-sm font-bold mb-1">
+              {t('time_entry.custom_shift.shift_type')}
             </label>
+            <div className="flex space-x-4">
+              <label className="flex items-center">
+                <input
+                  type="radio"
+                  name="shiftType"
+                  value="day"
+                  checked={shiftType === 'day'}
+                  onChange={(e) => setShiftType(e.target.value)}
+                  className="form-radio h-4 w-4 text-indigo-600"
+                />
+                <span className="ml-2 text-gray-700 text-sm">{t('time_entry.custom_shift.day_shift')}</span>
+              </label>
+              <label className="flex items-center">
+                <input
+                  type="radio"
+                  name="shiftType"
+                  value="rest"
+                  checked={shiftType === 'rest'}
+                  onChange={(e) => setShiftType(e.target.value)}
+                  className="form-radio h-4 w-4 text-indigo-600"
+                />
+                <span className="ml-2 text-gray-700 text-sm">{t('time_entry.custom_shift.rest_day')}</span>
+              </label>
+              <label className="flex items-center">
+                <input
+                  type="radio"
+                  name="shiftType"
+                  value="overnight"
+                  checked={shiftType === 'overnight'}
+                  onChange={(e) => setShiftType(e.target.value)}
+                  className="form-radio h-4 w-4 text-indigo-600"
+                />
+                <span className="ml-2 text-gray-700 text-sm">{t('time_entry.custom_shift.overnight_shift')}</span>
+              </label>
+            </div>
           </div>
           
           <div className="flex items-center justify-between">
@@ -227,9 +272,9 @@ const CustomShiftManager = () => {
                   >
                     {shift.name}
                   </h3>
-                  {/* 类型标识：普通班次或跨夜班 */}
+                  {/* 类型标识：显示班次类型 */}
                   <span className="text-xs text-gray-500">
-                    {shift.isOvernight ? t('time_entry.custom_shift.overnight_shift') : t('time_entry.custom_shift.regular_shift')}
+                    {getShiftTypeText(shift.shiftType || 'day')}
                   </span>
                 </div>
               </div>

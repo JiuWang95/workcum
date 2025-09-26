@@ -47,8 +47,10 @@
       },
       "delete_confirm": "Are you sure you want to delete this shift template?",
       "color_preview": "Color Preview",
-      "overnight_shift": "Overnight Shift",
-      "regular_shift": "Regular Shift"
+      "shift_type": "Shift Type",
+      "day_shift": "Day Shift",
+      "rest_day": "Rest Day",
+      "overnight_shift": "Overnight Shift"
     },
     "duration": "Hours",
     "notes": "Notes",

@@ -148,6 +148,20 @@ const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
     return hours + (minutes / 60);
   };
 
+  // 获取班次类型显示文本
+  const getShiftTypeText = (shiftType) => {
+    switch (shiftType) {
+      case 'day':
+        return t('time_entry.custom_shift.day_shift');
+      case 'rest':
+        return t('time_entry.custom_shift.rest_day');
+      case 'overnight':
+        return t('time_entry.custom_shift.overnight_shift');
+      default:
+        return t('time_entry.custom_shift.day_shift');
+    }
+  };
+
   const getScheduleForDate = (date) => {
     return schedules.filter(schedule => 
       isSameDay(new Date(schedule.date), date)
@@ -198,8 +212,8 @@ const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
                   // 获取班次信息
                   const shiftInfo = shifts.find(shift => shift.id === schedule.selectedShift);
                   const shiftName = shiftInfo ? shiftInfo.name : schedule.title;
-                  // 检查是否为跨夜班
-                  const isOvernight = shiftInfo ? shiftInfo.isOvernight : false;
+                  // 获取班次类型
+                  const shiftType = shiftInfo ? shiftInfo.shiftType : 'day';
                   
                   return (
                     <div 
@@ -220,9 +234,14 @@ const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
                           style={{ backgroundColor: getShiftColor(shiftName) }}
                         ></span>
                         <span className="font-bold truncate">{shiftName}</span>
-                        {isOvernight && (
+                        {shiftType === 'overnight' && (
                           <span className="ml-1 inline-flex items-center px-1 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
                             {t('time_entry.custom_shift.overnight_shift')}
+                          </span>
+                        )}
+                        {shiftType === 'rest' && (
+                          <span className="ml-1 inline-flex items-center px-1 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                            {t('time_entry.custom_shift.rest_day')}
                           </span>
                         )}
                       </div>

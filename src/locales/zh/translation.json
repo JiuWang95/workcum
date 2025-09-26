@@ -53,8 +53,10 @@
       },
       "delete_confirm": "确定要删除这个班次模板吗？",
       "color_preview": "颜色预览",
-      "overnight_shift": "跨夜班",
-      "regular_shift": "常规班次"
+      "shift_type": "班次类型",
+      "day_shift": "白天班",
+      "rest_day": "休息日",
+      "overnight_shift": "跨夜班"
     }
   },
   "reports": {
