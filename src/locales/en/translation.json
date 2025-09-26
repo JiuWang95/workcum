@@ -4,7 +4,8 @@
     "reports": "Statistics",
     "schedule": "Schedule",
     "settings": "Settings",
-    "data": "My"
+    "data": "My",
+    "time_entry": "Schedule"
   },
   "common": {
     "add": "Add",

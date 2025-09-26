@@ -1,7 +1,7 @@
 {
   "app_title": "工时记录系统",
   "navigation": {
-    "time_entry": "记录",
+    "time_entry": "计划",
     "reports": "统计",
     "schedule": "排班",
     "data": "我的"
