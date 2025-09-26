@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { format, subDays, startOfWeek, endOfWeek, startOfMonth, endOfMonth } from 'date-fns';
 import { exportToExcel } from '../utils/export';
 import { useTranslation } from 'react-i18next';
+import FileNameModal from '../components/FileNameModal';
 
 const ReportPage = () => {
   const { t } = useTranslation();
@@ -12,6 +13,7 @@ const ReportPage = () => {
   const [endDate, setEndDate] = useState(format(endOfWeek(new Date(), { weekStartsOn: 1 }), 'yyyy-MM-dd'));
   const [filteredEntries, setFilteredEntries] = useState([]);
   const [filteredSchedules, setFilteredSchedules] = useState([]);
+  const [isFileNameModalOpen, setIsFileNameModalOpen] = useState(false);
 
   // Load entries and schedules from localStorage on component mount
   useEffect(() => {
@@ -89,12 +91,24 @@ const ReportPage = () => {
 
   // Export to Excel
   const handleExport = () => {
-    exportToExcel(filteredEntries, filteredSchedules, shifts, `time-report-${startDate}-to-${endDate}`);
+    setIsFileNameModalOpen(true);
+  };
+
+  const handleFileNameConfirm = (fileName) => {
+    setIsFileNameModalOpen(false);
+    exportToExcel(filteredEntries, filteredSchedules, shifts, fileName);
   };
 
   return (
     <div className="max-w-6xl mx-auto">
       <h1 className="page-heading">{t('reports.title')}</h1>
+      
+      <FileNameModal
+        isOpen={isFileNameModalOpen}
+        onClose={() => setIsFileNameModalOpen(false)}
+        onConfirm={handleFileNameConfirm}
+        defaultFileName={`time-report-${startDate}-to-${endDate}`}
+      />
       
       <div className="bg-white rounded-lg shadow p-6 mb-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">

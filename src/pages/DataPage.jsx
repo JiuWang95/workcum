@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import FileNameModal from '../components/FileNameModal';
 
 const DataPage = () => {
   const { t, i18n } = useTranslation();
@@ -10,9 +11,15 @@ const DataPage = () => {
   };
   const [importStatus, setImportStatus] = useState('');
   const [exportStatus, setExportStatus] = useState('');
+  const [isFileNameModalOpen, setIsFileNameModalOpen] = useState(false);
 
   // Export all data
   const handleExportAllData = () => {
+    setIsFileNameModalOpen(true);
+  };
+
+  const handleFileNameConfirm = (fileName) => {
+    setIsFileNameModalOpen(false);
     try {
       // Get all data from localStorage
       const timeEntries = JSON.parse(localStorage.getItem('timeEntries') || '[]');
@@ -31,7 +38,7 @@ const DataPage = () => {
       const dataStr = JSON.stringify(data, null, 2);
       const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
       
-      const exportFileDefaultName = `time-tracker-backup-${new Date().toISOString().split('T')[0]}.json`;
+      const exportFileDefaultName = `${fileName}.json`;
       
       const linkElement = document.createElement('a');
       linkElement.setAttribute('href', dataUri);
@@ -98,6 +105,13 @@ const DataPage = () => {
 
   return (
     <div className="max-w-4xl mx-auto">
+      <FileNameModal
+        isOpen={isFileNameModalOpen}
+        onClose={() => setIsFileNameModalOpen(false)}
+        onConfirm={handleFileNameConfirm}
+        defaultFileName={`time-tracker-backup-${new Date().toISOString().split('T')[0]}`}
+      />
+      
       <div className="flex justify-between items-center">
         <h1 className="page-heading my-0">{t('data.title')}</h1>
         <button 
