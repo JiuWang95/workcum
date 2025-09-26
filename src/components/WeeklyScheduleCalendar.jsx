@@ -184,7 +184,7 @@ const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
   return (
     <div className="bg-white rounded-lg shadow p-1 hide-scrollbar mt-1">
       {/* Week view: Each date occupies a separate row with vertical arrangement */}
-      <div className="space-y-1 sm:space-y-2 md:space-y-3">
+      <div className="space-y-0.5 sm:space-y-1 md:space-y-1.5">
         {weekDays.map((day, index) => {
           const daySchedules = getScheduleForDate(day);
           const dayTimeEntries = getTimeEntriesForDate(day);
