@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { format, subDays, startOfWeek, endOfWeek, startOfMonth, endOfMonth } from 'date-fns';
-import { exportToExcel } from '../utils/export';
+import { exportToExcelReport } from '../utils/export';
 import { useTranslation } from 'react-i18next';
 import FileNameModal from '../components/FileNameModal';
 
@@ -110,7 +110,7 @@ const ReportPage = () => {
 
   const handleFileNameConfirm = (fileName) => {
     setIsFileNameModalOpen(false);
-    exportToExcel(filteredEntries, filteredSchedules, shifts, fileName);
+    exportToExcelReport(filteredEntries, filteredSchedules, shifts, fileName);
   };
 
   return (

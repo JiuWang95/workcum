@@ -13,12 +13,9 @@ const convertDurationToHours = (durationStr) => {
   return hours + (minutes / 60);
 };
 
-export const exportToExcelReport = (entries, schedules, shifts, filename) => {
-  // Create a new workbook
-  const wb = utils.book_new();
-
-  // Sort entries by date and start time
-  const sortedEntries = [...entries].sort((a, b) => {
+// Sort entries by date and start time
+const sortEntries = (entries) => {
+  return [...entries].sort((a, b) => {
     // First sort by date
     if (a.date !== b.date) {
       return a.date.localeCompare(b.date);
@@ -26,6 +23,26 @@ export const exportToExcelReport = (entries, schedules, shifts, filename) => {
     // If dates are equal, sort by start time
     return a.startTime.localeCompare(b.startTime);
   });
+};
+
+// Sort schedules by date and start time
+const sortSchedules = (schedules) => {
+  return [...schedules].sort((a, b) => {
+    // First sort by date
+    if (a.date !== b.date) {
+      return a.date.localeCompare(b.date);
+    }
+    // If dates are equal, sort by start time
+    return a.startTime.localeCompare(b.startTime);
+  });
+};
+
+export const exportAllDataToExcel = (timeEntries, schedules, customShifts, filename) => {
+  // Create a new workbook
+  const wb = utils.book_new();
+
+  // Sort entries by date and start time
+  const sortedEntries = sortEntries(timeEntries);
 
   // 1. Format time entries data for Excel
   const formattedEntries = sortedEntries.map(entry => {
@@ -47,14 +64,7 @@ export const exportToExcelReport = (entries, schedules, shifts, filename) => {
   }
 
   // Sort schedules by date and start time
-  const sortedSchedules = [...schedules].sort((a, b) => {
-    // First sort by date
-    if (a.date !== b.date) {
-      return a.date.localeCompare(b.date);
-    }
-    // If dates are equal, sort by start time
-    return a.startTime.localeCompare(b.startTime);
-  });
+  const sortedSchedules = sortSchedules(schedules);
 
   // 2. Format schedules data for Excel
   const formattedSchedules = sortedSchedules.map(schedule => {
@@ -63,7 +73,7 @@ export const exportToExcelReport = (entries, schedules, shifts, filename) => {
     if (schedule.customDuration !== undefined && schedule.customDuration !== null && schedule.customDuration !== "") {
       duration = convertDurationToHours(schedule.customDuration) * 60;
     } else if (schedule.selectedShift) {
-      const shift = shifts.find(s => s.id === schedule.selectedShift);
+      const shift = customShifts.find(s => s.id === schedule.selectedShift);
       // 修改逻辑：如果自定义工时存在（即使是0），也使用自定义工时
       if (shift && shift.customDuration !== undefined && shift.customDuration !== null && shift.customDuration !== "") {
         duration = convertDurationToHours(shift.customDuration) * 60;
@@ -93,7 +103,7 @@ export const exportToExcelReport = (entries, schedules, shifts, filename) => {
   }
 
   // 3. Format custom shifts data for Excel
-  const formattedShifts = shifts.map(shift => {
+  const formattedShifts = customShifts.map(shift => {
     return {
       '班次名称': shift.name,
       '开始时间': shift.startTime,
@@ -111,16 +121,16 @@ export const exportToExcelReport = (entries, schedules, shifts, filename) => {
 
   // 4. Create summary data
   // Calculate total minutes
-  const totalMinutesFromEntries = entries.reduce((sum, entry) => sum + entry.duration, 0);
+  const totalMinutesFromEntries = timeEntries.reduce((sum, entry) => sum + entry.duration, 0);
   const totalMinutesFromSchedules = formattedSchedules.reduce((sum, schedule) => sum + (schedule.Minutes || 0), 0);
   const totalMinutes = totalMinutesFromEntries + totalMinutesFromSchedules;
   const totalHours = (totalMinutes / 60).toFixed(1);
 
   // Summary data
   const summaryData = [
-    { '统计项目': '工时记录总数', '数值': entries.length },
+    { '统计项目': '工时记录总数', '数值': timeEntries.length },
     { '统计项目': '排班记录总数', '数值': schedules.length },
-    { '统计项目': '自定义班次总数', '数值': shifts.length },
+    { '统计项目': '自定义班次总数', '数值': customShifts.length },
     { '统计项目': '总工时(小时)', '数值': totalHours },
     { '统计项目': '总工时(分钟)', '数值': totalMinutes }
   ];

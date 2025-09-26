@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import FileNameModal from '../components/FileNameModal';
 
@@ -13,7 +13,7 @@ const DataPage = () => {
   const [exportStatus, setExportStatus] = useState('');
   const [isFileNameModalOpen, setIsFileNameModalOpen] = useState(false);
 
-  // Export all data
+  // Export all data to JSON
   const handleExportAllData = () => {
     setIsFileNameModalOpen(true);
   };
