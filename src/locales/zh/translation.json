@@ -80,8 +80,7 @@
   },
   "schedule": {
     "title": "排班",
-    "previous_month": "上月",
-    "next_month": "下月",
+
     "previous_week": "上周",
     "next_week": "下周",
     "today": "今天",

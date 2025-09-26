@@ -134,7 +134,7 @@ const DataPage = () => {
           </div>
           <div className="flex items-start">
             <div className="flex-shrink-0 h-6 w-6 text-blue-500 mt-0.5 font-bold">2.</div>
-            <p className="ml-2 text-gray-700">在"排班"页面使用周视图或月视图查看和管理日程安排，点击任意日期添加新的排班任务</p>
+            <p className="ml-2 text-gray-700">在"排班"页面使用周视图查看和管理日程安排，点击任意日期添加新的排班任务</p>
           </div>
           <div className="flex items-start">
             <div className="flex-shrink-0 h-6 w-6 text-blue-500 mt-0.5 font-bold">3.</div>
