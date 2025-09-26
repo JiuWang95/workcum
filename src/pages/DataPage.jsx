@@ -99,8 +99,22 @@ const DataPage = () => {
       <div className="mt-8 bg-white rounded-lg shadow p-6">
         <h2 className="section-heading">项目信息</h2>
         <p className="text-gray-600 mb-4">
-          这是一个专为工作时间管理而设计的高效工具，旨在帮助用户轻松跟踪和管理工作时间。项目最初是为了给我的妻子思语小姐创建一个方便计算工时的工具，现已发展成为一个功能完整的工时跟踪系统。
+          这是一个专为工作时间管理而设计的高效工具，旨在帮助用户轻松跟踪和管理工作时间。项目最初是为了给我的妻子思语小姐创建一个方便计算工时的工具，现已发展成为一个功能完整的工时跟踪系统。如果你有更好的建议或者问题反馈，可以点击联系乐乐。
         </p>
+        <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-4">
+          <div className="flex">
+            <div className="flex-shrink-0">
+              <svg className="h-5 w-5 text-yellow-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+              </svg>
+            </div>
+            <div className="ml-3">
+              <p className="text-sm text-yellow-700">
+                <strong>免责声明：</strong>本工具仅供个人学习和参考使用，用户应自行承担使用风险。本工具不收集、存储或传输任何用户数据，所有数据均保存在用户本地浏览器中。用户应定期备份重要数据，作者不对数据丢失承担任何责任。本工具不提供任何商业支持或技术保障，使用前请充分了解相关风险。
+              </p>
+            </div>
+          </div>
+        </div>
         <p className="text-gray-600 mb-4">
           主要功能包括：
         </p>
@@ -111,7 +125,7 @@ const DataPage = () => {
           <li>可视化报表分析</li>
         </ul>
         <p className="text-gray-600 mb-4">
-          无论您是自由职业者、项目经理还是团队领导，这个工具都能帮助您更好地管理时间，提高工作效率。
+          如果您想要感谢一下作者，您可以请思语小姐姐喝杯奶茶，您也可以在项目仓库里为作者打赏。也可以直接点击捐款为公益做一点贡献。
         </p>
         <div className="flex flex-col sm:flex-row sm:space-x-4 space-y-4 sm:space-y-0">
           <a 
@@ -166,6 +180,28 @@ const DataPage = () => {
             </svg>
             联系乐乐
           </button>
+          <a 
+            href="https://gongyi.qq.com/succor/project_list.htm" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+          >
+            <svg 
+              className="w-5 h-5 mr-2" 
+              fill="none" 
+              stroke="currentColor" 
+              viewBox="0 0 24 24" 
+              aria-hidden="true"
+            >
+              <path 
+                strokeLinecap="round" 
+                strokeLinejoin="round" 
+                strokeWidth="2" 
+                d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+            捐助
+          </a>
         </div>
       </div>
       
