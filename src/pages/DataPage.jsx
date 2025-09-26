@@ -2,7 +2,12 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 const DataPage = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+
+  const toggleLanguage = () => {
+    const newLang = i18n.language === 'zh' ? 'en' : 'zh';
+    i18n.changeLanguage(newLang);
+  };
   const [importStatus, setImportStatus] = useState('');
   const [exportStatus, setExportStatus] = useState('');
 
@@ -93,7 +98,15 @@ const DataPage = () => {
 
   return (
     <div className="max-w-4xl mx-auto">
-      <h1 className="page-heading">{t('data.title')}</h1>
+      <div className="flex justify-between items-center">
+        <h1 className="page-heading">{t('data.title')}</h1>
+        <button 
+          onClick={toggleLanguage}
+          className="bg-indigo-100 hover:bg-indigo-200 text-indigo-700 font-medium py-1 px-3 rounded-full text-sm transition-colors"
+        >
+          {i18n.language === 'zh' ? 'EN' : '中文'}
+        </button>
+      </div>
       
       {/* Project Information Section */}
       <div className="mt-8 bg-white rounded-lg shadow p-6">

@@ -3,7 +3,12 @@ import { Outlet, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 const Layout = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+
+  const toggleLanguage = () => {
+    const newLang = i18n.language === 'zh' ? 'en' : 'zh';
+    i18n.changeLanguage(newLang);
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -11,11 +16,17 @@ const Layout = () => {
       <nav className="hidden md:flex bg-white shadow-md p-4">
         <div className="container mx-auto flex justify-between items-center">
           <h1 className="text-xl font-bold text-indigo-600">{t('app_title')}</h1>
-          <div className="flex space-x-6">
+          <div className="flex space-x-6 items-center">
             <Link to="/schedule" className="text-gray-700 hover:text-indigo-600">{t('navigation.schedule')}</Link>
             <Link to="/" className="text-gray-700 hover:text-indigo-600">{t('navigation.time_entry')}</Link>
             <Link to="/reports" className="text-gray-700 hover:text-indigo-600">{t('navigation.reports')}</Link>
             <Link to="/data" className="text-gray-700 hover:text-indigo-600">{t('navigation.data')}</Link>
+            <button 
+              onClick={toggleLanguage}
+              className="bg-indigo-100 hover:bg-indigo-200 text-indigo-700 font-medium py-1 px-3 rounded-full text-sm transition-colors"
+            >
+              {i18n.language === 'zh' ? 'EN' : '中文'}
+            </button>
           </div>
         </div>
       </nav>

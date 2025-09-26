@@ -1,4 +1,5 @@
 {
+  "app_title": "Time Tracking System",
   "navigation": {
     "time_tracking": "Time Tracking",
     "reports": "Statistics",
@@ -115,5 +116,35 @@
     "delete_confirm": "Are you sure you want to delete all data? This action cannot be undone.",
     "import_success": "Data imported successfully",
     "import_error": "Error importing data. Please check the file format."
+  },
+  "data": {
+    "title": "About Us",
+    "export_data": "Export Data",
+    "import_data": "Import Data",
+    "export_success": "Data exported successfully!",
+    "import_success": "Data imported successfully!",
+    "import_error": "Error importing data. Please check the file format.",
+    "export": {
+      "title": "Export Data",
+      "description": "Export all time tracking data to a JSON file for backup or transfer.",
+      "button": "Export Data",
+      "success": "Data exported successfully!",
+      "error": "Error exporting data: "
+    },
+    "import": {
+      "title": "Import Data",
+      "description": "Import time tracking data from a JSON file. This will overwrite your current data.",
+      "button": "Import Data",
+      "success": "Data imported successfully!",
+      "error": "Error importing data: ",
+      "invalid_format": "Invalid data format"
+    },
+    "danger_zone": {
+      "title": "Danger Zone",
+      "description": "Clear all data from browser local storage. This action cannot be undone.",
+      "button": "Clear All Data"
+    },
+    "clear_confirm": "Are you sure you want to delete all data? This action cannot be undone.",
+    "clear_success": "All data has been cleared."
   }
 }
