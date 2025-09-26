@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { format, parse } from 'date-fns';
 import { useTranslation } from 'react-i18next';
+import DurationPicker from './DurationPicker';
 
 const TimeEntryForm = ({ onAddEntry }) => {
   const { t } = useTranslation();
@@ -185,19 +186,14 @@ const TimeEntryForm = ({ onAddEntry }) => {
         
         {/* Custom duration input */}
         <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="customDuration">
-            {t('time_entry.custom_shift.custom_duration')}
-          </label>
-          <input
-            type="text"
+          <DurationPicker
             id="customDuration"
+            label={t('time_entry.custom_shift.custom_duration')}
             value={customDuration}
-            onChange={(e) => setCustomDuration(e.target.value)}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            placeholder={t('time_entry.custom_shift.custom_duration_placeholder') || "例如: 8h 或 480m"}
+            onChange={setCustomDuration}
           />
           <p className="text-gray-500 text-xs md:text-sm mt-1">
-            {t('time_entry.custom_shift.custom_duration_help') || "输入自定义工时，例如 8h 表示8小时，480m 表示480分钟"}
+            {t('time_entry.custom_shift.custom_duration_help') || "选择自定义工时"}
           </p>
         </div>
         
