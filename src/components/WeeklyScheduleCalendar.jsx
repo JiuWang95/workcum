@@ -18,7 +18,9 @@ const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
   const [timeEntries, setTimeEntries] = useState([]);
   const [shifts, setShifts] = useState([]); // Add shifts state
   const [showModal, setShowModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
+  const [selectedEntry, setSelectedEntry] = useState(null);
   const [formData, setFormData] = useState({
     id: null,
     date: '',
@@ -112,6 +114,12 @@ const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
   const handleDelete = (id) => {
     if (window.confirm(t('schedule.delete_confirm'))) {
       setSchedules(schedules.filter(schedule => schedule.id !== id));
+    }
+  };
+
+  const handleDeleteTimeEntry = (id) => {
+    if (window.confirm(t('time_entry.delete_confirm') || '确定要删除这个时间记录吗？')) {
+      setTimeEntries(timeEntries.filter(entry => entry.id !== id));
     }
   };
 
@@ -310,7 +318,8 @@ const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
                     className="text-[0.6rem] sm:text-xs md:text-sm font-semibold bg-green-100 text-green-800 p-1.5 sm:p-2 rounded-md flex-shrink-0 w-full sm:w-auto cursor-pointer hover:bg-green-200 transition-colors"
                     onClick={(e) => {
                       e.stopPropagation();
-                      handleDeleteTimeEntry(entry.id);
+                      setSelectedEntry(entry);
+                      setShowDeleteModal(true);
                     }}
                   >
                     <div className="font-bold truncate text-[0.6rem] sm:text-xs">{entry.notes || t('time_entry.entry')}</div>
@@ -399,6 +408,55 @@ const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
                 </div>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {showDeleteModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 w-full max-w-md">
+            <h2 className="section-heading text-center mb-6">
+              {t('time_entry.delete_entry')}
+            </h2>
+            
+            <div className="mb-6">
+              <p className="text-gray-700 text-center">
+                {t('time_entry.delete_confirm') || '确定要删除这个时间记录吗？'}
+              </p>
+              {selectedEntry && (
+                <div className="mt-4 p-3 bg-green-50 rounded-md">
+                  <div className="font-bold truncate">{selectedEntry.notes || t('time_entry.entry')}</div>
+                  <div className="text-green-600 text-sm mt-1">
+                    {formatTime(selectedEntry.startTime)} - {formatTime(selectedEntry.endTime)}
+                    {selectedEntry.duration && (
+                      <span className="ml-2">
+                        [{(selectedEntry.duration / 60).toFixed(1)}h]
+                      </span>
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
+            
+            <div className="flex justify-between">
+              <button
+                type="button"
+                onClick={() => setShowDeleteModal(false)}
+                className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded"
+              >
+                {t('schedule.form.cancel')}
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  handleDeleteTimeEntry(selectedEntry.id);
+                  setShowDeleteModal(false);
+                }}
+                className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+              >
+                {t('schedule.form.delete')}
+              </button>
+            </div>
           </div>
         </div>
       )}
