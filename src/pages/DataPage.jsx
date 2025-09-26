@@ -341,18 +341,24 @@ const DataPage = () => {
                 <p className="text-gray-600 mb-4 text-sm md:text-base">
                   {t('data.import.description')}
                 </p>
-                <input
-                  type="file"
-                  accept=".json"
-                  onChange={handleImportData}
-                  className="block w-full text-sm text-gray-500
-                    file:mr-4 file:py-2 file:px-4
-                    file:rounded file:border-0
-                    file:text-sm file:font-semibold
-                    file:bg-indigo-50 file:text-indigo-700
-                    hover:file:bg-indigo-100
-                    rounded-lg"
-                />
+                <div className="relative">
+                  <input
+                    type="file"
+                    accept=".json"
+                    onChange={handleImportData}
+                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                    id="fileInput"
+                  />
+                  <label
+                    htmlFor="fileInput"
+                    className="inline-flex items-center px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg transition-all duration-200 shadow hover:shadow-md cursor-pointer"
+                  >
+                    <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"></path>
+                    </svg>
+                    选择文件
+                  </label>
+                </div>
                 {importStatus && (
                   <div className="mt-4 p-3 bg-indigo-100 text-indigo-700 rounded-lg">
                     {importStatus}
