@@ -83,7 +83,11 @@
 
     "previous_week": "上周",
     "next_week": "下周",
+    "previous_month": "上月",
+    "next_month": "下月",
     "today": "今天",
+    "week_view": "周视图",
+    "month_view": "月视图",
     "add_task": "+ 添加任务",
     "edit_schedule": "编辑排班",
     "add_schedule": "添加排班",
