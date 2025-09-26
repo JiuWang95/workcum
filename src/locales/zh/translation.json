@@ -2,7 +2,7 @@
   "app_title": "工作时间记录系统",
   "navigation": {
     "time_entry": "记录",
-    "reports": "报告",
+    "reports": "统计",
     "schedule": "排班",
     "data": "我的"
   },
@@ -60,8 +60,8 @@
     }
   },
   "reports": {
-    "title": "报告",
-    "generate_report": "生成报表",
+    "title": "统计",
+    "generate_report": "生成统计",
     "export_excel": "导出到Excel",
     "from_date": "开始日期",
     "to_date": "结束日期",

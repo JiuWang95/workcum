@@ -1,7 +1,7 @@
 {
   "navigation": {
     "time_tracking": "Time Tracking",
-    "reports": "Reports",
+    "reports": "Statistics",
     "schedule": "Schedule",
     "settings": "Settings",
     "data": "My"
@@ -68,7 +68,7 @@
     "minutes": "minutes"
   },
   "reports": {
-    "title": "Reports",
+    "title": "Statistics",
     "summary": "Summary",
     "details": "Details",
     "total_duration": "Total Hours",
