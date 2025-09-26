@@ -75,6 +75,9 @@
     "details": "Details",
     "total_duration": "Total Hours",
     "export": "Export to Excel",
+    "last_week": "Last Week",
+    "this_week": "This Week",
+    "next_week": "Next Week",
     "table": {
       "date": "Date",
       "shift": "Shift",

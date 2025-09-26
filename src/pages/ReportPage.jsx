@@ -83,6 +83,20 @@ const ReportPage = () => {
     setEndDate(format(endOfWeek(now, { weekStartsOn: 1 }), 'yyyy-MM-dd'));
   };
 
+  const setLastWeek = () => {
+    const now = new Date();
+    const lastWeek = subDays(now, 7);
+    setStartDate(format(startOfWeek(lastWeek, { weekStartsOn: 1 }), 'yyyy-MM-dd'));
+    setEndDate(format(endOfWeek(lastWeek, { weekStartsOn: 1 }), 'yyyy-MM-dd'));
+  };
+
+  const setNextWeek = () => {
+    const now = new Date();
+    const nextWeek = subDays(now, -7);
+    setStartDate(format(startOfWeek(nextWeek, { weekStartsOn: 1 }), 'yyyy-MM-dd'));
+    setEndDate(format(endOfWeek(nextWeek, { weekStartsOn: 1 }), 'yyyy-MM-dd'));
+  };
+
   const setThisMonth = () => {
     const now = new Date();
     setStartDate(format(startOfMonth(now), 'yyyy-MM-dd'));
@@ -140,10 +154,22 @@ const ReportPage = () => {
           
           <div className="flex items-end">
             <button
+              onClick={setLastWeek}
+              className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded mr-2"
+            >
+              {t('reports.last_week')}
+            </button>
+            <button
               onClick={setThisWeek}
               className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded mr-2"
             >
               {t('reports.this_week')}
+            </button>
+            <button
+              onClick={setNextWeek}
+              className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded mr-2"
+            >
+              {t('reports.next_week')}
             </button>
             <button
               onClick={setThisMonth}
