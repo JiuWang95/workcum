@@ -9,7 +9,7 @@ const TimeEntryPage = () => {
   const [entries, setEntries] = useState([]);
   const [shifts, setShifts] = useState([]);
   const [showInstructions, setShowInstructions] = useState(false); // 控制使用说明弹窗显示
-  const [isAddRecordOpen, setIsAddRecordOpen] = useState(true); // 控制添加记录模块的折叠状态
+  const [isAddRecordOpen, setIsAddRecordOpen] = useState(false); // 控制添加记录模块的折叠状态（默认折叠）
   const editSectionRef = useRef(null);
 
   // Load entries and shifts from localStorage on component mount
