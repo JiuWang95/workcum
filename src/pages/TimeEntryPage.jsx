@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import TimeEntryForm from '../components/TimeEntryForm';
 import CustomShiftManager from '../components/CustomShiftManager';
 import InstructionsModal from '../components/InstructionsModal';
@@ -9,6 +9,7 @@ const TimeEntryPage = () => {
   const [entries, setEntries] = useState([]);
   const [shifts, setShifts] = useState([]);
   const [showInstructions, setShowInstructions] = useState(false); // 控制使用说明弹窗显示
+  const editSectionRef = useRef(null);
 
   // Load entries and shifts from localStorage on component mount
   React.useEffect(() => {
@@ -18,6 +19,13 @@ const TimeEntryPage = () => {
     setEntries(savedEntries);
     setShifts(savedShifts);
   }, []);
+
+  // 滚动到编辑区域的函数
+  const scrollToEditSection = () => {
+    if (editSectionRef.current) {
+      editSectionRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
 
   const handleAddEntry = (entry) => {
     const newEntries = [...entries, entry];
@@ -48,8 +56,8 @@ const TimeEntryPage = () => {
       
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="lg:col-span-3">
-          <CustomShiftManager />
-          <div className="bg-white rounded-lg shadow p-6 mt-8">
+          <CustomShiftManager scrollToEditSection={scrollToEditSection} />
+          <div className="bg-white rounded-lg shadow p-6 mt-8" ref={editSectionRef}>
             <h2 className="section-heading mb-6">{t('time_entry.add_entry')}</h2>
             <TimeEntryForm onAddEntry={handleAddEntry} />
           </div>

@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import DurationPicker from './DurationPicker';
 import { getShiftColor, getShiftBackgroundColor } from '../utils/shiftColor'; // 导入颜色工具函数
 
-const CustomShiftManager = () => {
+const CustomShiftManager = ({ scrollToEditSection }) => {
   const { t } = useTranslation();
   const [shifts, setShifts] = useState([]);
   const [showForm, setShowForm] = useState(false);
@@ -73,6 +73,13 @@ const CustomShiftManager = () => {
     // 设置班次类型，如果不存在则默认为day
     setShiftType(shift.shiftType || 'day');
     setShowForm(true);
+    
+    // 滚动到编辑区域
+    if (scrollToEditSection) {
+      setTimeout(() => {
+        scrollToEditSection();
+      }, 100);
+    }
   };
 
   const handleDelete = (shiftId) => {
