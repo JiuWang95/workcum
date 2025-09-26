@@ -37,6 +37,23 @@ const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
     setTimeEntries(savedEntries);
   }, []);
 
+  // 添加一个useEffect来监听localStorage的变化
+  useEffect(() => {
+    const handleStorageChange = (e) => {
+      if (e.key === 'timeEntries') {
+        const savedEntries = JSON.parse(e.newValue || '[]');
+        setTimeEntries(savedEntries);
+      }
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    
+    // Cleanup event listener on component unmount
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+    };
+  }, []);
+
   // Load custom shifts from localStorage
   useEffect(() => {
     const savedShifts = JSON.parse(localStorage.getItem('customShifts') || '[]');
@@ -47,6 +64,11 @@ const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
   useEffect(() => {
     localStorage.setItem('schedules', JSON.stringify(schedules));
   }, [schedules]);
+
+  // Save time entries to localStorage whenever they change
+  useEffect(() => {
+    localStorage.setItem('timeEntries', JSON.stringify(timeEntries));
+  }, [timeEntries]);
 
   // Get all days to display in the week view
   const getWeekDays = (date) => {
@@ -285,7 +307,11 @@ const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
                 {dayTimeEntries.map((entry) => (
                   <div 
                     key={entry.id} 
-                    className="text-[0.6rem] sm:text-xs md:text-sm font-semibold bg-green-100 text-green-800 p-1.5 sm:p-2 rounded-md flex-shrink-0 w-full sm:w-auto"
+                    className="text-[0.6rem] sm:text-xs md:text-sm font-semibold bg-green-100 text-green-800 p-1.5 sm:p-2 rounded-md flex-shrink-0 w-full sm:w-auto cursor-pointer hover:bg-green-200 transition-colors"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleDeleteTimeEntry(entry.id);
+                    }}
                   >
                     <div className="font-bold truncate text-[0.6rem] sm:text-xs">{entry.notes || t('time_entry.entry')}</div>
                     <div className="text-green-600 text-[0.5rem] sm:text-[0.6rem] mt-0.5">
