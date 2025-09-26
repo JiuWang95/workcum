@@ -62,8 +62,8 @@ const SchedulePage = () => {
         </div>
       </div>
       
-      <div className="p-4 mt-4 mb-2">
-        <div className="flex justify-between items-center mb-1">
+      <div className="p-4 mt-8 mb-2">
+        <div className="flex justify-between items-center mb-6">
           <button
             onClick={goToPreviousPeriod}
             className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded"
