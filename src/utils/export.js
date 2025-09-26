@@ -14,7 +14,10 @@ const convertDurationToHours = (durationStr) => {
 };
 
 export const exportToExcel = (entries, schedules, shifts, filename) => {
-  // Format time entries data for Excel
+  // Create a new workbook
+  const wb = utils.book_new();
+
+  // 1. Format time entries data for Excel
   const formattedEntries = entries.map(entry => {
     return {
       Type: '工时记录',
@@ -27,7 +30,13 @@ export const exportToExcel = (entries, schedules, shifts, filename) => {
     };
   });
 
-  // Format schedules data for Excel
+  // Add time entries worksheet if there are entries
+  if (formattedEntries.length > 0) {
+    const wsEntries = utils.json_to_sheet(formattedEntries);
+    utils.book_append_sheet(wb, wsEntries, '工时记录');
+  }
+
+  // 2. Format schedules data for Excel
   const formattedSchedules = schedules.map(schedule => {
     let duration = 0;
     if (schedule.selectedShift) {
@@ -53,35 +62,47 @@ export const exportToExcel = (entries, schedules, shifts, filename) => {
     };
   });
 
-  // Combine both types of data
-  const combinedData = [...formattedEntries, ...formattedSchedules];
+  // Add schedules worksheet if there are schedules
+  if (formattedSchedules.length > 0) {
+    const wsSchedules = utils.json_to_sheet(formattedSchedules);
+    utils.book_append_sheet(wb, wsSchedules, '排班表');
+  }
 
+  // 3. Format custom shifts data for Excel
+  const formattedShifts = shifts.map(shift => {
+    return {
+      '班次名称': shift.name,
+      '开始时间': shift.startTime,
+      '结束时间': shift.endTime,
+      '自定义工时': shift.customDuration || '',
+      '班次类型': shift.shiftType || 'day'
+    };
+  });
+
+  // Add shifts worksheet if there are shifts
+  if (formattedShifts.length > 0) {
+    const wsShifts = utils.json_to_sheet(formattedShifts);
+    utils.book_append_sheet(wb, wsShifts, '自定义班次');
+  }
+
+  // 4. Create summary data
   // Calculate total minutes
   const totalMinutesFromEntries = entries.reduce((sum, entry) => sum + entry.duration, 0);
-  const totalMinutesFromSchedules = formattedSchedules.reduce((sum, schedule) => sum + schedule.Minutes, 0);
+  const totalMinutesFromSchedules = formattedSchedules.reduce((sum, schedule) => sum + (schedule.Minutes || 0), 0);
   const totalMinutes = totalMinutesFromEntries + totalMinutesFromSchedules;
   const totalHours = (totalMinutes / 60).toFixed(1);
 
-  // Add a summary row at the end
-  const summaryRow = {
-    Type: '总计',
-    Date: '',
-    'Start Time': '',
-    'End Time': '',
-    Duration: `${totalHours}h`,
-    Minutes: totalMinutes,
-    Notes: ''
-  };
+  // Summary data
+  const summaryData = [
+    { '统计项目': '工时记录总数', '数值': entries.length },
+    { '统计项目': '排班记录总数', '数值': schedules.length },
+    { '统计项目': '自定义班次总数', '数值': shifts.length },
+    { '统计项目': '总工时(小时)', '数值': totalHours },
+    { '统计项目': '总工时(分钟)', '数值': totalMinutes }
+  ];
 
-  // Add the summary row to the combined data
-  combinedData.push(summaryRow);
-
-  // Create worksheet
-  const ws = utils.json_to_sheet(combinedData);
-
-  // Create workbook
-  const wb = utils.book_new();
-  utils.book_append_sheet(wb, ws, '工时记录');
+  const wsSummary = utils.json_to_sheet(summaryData);
+  utils.book_append_sheet(wb, wsSummary, '统计');
 
   // Export to file
   writeFile(wb, `${filename}.xlsx`);
