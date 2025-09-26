@@ -41,7 +41,8 @@ export const exportToExcel = (entries, schedules, shifts, filename) => {
     let duration = 0;
     if (schedule.selectedShift) {
       const shift = shifts.find(s => s.id === schedule.selectedShift);
-      if (shift && shift.customDuration) {
+      // 修改逻辑：如果自定义工时存在（即使是0），也使用自定义工时
+      if (shift && shift.customDuration !== undefined && shift.customDuration !== null && shift.customDuration !== "") {
         duration = convertDurationToHours(shift.customDuration) * 60;
       } else {
         // Calculate duration from start and end time

@@ -188,6 +188,25 @@ const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
           const dayTimeEntries = getTimeEntriesForDate(day);
           const isToday = isSameDay(day, new Date());
           
+          // Calculate total minutes from schedules
+          const filteredSchedules = daySchedules.filter(schedule => schedule.selectedShift);
+          const totalMinutesFromSchedules = filteredSchedules.reduce((sum, schedule) => {
+            if (schedule.selectedShift) {
+              const shift = shifts.find(s => s.id === schedule.selectedShift);
+              // 修改逻辑：如果自定义工时存在（即使是0），也使用自定义工时
+              if (shift && shift.customDuration !== undefined && shift.customDuration !== null && shift.customDuration !== "") {
+                return sum + (convertDurationToHours(shift.customDuration) * 60);
+              }
+              
+              // Calculate duration from start and end time if no custom duration
+              const start = new Date(`1970-01-01T${schedule.startTime}:00`);
+              const end = new Date(`1970-01-01T${schedule.endTime}:00`);
+              const duration = (end - start) / (1000 * 60); // Convert to minutes
+              return sum + duration;
+            }
+            return sum;
+          }, 0);
+
           return (
             <div 
               key={index} 
