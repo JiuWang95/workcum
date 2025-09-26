@@ -8,6 +8,8 @@ on:
 
 jobs:
   sync-forks:
+    # Only run this workflow on forked repositories
+    if: github.event.repository.fork == true
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
