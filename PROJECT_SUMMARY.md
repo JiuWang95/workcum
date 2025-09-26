@@ -5,7 +5,7 @@ This is a simple, elegant time tracking web application built with React, Tailwi
 
 ## 功能概述
 
-这是一个使用 React、Tailwind CSS 和 Vite 构建的简洁、优雅的工作时间记录与排班管理 Web 应用程序。项目最初是为了给我的妻子思语小姐创建一个方便计算工时的工具，现已发展成为一个功能完整的工作时间记录与排班管理系统。
+这是一个使用 React、Tailwind CSS 和 Vite 构建的简洁、优雅的工时记录与排班管理 Web 应用程序。项目最初是为了给我的妻子思语小姐创建一个方便计算工时的工具，现已发展成为一个功能完整的工时记录与排班管理系统。
 
 ## Features Implemented
 
@@ -43,7 +43,7 @@ This is a simple, elegant time tracking web application built with React, Tailwi
 ## 核心功能
 
 ### 1. 时间记录管理
-- 快速添加工作时间记录，包括开始和结束时间
+- 快速添加工时记录，包括开始和结束时间
 - 支持使用自定义班次模板快速填充记录信息
 - 时间记录自动同步到排班日历，统一管理工作安排
 - 可添加备注信息，记录工作内容或重要事项
@@ -205,4 +205,4 @@ The Time Tracker application successfully fulfills all the requirements with a c
 
 ## 项目总结
 
-工作时间记录与排班管理系统项目成功实现了所有要求的功能，具有简洁、响应式的界面设计和直观的用户体验。应用程序功能完整，所有核心功能都已实现并通过测试。代码结构良好，易于维护，遵循了现代 React 开发实践。
+工时记录与排班管理系统项目成功实现了所有要求的功能，具有简洁、响应式的界面设计和直观的用户体验。应用程序功能完整，所有核心功能都已实现并通过测试。代码结构良好，易于维护，遵循了现代 React 开发实践。
