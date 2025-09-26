@@ -17,8 +17,18 @@ export const exportToExcel = (entries, schedules, shifts, filename) => {
   // Create a new workbook
   const wb = utils.book_new();
 
+  // Sort entries by date and start time
+  const sortedEntries = [...entries].sort((a, b) => {
+    // First sort by date
+    if (a.date !== b.date) {
+      return a.date.localeCompare(b.date);
+    }
+    // If dates are equal, sort by start time
+    return a.startTime.localeCompare(b.startTime);
+  });
+
   // 1. Format time entries data for Excel
-  const formattedEntries = entries.map(entry => {
+  const formattedEntries = sortedEntries.map(entry => {
     return {
       Type: '工时记录',
       Date: entry.date,
@@ -36,8 +46,18 @@ export const exportToExcel = (entries, schedules, shifts, filename) => {
     utils.book_append_sheet(wb, wsEntries, '工时记录');
   }
 
+  // Sort schedules by date and start time
+  const sortedSchedules = [...schedules].sort((a, b) => {
+    // First sort by date
+    if (a.date !== b.date) {
+      return a.date.localeCompare(b.date);
+    }
+    // If dates are equal, sort by start time
+    return a.startTime.localeCompare(b.startTime);
+  });
+
   // 2. Format schedules data for Excel
-  const formattedSchedules = schedules.map(schedule => {
+  const formattedSchedules = sortedSchedules.map(schedule => {
     let duration = 0;
     // 优先使用排班记录中保存的自定义工时
     if (schedule.customDuration !== undefined && schedule.customDuration !== null && schedule.customDuration !== "") {
