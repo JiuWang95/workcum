@@ -141,13 +141,12 @@ const MonthlyScheduleCalendar = ({ currentDate, onDateChange }) => {
                   return (
                     <div 
                       key={schedule.id}
-                      className="text-[0.6rem] sm:text-xs md:text-sm truncate mb-0.5 p-0.5 rounded"
+                      className="text-[0.7rem] sm:text-sm md:text-base truncate mb-0.5 p-0.5 rounded"
                       style={{
-                        backgroundColor: getShiftBackgroundColor(shiftType),
-                        borderLeft: `1px solid ${getShiftColor(shiftType)}`
+                        backgroundColor: getShiftBackgroundColor(shiftType)
                       }}
                     >
-                      <span className="font-medium">{shiftName}</span>
+                      <span className="font-bold">{shiftName}</span>
                     </div>
                   );
                 })}
