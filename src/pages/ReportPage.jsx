@@ -125,7 +125,7 @@ const ReportPage = () => {
       />
       
       <div className="bg-white rounded-lg shadow p-6 mb-8">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
           <div>
             <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="startDate">
               {t('reports.from_date')}
@@ -151,29 +151,68 @@ const ReportPage = () => {
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             />
           </div>
-          
-          <div className="flex items-end">
+        </div>
+        
+        <div className="hidden md:block mb-6">
+          <div className="flex justify-between items-end gap-4">
+            <div className="flex flex-wrap gap-2">
+              <button
+                onClick={setLastWeek}
+                className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded whitespace-nowrap"
+              >
+                {t('reports.last_week')}
+              </button>
+              <button
+                onClick={setThisWeek}
+                className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded whitespace-nowrap"
+              >
+                {t('reports.this_week')}
+              </button>
+              <button
+                onClick={setNextWeek}
+                className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded whitespace-nowrap"
+              >
+                {t('reports.next_week')}
+              </button>
+              <button
+                onClick={setThisMonth}
+                className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded whitespace-nowrap"
+              >
+                {t('reports.this_month')}
+              </button>
+            </div>
+            <button
+              onClick={handleExport}
+              className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 px-4 rounded whitespace-nowrap"
+            >
+              {t('reports.export_excel')}
+            </button>
+          </div>
+        </div>
+        
+        <div className="md:hidden mb-6">
+          <div className="flex flex-wrap items-end gap-2 mb-2">
             <button
               onClick={setLastWeek}
-              className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded mr-2"
+              className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded whitespace-nowrap"
             >
               {t('reports.last_week')}
             </button>
             <button
               onClick={setThisWeek}
-              className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded mr-2"
+              className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded whitespace-nowrap"
             >
               {t('reports.this_week')}
             </button>
             <button
               onClick={setNextWeek}
-              className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded mr-2"
+              className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded whitespace-nowrap"
             >
               {t('reports.next_week')}
             </button>
             <button
               onClick={setThisMonth}
-              className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded"
+              className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded whitespace-nowrap"
             >
               {t('reports.this_month')}
             </button>
