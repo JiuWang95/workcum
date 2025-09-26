@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import TimeEntryForm from '../components/TimeEntryForm';
 import CustomShiftManager from '../components/CustomShiftManager';
+import InstructionsModal from '../components/InstructionsModal';
 import { useTranslation } from 'react-i18next';
 
 const TimeEntryPage = () => {
@@ -8,6 +9,7 @@ const TimeEntryPage = () => {
   const [entries, setEntries] = useState([]);
   const [shifts, setShifts] = useState([]);
   const [isAddRecordOpen, setIsAddRecordOpen] = useState(false);
+  const [showInstructions, setShowInstructions] = useState(false); // 控制使用说明弹窗显示
 
   // Load entries and shifts from localStorage on component mount
   React.useEffect(() => {
@@ -35,7 +37,15 @@ const TimeEntryPage = () => {
 
   return (
     <div className="max-w-6xl mx-auto">
-      <h1 className="page-heading">{t('navigation.time_entry')}</h1>
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="page-heading">{t('navigation.time_entry')}</h1>
+        <button
+          onClick={() => setShowInstructions(true)}
+          className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 text-sm font-medium"
+        >
+          使用说明!
+        </button>
+      </div>
       
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="lg:col-span-3">
@@ -67,6 +77,7 @@ const TimeEntryPage = () => {
           </div>
         </div>
       </div>
+      <InstructionsModal isOpen={showInstructions} onClose={() => setShowInstructions(false)} />
     </div>
   );
 };
