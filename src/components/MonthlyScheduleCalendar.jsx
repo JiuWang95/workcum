@@ -84,7 +84,7 @@ const MonthlyScheduleCalendar = ({ currentDate, onDateChange }) => {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow p-1 sm:p-2 md:p-4">
+    <div className="bg-white rounded-lg shadow p-1 hide-scrollbar">
       {/* Calendar grid */}
       <div className="grid grid-cols-7 gap-0.5 sm:gap-1">
         {/* Weekday headers */}
@@ -128,13 +128,13 @@ const MonthlyScheduleCalendar = ({ currentDate, onDateChange }) => {
                 backgroundColor: dayBackgroundColor
               } : {}}
             >
-              <div className={`text-right text-xs sm:text-sm font-medium mb-0.5 sm:mb-1 ${
+              <div className={`text-right text-xs sm:text-sm font-medium mb-1 sm:mb-2 ${
                 isToday ? 'text-blue-600' : daySchedules.length > 0 ? 'text-gray-800' : 'text-gray-500'
               }`}>
                 {format(day, 'd', { locale: zhCN })}
               </div>
               
-              <div className="space-y-0.5 sm:space-y-1 flex-grow">
+              <div className="flex flex-wrap gap-1 sm:space-y-1 flex-grow">
                 {allItems.slice(0, 3).map((item) => {
                   // 获取班次信息（如果是排班项目）
                   const shiftInfo = item.itemType === 'schedule' ? 
@@ -144,7 +144,7 @@ const MonthlyScheduleCalendar = ({ currentDate, onDateChange }) => {
                   return (
                     <div 
                       key={item.id} 
-                      className={`text-[0.6rem] sm:text-xs p-0.5 sm:p-1 rounded truncate ${
+                      className={`text-[0.6rem] sm:text-xs p-0.5 sm:p-1 rounded truncate flex-shrink-0 w-full sm:w-auto ${
                         item.itemType === 'schedule' 
                           ? 'bg-white bg-opacity-50 text-gray-800' 
                           : 'bg-white bg-opacity-70 text-gray-800'

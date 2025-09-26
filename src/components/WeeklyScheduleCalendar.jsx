@@ -182,7 +182,7 @@ const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow p-1 sm:p-2 md:p-4">
+    <div className="bg-white rounded-lg shadow p-1 hide-scrollbar">
       {/* Week view: Each date occupies a separate row with vertical arrangement */}
       <div className="space-y-1 sm:space-y-2 md:space-y-3">
         {weekDays.map((day, index) => {
@@ -212,7 +212,7 @@ const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
           return (
             <div 
               key={index} 
-              className={`border rounded-md p-1.5 sm:p-2 md:p-3 cursor-pointer ${
+              className={`border rounded-md p-1 sm:p-1.5 md:p-2 cursor-pointer ${
                 isToday ? 'bg-blue-50 border-blue-300' : 'border-gray-200'
               }`}
               onClick={() => handleDateClick(day)}
@@ -226,8 +226,8 @@ const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
                 <span className="ml-1 text-[0.6rem] sm:text-xs">{format(day, 'MMMM', { locale: zhCN })}</span>
               </div>
               
-              {/* Vertical arrangement of schedules and time entries */}
-              <div className="space-y-0.5 sm:space-y-1">
+              {/* Arrangement of schedules and time entries: vertical on larger screens, horizontal wrap on mobile */}
+              <div className="flex flex-wrap gap-1 sm:space-y-1">
                 {/* Display schedules */}
                 {daySchedules.map((schedule) => {
                   // 获取班次信息
@@ -239,7 +239,7 @@ const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
                   return (
                     <div 
                       key={schedule.id} 
-                      className="text-[0.6rem] sm:text-xs md:text-sm font-semibold p-1.5 sm:p-2 rounded-md"
+                      className="text-[0.6rem] sm:text-xs md:text-sm font-semibold p-1.5 sm:p-2 rounded-md flex-shrink-0 w-full sm:w-auto"
                       style={{
                         backgroundColor: getShiftBackgroundColor(shiftType),
                         borderLeft: `2px solid ${getShiftColor(shiftType)}`
@@ -285,7 +285,7 @@ const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
                 {dayTimeEntries.map((entry) => (
                   <div 
                     key={entry.id} 
-                    className="text-[0.6rem] sm:text-xs md:text-sm font-semibold bg-green-100 text-green-800 p-1.5 sm:p-2 rounded-md"
+                    className="text-[0.6rem] sm:text-xs md:text-sm font-semibold bg-green-100 text-green-800 p-1.5 sm:p-2 rounded-md flex-shrink-0 w-full sm:w-auto"
                   >
                     <div className="font-bold truncate text-[0.6rem] sm:text-xs">{entry.notes || t('time_entry.entry')}</div>
                     <div className="text-green-600 text-[0.5rem] sm:text-[0.6rem] mt-0.5">

@@ -62,8 +62,8 @@ const SchedulePage = () => {
         </div>
       </div>
       
-      <div className="bg-white rounded-lg shadow p-6 mb-8">
-        <div className="flex justify-between items-center mb-6">
+      <div className="p-4 mt-4 mb-2">
+        <div className="flex justify-between items-center mb-1">
           <button
             onClick={goToPreviousPeriod}
             className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded"
@@ -75,12 +75,6 @@ const SchedulePage = () => {
             <h2 className="section-heading">
               {viewMode === 'week' ? getWeekRange(currentWeek) : getMonthRange(currentWeek)}
             </h2>
-            <button
-              onClick={goToToday}
-              className="text-indigo-600 hover:text-indigo-800 text-sm mt-1"
-            >
-              {t('schedule.today')}
-            </button>
           </div>
           
           <button
