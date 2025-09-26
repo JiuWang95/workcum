@@ -230,16 +230,16 @@ const ReportPage = () => {
         
         <div className="bg-indigo-50 rounded-lg p-4 mb-6">
           <h2 className="subsection-heading">{t('reports.summary')}</h2>
-          <p className="text-2xl font-bold text-indigo-600">
+          <p className="text-xl font-bold text-indigo-600 md:text-2xl">
             {(totalMinutes / 60).toFixed(1)}h
           </p>
-          <p className="text-gray-600">
+          <p className="text-gray-600 text-sm md:text-base">
             {t('reports.total_time_tracked', { startDate, endDate })}
           </p>
         </div>
         
         {filteredEntries.length === 0 && filteredSchedules.length === 0 ? (
-          <p className="text-gray-500 text-center py-8">{t('reports.no_entries')}</p>
+          <p className="text-gray-500 text-center py-8 text-sm md:text-base">{t('reports.no_entries')}</p>
         ) : (
           <>
             {/* Desktop Table View */}
@@ -354,7 +354,7 @@ const ReportPage = () => {
                     return (
                       <div key={`entry-${record.id}`} className="bg-white rounded-lg shadow p-4 border-l-4 border-green-500">
                         <div className="flex justify-between items-start mb-2">
-                          <h3 className="font-bold text-lg">{record.notes || t('time_entry.entry')}</h3>
+                          <h3 className="font-bold text-lg md:text-xl">{record.notes || t('time_entry.entry')}</h3>
                           <span className="bg-green-100 text-green-800 text-xs px-2 py-1 rounded">工时记录</span>
                         </div>
                         <div className="grid grid-cols-2 gap-2 text-sm">
@@ -398,7 +398,7 @@ const ReportPage = () => {
                     return (
                       <div key={`schedule-${record.id}`} className="bg-white rounded-lg shadow p-4 border-l-4 border-indigo-500">
                         <div className="flex justify-between items-start mb-2">
-                          <h3 className="font-bold text-lg">{record.notes || record.title || '-'}</h3>
+                          <h3 className="font-bold text-lg md:text-xl">{record.notes || record.title || '-'}</h3>
                           <span className="bg-indigo-100 text-indigo-800 text-xs px-2 py-1 rounded">排班</span>
                         </div>
                         <div className="grid grid-cols-2 gap-2 text-sm">

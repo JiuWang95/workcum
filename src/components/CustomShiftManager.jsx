@@ -258,7 +258,7 @@ const CustomShiftManager = () => {
                   onChange={(e) => setShiftType(e.target.value)}
                   className="form-radio h-4 w-4 text-indigo-600"
                 />
-                <span className="ml-2 text-gray-700 text-sm">{t('time_entry.custom_shift.day_shift')}</span>
+                <span className="ml-2 text-gray-700 text-sm md:text-base">{t('time_entry.custom_shift.day_shift')}</span>
               </label>
               <label className="flex items-center">
                 <input
@@ -269,7 +269,7 @@ const CustomShiftManager = () => {
                   onChange={(e) => setShiftType(e.target.value)}
                   className="form-radio h-4 w-4 text-indigo-600"
                 />
-                <span className="ml-2 text-gray-700 text-sm">{t('time_entry.custom_shift.rest_day')}</span>
+                <span className="ml-2 text-gray-700 text-sm md:text-base">{t('time_entry.custom_shift.rest_day')}</span>
               </label>
               <label className="flex items-center">
                 <input
@@ -280,7 +280,7 @@ const CustomShiftManager = () => {
                   onChange={(e) => setShiftType(e.target.value)}
                   className="form-radio h-4 w-4 text-indigo-600"
                 />
-                <span className="ml-2 text-gray-700 text-sm">{t('time_entry.custom_shift.overnight_shift')}</span>
+                <span className="ml-2 text-gray-700 text-sm md:text-base">{t('time_entry.custom_shift.overnight_shift')}</span>
               </label>
             </div>
           </div>
@@ -332,13 +332,13 @@ const CustomShiftManager = () => {
                 ></div>
                 <div>
                   <h3 
-                    className="font-semibold text-gray-800 text-sm"
+                    className="font-semibold text-gray-800 text-sm md:text-base"
                     style={{ color: getShiftColor(shift.shiftType) }}
                   >
                     {shift.name}
                   </h3>
                   {/* 类型标识：显示班次类型 */}
-                  <span className="text-xs text-gray-500">
+                  <span className="text-xs md:text-sm text-gray-500">
                     {getShiftTypeText(shift.shiftType || 'day')}
                   </span>
                 </div>
@@ -349,16 +349,16 @@ const CustomShiftManager = () => {
                 {/* 工时时长 */}
                 <div className="text-right mr-2">
                   {shift.customDuration ? (
-                    <p className="text-gray-600 text-xs font-medium">
+                    <p className="text-gray-600 text-xs md:text-sm font-medium">
                       {convertDurationToHours(shift.customDuration).toFixed(1)}h
                     </p>
                   ) : (
-                    <p className="text-gray-400 text-xs italic">
+                    <p className="text-gray-400 text-xs md:text-sm italic">
                       {t('time_entry.custom_shift.custom_duration')}
                     </p>
                   )}
                   {/* 显示时间范围 */}
-                  <p className="text-gray-500 text-xs">
+                  <p className="text-gray-500 text-xs md:text-sm">
                     {shift.startTime}-{shift.endTime}
                   </p>
                 </div>
@@ -367,13 +367,13 @@ const CustomShiftManager = () => {
                 <div className="flex flex-col space-y-1">
                   <button
                     onClick={() => handleEdit(shift)}
-                    className="text-indigo-600 hover:text-indigo-800 text-xs"
+                    className="text-indigo-600 hover:text-indigo-800 text-xs md:text-sm"
                   >
                     {t('time_entry.custom_shift.edit')}
                   </button>
                   <button
                     onClick={() => handleDelete(shift.id)}
-                    className="text-red-600 hover:text-red-800 text-xs"
+                    className="text-red-600 hover:text-red-800 text-xs md:text-sm"
                   >
                     {t('time_entry.custom_shift.delete')}
                   </button>
@@ -383,7 +383,7 @@ const CustomShiftManager = () => {
           ))}
         </div>
       ) : (
-        <p className="text-gray-500 text-sm">{t('time_entry.custom_shift.no_shifts')}</p>
+        <p className="text-gray-500 text-sm md:text-base">{t('time_entry.custom_shift.no_shifts')}</p>
       )}
     </div>
   );

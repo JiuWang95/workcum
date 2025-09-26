@@ -182,7 +182,7 @@ const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow p-1 hide-scrollbar">
+    <div className="bg-white rounded-lg shadow p-1 hide-scrollbar mt-1">
       {/* Week view: Each date occupies a separate row with vertical arrangement */}
       <div className="space-y-1 sm:space-y-2 md:space-y-3">
         {weekDays.map((day, index) => {
@@ -223,7 +223,7 @@ const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
               }`}>
                 <span className="mr-1 font-bold">{format(day, 'EEE', { locale: zhCN })}</span>
                 <span className="text-sm sm:text-base md:text-lg">{format(day, 'd', { locale: zhCN })}</span>
-                <span className="ml-1 text-[0.6rem] sm:text-xs">{format(day, 'MMMM', { locale: zhCN })}</span>
+                <span className="ml-1 text-[0.6rem] sm:text-xs md:text-sm">{format(day, 'MMMM', { locale: zhCN })}</span>
               </div>
               
               {/* Arrangement of schedules and time entries: vertical on larger screens, horizontal wrap on mobile */}
@@ -254,20 +254,20 @@ const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
                           className="inline-block w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full mr-1"
                           style={{ backgroundColor: getShiftColor(shiftType) }}
                         ></span>
-                        <span className="font-bold truncate text-[0.6rem] sm:text-xs">{shiftName}</span>
+                        <span className="font-bold truncate text-[0.6rem] sm:text-xs md:text-sm">{shiftName}</span>
                         {shiftType === 'overnight' && (
-                          <span className="ml-1 inline-flex items-center px-0.5 py-0 rounded-full text-[0.5rem] sm:text-[0.6rem] font-medium bg-red-100 text-red-800">
+                          <span className="ml-1 inline-flex items-center px-0.5 py-0 rounded-full text-[0.5rem] sm:text-[0.6rem] md:text-xs font-medium bg-red-100 text-red-800">
                             {t('time_entry.custom_shift.overnight_shift')}
                           </span>
                         )}
                         {shiftType === 'rest' && (
-                          <span className="ml-1 inline-flex items-center px-0.5 py-0 rounded-full text-[0.5rem] sm:text-[0.6rem] font-medium bg-green-100 text-green-800">
+                          <span className="ml-1 inline-flex items-center px-0.5 py-0 rounded-full text-[0.5rem] sm:text-[0.6rem] md:text-xs font-medium bg-green-100 text-green-800">
                             {t('time_entry.custom_shift.rest_day')}
                           </span>
                         )}
                       </div>
                       <div 
-                        className="text-[0.5rem] sm:text-[0.6rem] mt-0.5"
+                        className="text-[0.5rem] sm:text-[0.6rem] md:text-xs mt-0.5"
                         style={{ color: getShiftColor(shiftType) }}
                       >
                         {formatTime(schedule.startTime)} - {formatTime(schedule.endTime)}
@@ -301,10 +301,10 @@ const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
                 
                 {/* Show placeholder if no items */}
                 {daySchedules.length === 0 && dayTimeEntries.length === 0 && (
-                  <div className="text-gray-400 italic py-1 text-center text-[0.6rem] sm:text-xs">
-                    {t('schedule.no_events')}
-                  </div>
-                )}
+                      <div className="text-gray-400 italic py-1 text-center text-[0.6rem] sm:text-xs md:text-sm">
+                        {t('schedule.no_events')}
+                      </div>
+                    )}
               </div>
             </div>
           );

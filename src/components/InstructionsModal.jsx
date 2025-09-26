@@ -18,11 +18,11 @@ const InstructionsModal = ({ isOpen, onClose }) => {
               <h3 className="text-base sm:text-lg font-semibold text-blue-700 mb-1">方便使用</h3>
               <div className="flex items-start">
                 <div className="flex-shrink-0 h-5 w-5 text-blue-500 mt-1">•</div>
-                <p className="ml-2 text-gray-700">用设备自带浏览器或者如Safari、Edge、Chrome，华为浏览器等打开本网站，会提示安装到桌面。</p>
+                <p className="ml-2 text-gray-700 text-sm md:text-base">用设备自带浏览器或者如Safari、Edge、Chrome，华为浏览器等打开本网站，会提示安装到桌面。</p>
               </div>
               <div className="flex items-start mt-1">
                 <div className="flex-shrink-0 h-5 w-5 text-blue-500 mt-1">•</div>
-                <p className="ml-2 text-gray-700">安装后即可在桌面打开，无需每次都打开浏览器。或者点击网页菜单，点击添加到桌面。</p>
+                <p className="ml-2 text-gray-700 text-sm md:text-base">安装后即可在桌面打开，无需每次都打开浏览器。或者点击网页菜单，点击添加到桌面。</p>
               </div>
             </div>
 
@@ -31,11 +31,11 @@ const InstructionsModal = ({ isOpen, onClose }) => {
               <h3 className="text-base sm:text-lg font-semibold text-blue-700 mb-1">计划</h3>
               <div className="flex items-start">
                 <div className="flex-shrink-0 h-5 w-5 text-blue-500 mt-1">•</div>
-                <p className="ml-2 text-gray-700">可选择预设的自定义班次模板快速填充记录信息，</p>
+                <p className="ml-2 text-gray-700 text-sm md:text-base">可选择预设的自定义班次模板快速填充记录信息，</p>
               </div>
               <div className="flex items-start mt-1">
                 <div className="flex-shrink-0 h-5 w-5 text-blue-500 mt-1">•</div>
-                <p className="ml-2 text-gray-700">或者手动添加您的工作时间记录（排班表里没有的）。</p>
+                <p className="ml-2 text-gray-700 text-sm md:text-base">或者手动添加您的工作时间记录（排班表里没有的）。</p>
               </div>
             </div>
 
@@ -44,11 +44,11 @@ const InstructionsModal = ({ isOpen, onClose }) => {
               <h3 className="text-base sm:text-lg font-semibold text-blue-700 mb-1">排班</h3>
               <div className="flex items-start">
                 <div className="flex-shrink-0 h-5 w-5 text-blue-500 mt-1">•</div>
-                <p className="ml-2 text-gray-700">使用周历添加和管理排班，点击任意日期添加新的排班任务。</p>
+                <p className="ml-2 text-gray-700 text-sm md:text-base">使用周历添加和管理排班，点击任意日期添加新的排班任务。</p>
               </div>
               <div className="flex items-start mt-1">
                 <div className="flex-shrink-0 h-5 w-5 text-blue-500 mt-1">•</div>
-                <p className="ml-2 text-gray-700">使用月历查看整月排班。</p>
+                <p className="ml-2 text-gray-700 text-sm md:text-base">使用月历查看整月排班。</p>
               </div>
             </div>
 
@@ -57,15 +57,15 @@ const InstructionsModal = ({ isOpen, onClose }) => {
               <h3 className="text-base sm:text-lg font-semibold text-blue-700 mb-1">统计</h3>
               <div className="flex items-start">
                 <div className="flex-shrink-0 h-5 w-5 text-blue-500 mt-1">•</div>
-                <p className="ml-2 text-gray-700">选择日期范围生成工时统计，支持"本周"和"本月"快捷日期选择。</p>
+                <p className="ml-2 text-gray-700 text-sm md:text-base">选择日期范围生成工时统计，支持"本周"和"本月"快捷日期选择。</p>
               </div>
               <div className="flex items-start mt-1">
                 <div className="flex-shrink-0 h-5 w-5 text-blue-500 mt-1">•</div>
-                <p className="ml-2 text-gray-700">点击导出Excel，可以自定义Excel文件名。</p>
+                <p className="ml-2 text-gray-700 text-sm md:text-base">点击导出Excel，可以自定义Excel文件名。</p>
               </div>
               <div className="flex items-start mt-1">
                 <div className="flex-shrink-0 h-5 w-5 text-blue-500 mt-1">•</div>
-                <p className="ml-2 text-gray-700">导出后会生成日期范围内的工时统计。</p>
+                <p className="ml-2 text-gray-700 text-sm md:text-base">导出后会生成日期范围内的工时统计。</p>
               </div>
             </div>
 
@@ -74,17 +74,17 @@ const InstructionsModal = ({ isOpen, onClose }) => {
               <h3 className="text-base sm:text-lg font-semibold text-blue-700 mb-1">我的</h3>
               <div className="flex items-start">
                 <div className="flex-shrink-0 h-5 w-5 text-blue-500 mt-1">•</div>
-                <p className="ml-2 text-gray-700">有项目介绍，管理数据，支持导出所有数据为JSON文件进行备份，或从JSON文件导入数据恢复信息。</p>
+                <p className="ml-2 text-gray-700 text-sm md:text-base">有项目介绍，管理数据，支持导出所有数据为JSON文件进行备份，或从JSON文件导入数据恢复信息。</p>
               </div>
               <div className="flex items-start mt-1">
                 <div className="flex-shrink-0 h-5 w-5 text-blue-500 mt-1">•</div>
-                <p className="ml-2 text-gray-700">这个方法也可以实现不同设备间的数据同步。</p>
+                <p className="ml-2 text-gray-700 text-sm md:text-base">这个方法也可以实现不同设备间的数据同步。</p>
               </div>
             </div>
           </div>
           
           <div className="mt-4 p-3 sm:p-4 bg-blue-100 rounded-lg">
-            <p className="text-sm sm:text-base text-blue-800">
+            <p className="text-sm md:text-base text-blue-800">
               <span className="font-semibold">提示：</span>
               所有数据均安全存储在您的浏览器本地，不会上传到任何服务器。建议定期导出数据进行备份。
             </p>

@@ -196,7 +196,7 @@ const TimeEntryForm = ({ onAddEntry }) => {
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             placeholder={t('time_entry.custom_shift.custom_duration_placeholder') || "例如: 8h 或 480m"}
           />
-          <p className="text-gray-500 text-xs mt-1">
+          <p className="text-gray-500 text-xs md:text-sm mt-1">
             {t('time_entry.custom_shift.custom_duration_help') || "输入自定义工时，例如 8h 表示8小时，480m 表示480分钟"}
           </p>
         </div>

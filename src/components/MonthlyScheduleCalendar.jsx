@@ -84,12 +84,12 @@ const MonthlyScheduleCalendar = ({ currentDate, onDateChange }) => {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow p-1 hide-scrollbar">
+    <div className="bg-white rounded-lg shadow p-1 hide-scrollbar mt-1">
       {/* Calendar grid */}
       <div className="grid grid-cols-7 gap-0.5 sm:gap-1">
         {/* Weekday headers */}
-        {['周一', '周二', '周三', '周四', '周五', '周六', '周日'].map((day) => (
-          <div key={day} className="text-center font-bold text-gray-600 py-1 sm:py-2 text-xs sm:text-sm">
+        {['日', '一', '二', '三', '四', '五', '六'].map((day, index) => (
+          <div key={index} className="text-center text-xs sm:text-sm md:text-base font-medium text-gray-500 py-1">
             {day}
           </div>
         ))}
@@ -128,36 +128,33 @@ const MonthlyScheduleCalendar = ({ currentDate, onDateChange }) => {
                 backgroundColor: dayBackgroundColor
               } : {}}
             >
-              <div className={`text-right text-xs sm:text-sm font-medium mb-1 sm:mb-2 ${
-                isToday ? 'text-blue-600' : daySchedules.length > 0 ? 'text-gray-800' : 'text-gray-500'
-              }`}>
-                {format(day, 'd', { locale: zhCN })}
+              <div className={`text-right pr-1 sm:pr-2 ${isToday ? 'bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center' : ''}`}>
+                <span className="text-xs sm:text-sm md:text-base">{format(day, 'd', { locale: zhCN })}</span>
               </div>
               
-              <div className="flex flex-wrap gap-1 sm:space-y-1 flex-grow">
-                {allItems.slice(0, 3).map((item) => {
-                  // 获取班次信息（如果是排班项目）
-                  const shiftInfo = item.itemType === 'schedule' ? 
-                    shifts.find(shift => shift.id === item.selectedShift) : null;
+              <div className="flex-1 overflow-hidden">
+                {daySchedules.slice(0, 2).map((schedule) => {
+                  const shiftInfo = shifts.find(shift => shift.id === schedule.selectedShift);
+                  const shiftName = shiftInfo ? shiftInfo.name : schedule.title;
                   const shiftType = shiftInfo ? shiftInfo.shiftType : 'day';
                   
                   return (
                     <div 
-                      key={item.id} 
-                      className={`text-[0.6rem] sm:text-xs p-0.5 sm:p-1 rounded truncate flex-shrink-0 w-full sm:w-auto ${
-                        item.itemType === 'schedule' 
-                          ? 'bg-white bg-opacity-50 text-gray-800' 
-                          : 'bg-white bg-opacity-70 text-gray-800'
-                      }`}
+                      key={schedule.id}
+                      className="text-[0.6rem] sm:text-xs md:text-sm truncate mb-0.5 p-0.5 rounded"
+                      style={{
+                        backgroundColor: getShiftBackgroundColor(shiftType),
+                        borderLeft: `1px solid ${getShiftColor(shiftType)}`
+                      }}
                     >
-                      <div className="font-bold truncate text-[0.6rem] sm:text-xs">{item.title}</div>
+                      <span className="font-medium">{shiftName}</span>
                     </div>
                   );
                 })}
                 
-                {allItems.length > 3 && (
-                  <div className="text-[0.5rem] sm:text-xs text-gray-700">
-                    +{allItems.length - 3}
+                {daySchedules.length > 2 && (
+                  <div className="text-[0.5rem] sm:text-xs md:text-sm text-gray-500 truncate">
+                    +{daySchedules.length - 2} {t('schedule.more_items')}
                   </div>
                 )}
               </div>

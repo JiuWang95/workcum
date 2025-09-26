@@ -137,13 +137,13 @@ const DataPage = () => {
               </div>
             </div>
             <div className="flex-1">
-              <h2 className="text-xl font-bold text-gray-800 mb-2">项目介绍</h2>
-              <p className="text-gray-600 mb-5 leading-relaxed">
-                这是一个专为工作时间管理而设计的高效工具，旨在帮助用户轻松跟踪和管理工作时间。项目最初是为了给我的老婆大人思语小姐姐创建一个方便计算工时的工具，现已发展成为一个功能完整的工时跟踪系统。如果你有更好的建议或者问题反馈，可以点击联系乐乐。
-              </p>
+              <h2 className="text-lg font-bold text-gray-800 mb-2 md:text-xl">项目介绍</h2>
+              <p className="text-gray-600 mb-5 leading-relaxed text-sm md:text-base">
+        这是一个专为工作时间管理而设计的高效工具，旨在帮助用户轻松跟踪和管理工作时间。项目最初是为了给我的老婆大人思语小姐姐创建一个方便计算工时的工具，现已发展成为一个功能完整的工时跟踪系统。如果你有更好的建议或者问题反馈，可以点击联系乐乐。
+      </p>
               
               <div className="mb-6">
-                <h3 className="text-lg font-semibold text-gray-800 mb-3 flex items-center">
+                <h3 className="text-base font-semibold text-gray-800 mb-3 flex items-center md:text-lg">
                   <svg className="w-5 h-5 mr-2 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
                   </svg>
@@ -154,30 +154,30 @@ const DataPage = () => {
                     <svg className="w-5 h-5 text-green-500 mt-0.5 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                     </svg>
-                    <span className="text-gray-600">直观的排班日历视图</span>
+                    <span className="text-gray-600 text-sm md:text-base">直观的排班日历视图</span>
                   </div>
                   <div className="flex items-start">
                     <svg className="w-5 h-5 text-green-500 mt-0.5 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                     </svg>
-                    <span className="text-gray-600">详细的时间记录功能</span>
+                    <span className="text-gray-600 text-sm md:text-base">详细的时间记录功能</span>
                   </div>
                   <div className="flex items-start">
                     <svg className="w-5 h-5 text-green-500 mt-0.5 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                     </svg>
-                    <span className="text-gray-600">全面的数据导出和导入支持</span>
+                    <span className="text-gray-600 text-sm md:text-base">全面的数据导出和导入支持</span>
                   </div>
                   <div className="flex items-start">
                     <svg className="w-5 h-5 text-green-500 mt-0.5 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                     </svg>
-                    <span className="text-gray-600">可视化报表分析</span>
+                    <span className="text-gray-600 text-sm md:text-base">可视化报表分析</span>
                   </div>
                 </div>
               </div>
               
-              <p className="text-gray-600 mb-6 leading-relaxed">
+              <p className="text-gray-600 mb-6 leading-relaxed text-sm md:text-base">
                 如果您想要感谢一下作者，您可以请思语小姐姐喝杯奶茶，您也可以在项目仓库里为作者打赏。也可以直接点击捐款为公益做一点贡献。
               </p>
               
@@ -273,8 +273,8 @@ const DataPage = () => {
               </svg>
             </div>
             <div>
-              <h2 className="text-xl font-bold text-gray-800 mb-3">重要免责声明</h2>
-              <p className="text-red-700 font-medium">
+              <h2 className="text-lg font-bold text-gray-800 mb-3 md:text-xl">重要免责声明</h2>
+              <p className="text-red-700 font-medium text-sm md:text-base">
                 本工具仅供个人学习和参考使用，用户应自行承担使用风险。本工具不收集、存储或传输任何用户数据，所有数据均保存在用户本地浏览器中。用户应定期备份重要数据，作者不对数据丢失承担任何责任。本工具不提供任何商业支持或技术保障，使用前请充分了解相关风险。
               </p>
             </div>
@@ -284,7 +284,7 @@ const DataPage = () => {
       
       {/* Data Management Section */}
       <div className="mt-8">
-        <h2 className="page-heading">数据管理</h2>
+        <h2 className="text-xl font-bold text-gray-800 mb-4 md:text-2xl md:mb-6">数据管理</h2>
       </div>
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
@@ -301,8 +301,8 @@ const DataPage = () => {
                 </div>
               </div>
               <div className="flex-1">
-                <h2 className="text-xl font-bold text-gray-800 mb-2">{t('data.export.title')}</h2>
-                <p className="text-gray-600 mb-4">
+                <h2 className="text-lg font-bold text-gray-800 mb-2 md:text-xl">{t('data.export.title')}</h2>
+                <p className="text-gray-600 mb-4 text-sm md:text-base">
                   {t('data.export.description')}
                 </p>
                 <button
@@ -337,8 +337,8 @@ const DataPage = () => {
                 </div>
               </div>
               <div className="flex-1">
-                <h2 className="text-xl font-bold text-gray-800 mb-2">{t('data.import.title')}</h2>
-                <p className="text-gray-600 mb-4">
+                <h2 className="text-lg font-bold text-gray-800 mb-2 md:text-xl">{t('data.import.title')}</h2>
+                <p className="text-gray-600 mb-4 text-sm md:text-base">
                   {t('data.import.description')}
                 </p>
                 <input
@@ -377,8 +377,8 @@ const DataPage = () => {
               </div>
             </div>
             <div className="flex-1">
-              <h2 className="text-xl font-bold text-gray-800 mb-2">{t('data.danger_zone.title')}</h2>
-              <p className="text-gray-600 mb-4">
+              <h2 className="text-lg font-bold text-gray-800 mb-2 md:text-xl">{t('data.danger_zone.title')}</h2>
+              <p className="text-gray-600 mb-4 text-sm md:text-base">
                 {t('data.danger_zone.description')}
               </p>
               <button
