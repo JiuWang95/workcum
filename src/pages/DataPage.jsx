@@ -181,7 +181,7 @@ const DataPage = () => {
               </div>
               
               <p className="text-gray-600 mb-6 leading-relaxed text-sm md:text-base">
-                如果您想要感谢一下作者，您可以请思语小姐姐喝杯奶茶，您也可以在项目仓库里为作者打赏。也可以直接点击捐款为公益做一点贡献。
+                如果您想要感谢一下作者，您可以请思语小姐姐喝杯奶茶，您也可以在GitHub仓库里为作者打赏。也可以直接点击捐款为公益做一点贡献。
               </p>
               
               <div className="flex flex-wrap gap-3">
@@ -203,7 +203,7 @@ const DataPage = () => {
                       clipRule="evenodd"
                     />
                   </svg>
-                  GitHub项目
+                  GitHub仓库
                 </a>
                 <button
                   onClick={() => {
@@ -276,7 +276,7 @@ const DataPage = () => {
               </svg>
             </div>
             <div>
-              <h2 className="text-lg font-bold text-gray-800 mb-3 md:text-xl">重要免责声明</h2>
+              <h2 className="text-lg font-bold text-gray-800 mb-3 md:text-xl">免责声明</h2>
               <p className="text-red-700 font-medium text-sm md:text-base">
                 本工具仅供个人学习和参考使用，用户应自行承担使用风险。本工具不收集、存储或传输任何用户数据，所有数据均保存在用户本地浏览器中。用户应定期备份重要数据，作者不对数据丢失承担任何责任。本工具不提供任何商业支持或技术保障，使用前请充分了解相关风险。
               </p>
@@ -359,7 +359,7 @@ const DataPage = () => {
                     <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"></path>
                     </svg>
-                    选择文件
+                    {t('data.import.button')}
                   </label>
                 </div>
                 {importStatus && (
