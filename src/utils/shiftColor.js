@@ -1,24 +1,30 @@
 /**
  * 根据班次类型生成确定性颜色
  * 使用预定义的颜色映射确保相同类型的班次在所有视图中显示一致的颜色
+ * 
+ * 颜色映射：
+ * - 白天班 (day) - 绿色
+ * - 跨夜班 (overnight) - 蓝色
+ * - 休息日 (rest) - 紫色
+ * - 常规班次 (regular) - 橙色
  */
 
 // 班次类型到颜色的映射
 const shiftTypeToColorMap = {
-  'day': { // 白天班 - 蓝色
+  'day': { // 白天班 - 绿色
+    hue: 120,
+    saturation: 80,
+    lightness: 50,
+    bgLightness: 90
+  },
+  'overnight': { // 跨夜班 - 蓝色
     hue: 220,
     saturation: 80,
     lightness: 50,
     bgLightness: 90
   },
-  'overnight': { // 跨夜班 - 紫色
+  'rest': { // 休息日 - 紫色
     hue: 280,
-    saturation: 80,
-    lightness: 50,
-    bgLightness: 90
-  },
-  'rest': { // 休息日 - 绿色
-    hue: 120,
     saturation: 80,
     lightness: 50,
     bgLightness: 90
