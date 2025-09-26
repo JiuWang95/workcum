@@ -351,10 +351,17 @@ const CustomShiftManager = ({ scrollToEditSection }) => {
                 </div>
               </div>
               
+              {/* 中间：时间范围信息，居中显示 */}
+              <div className="text-center">
+                <p className="text-gray-500 text-xs md:text-sm font-medium">
+                  {shift.startTime}-{shift.endTime}
+                </p>
+              </div>
+              
               {/* 右侧：时长信息和操作按钮 */}
               <div className="flex items-center">
                 {/* 工时时长 */}
-                <div className="text-right mr-2 hidden sm:block">
+                <div className="text-right mr-2">
                   {shift.customDuration ? (
                     <p className="text-gray-600 text-xs md:text-sm font-medium">
                       {convertDurationToHours(shift.customDuration).toFixed(1)}h
@@ -364,10 +371,6 @@ const CustomShiftManager = ({ scrollToEditSection }) => {
                       {t('time_entry.custom_shift.custom_duration')}
                     </p>
                   )}
-                  {/* 显示时间范围 */}
-                  <p className="text-gray-500 text-xs md:text-sm">
-                    {shift.startTime}-{shift.endTime}
-                  </p>
                 </div>
                 
                 {/* 操作按钮 */}
