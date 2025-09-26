@@ -172,9 +172,9 @@ const CustomShiftManager = () => {
   };
 
   return (
-    // 修复移动端显示问题：添加 max-h-[60vh] 和 overflow-y-auto 来限制高度并允许滚动
-    // 添加 pb-20 以防止内容被底部导航栏遮挡
-    <div className="bg-white rounded-lg shadow p-4 mb-6 max-h-[60vh] overflow-y-auto pb-20">
+    // 移除高度限制和滚动条，让容器随内容自动扩展
+    // 移除 pb-20 以避免不必要的底部空白
+    <div className="bg-white rounded-lg shadow p-4 mb-6">
       <div className="flex justify-between items-center mb-4">
         <h2 className="section-heading">{t('time_entry.custom_shift.title')}</h2>
         <button
