@@ -56,6 +56,23 @@ const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
     };
   }, []);
 
+  // 添加一个useEffect来监听localStorage的变化
+  useEffect(() => {
+    const handleStorageChange = (e) => {
+      if (e.key === 'timeEntries') {
+        const savedEntries = JSON.parse(e.newValue || '[]');
+        setTimeEntries(savedEntries);
+      }
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    
+    // Cleanup event listener on component unmount
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+    };
+  }, []);
+
   // Load custom shifts from localStorage
   useEffect(() => {
     const savedShifts = JSON.parse(localStorage.getItem('customShifts') || '[]');
