@@ -7,12 +7,17 @@ const DataPage = () => {
   const [showInstructions, setShowInstructions] = useState(false);
 
   useEffect(() => {
-    // 每次访问数据页面时都显示使用说明弹窗
-    setShowInstructions(true);
+    // 检查用户是否已经看过使用说明
+    const hasSeenInstructions = localStorage.getItem('hasSeenInstructions');
+    if (!hasSeenInstructions) {
+      setShowInstructions(true);
+    }
   }, []);
 
   const handleCloseInstructions = () => {
     setShowInstructions(false);
+    // 记录用户已经看过使用说明
+    localStorage.setItem('hasSeenInstructions', 'true');
   };
 
   const toggleLanguage = () => {
@@ -109,12 +114,6 @@ const DataPage = () => {
 
   return (
     <div className="max-w-4xl mx-auto">
-      {/* Instructions Modal */}
-      <InstructionsModal 
-        isOpen={showInstructions} 
-        onClose={handleCloseInstructions} 
-      />
-      
       <div className="flex justify-between items-center">
         <h1 className="page-heading">{t('data.title')}</h1>
         <button 
@@ -123,6 +122,36 @@ const DataPage = () => {
         >
           {i18n.language === 'zh' ? 'EN' : '中文'}
         </button>
+      </div>
+      
+      {/* Instructions Section */}
+      <div className="mt-8 bg-blue-50 rounded-lg shadow p-6">
+        <h2 className="section-heading text-blue-800">使用说明</h2>
+        <div className="space-y-4 mt-4">
+          <div className="flex items-start">
+            <div className="flex-shrink-0 h-6 w-6 text-blue-500 mt-0.5 font-bold">1.</div>
+            <p className="ml-2 text-gray-700">在"计划"页面，可选择预设的自定义班次模板快速填充记录信息，或者手动添加您的工作时间记录。</p>
+          </div>
+          <div className="flex items-start">
+            <div className="flex-shrink-0 h-6 w-6 text-blue-500 mt-0.5 font-bold">2.</div>
+            <p className="ml-2 text-gray-700">在"排班"页面使用周视图或月视图查看和管理日程安排，点击任意日期添加新的排班任务</p>
+          </div>
+          <div className="flex items-start">
+            <div className="flex-shrink-0 h-6 w-6 text-blue-500 mt-0.5 font-bold">3.</div>
+            <p className="ml-2 text-gray-700">在"统计"页面选择日期范围生成工时统计，支持"本周"和"本月"快捷日期选择</p>
+          </div>
+          <div className="flex items-start">
+            <div className="flex-shrink-0 h-6 w-6 text-blue-500 mt-0.5 font-bold">4.</div>
+            <p className="ml-2 text-gray-700">在"我的"页面管理数据，支持导出所有数据为JSON文件进行备份，或从JSON文件导入数据恢复信息</p>
+          </div>
+        </div>
+        
+        <div className="mt-6 p-4 bg-blue-100 rounded-lg">
+          <p className="text-blue-800">
+            <span className="font-semibold">提示：</span>
+            所有数据均安全存储在您的浏览器本地，不会上传到任何服务器。建议定期导出数据进行备份。
+          </p>
+        </div>
       </div>
       
       {/* Project Information Section */}
