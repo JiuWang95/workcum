@@ -104,7 +104,7 @@ const DataPage = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto">
+    <div className="max-w-4xl mx-auto w-full px-4">
       <FileNameModal
         isOpen={isFileNameModalOpen}
         onClose={() => setIsFileNameModalOpen(false)}
@@ -113,7 +113,7 @@ const DataPage = () => {
       />
       
       <div className="flex justify-between items-center">
-        <h1 className="page-heading my-0">{t('data.title')}</h1>
+        <h1 className="page-heading my-0 text-xl md:text-2xl">{t('data.title')}</h1>
         <button 
           onClick={toggleLanguage}
           className="bg-indigo-100 hover:bg-indigo-200 text-indigo-700 font-medium py-1 px-3 rounded-full text-sm transition-colors self-start mt-2"
@@ -125,9 +125,9 @@ const DataPage = () => {
       
       
       {/* Project Information Section */}
-      <div className="mt-8 bg-gradient-to-r from-indigo-50 to-purple-50 rounded-2xl shadow-lg overflow-hidden">
+      <div className="mt-6 bg-gradient-to-r from-indigo-50 to-purple-50 rounded-xl shadow-md overflow-hidden">
         <div className="p-1 bg-gradient-to-r from-indigo-500 to-purple-600"></div>
-        <div className="p-6">
+        <div className="p-4 md:p-6">
           <div className="flex items-start">
             <div className="flex-shrink-0 mr-3">
               <div className="bg-indigo-100 p-2 rounded-lg">
@@ -263,9 +263,9 @@ const DataPage = () => {
       </div>
       
       {/* Disclaimer Section -独立模块框 */}
-      <div className="mt-8 bg-red-50 rounded-lg shadow overflow-hidden">
+      <div className="mt-6 bg-red-50 rounded-lg shadow-sm overflow-hidden">
         <div className="p-1 bg-red-500"></div>
-        <div className="p-6">
+        <div className="p-4 md:p-6">
           <div className="flex items-start">
             <div className="flex-shrink-0 mr-3">
               <svg className="h-6 w-6 text-red-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -283,15 +283,15 @@ const DataPage = () => {
       </div>
       
       {/* Data Management Section */}
-      <div className="mt-8">
-        <h2 className="text-xl font-bold text-gray-800 mb-4 md:text-2xl md:mb-6">数据管理</h2>
+      <div className="mt-6">
+        <h2 className="text-lg font-bold text-gray-800 mb-3 md:text-xl md:mb-4">数据管理</h2>
       </div>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
+      <div className="grid grid-cols-1 gap-6 mt-8">
         {/* Export Data Card */}
-        <div className="bg-gradient-to-r from-emerald-50 to-teal-50 rounded-2xl shadow-lg overflow-hidden">
+        <div className="bg-gradient-to-r from-emerald-50 to-teal-50 rounded-xl shadow-md overflow-hidden">
           <div className="p-1 bg-gradient-to-r from-emerald-500 to-teal-600"></div>
-          <div className="p-6">
+          <div className="p-4 md:p-6">
             <div className="flex items-start">
               <div className="flex-shrink-0 mr-3">
                 <div className="bg-emerald-100 p-2 rounded-lg">
@@ -325,9 +325,9 @@ const DataPage = () => {
         </div>
         
         {/* Import Data Card */}
-        <div className="bg-gradient-to-r from-indigo-50 to-blue-50 rounded-2xl shadow-lg overflow-hidden">
+        <div className="bg-gradient-to-r from-indigo-50 to-blue-50 rounded-xl shadow-md overflow-hidden">
           <div className="p-1 bg-gradient-to-r from-indigo-500 to-blue-600"></div>
-          <div className="p-6">
+          <div className="p-4 md:p-6">
             <div className="flex items-start">
               <div className="flex-shrink-0 mr-3">
                 <div className="bg-indigo-100 p-2 rounded-lg">
@@ -371,9 +371,9 @@ const DataPage = () => {
       </div>
       
       {/* Danger Zone Card */}
-      <div className="mt-8 bg-gradient-to-r from-red-50 to-orange-50 rounded-2xl shadow-lg overflow-hidden">
+      <div className="mt-6 bg-gradient-to-r from-red-50 to-orange-50 rounded-xl shadow-md overflow-hidden">
         <div className="p-1 bg-gradient-to-r from-red-500 to-orange-600"></div>
-        <div className="p-6">
+        <div className="p-4 md:p-6">
           <div className="flex items-start">
             <div className="flex-shrink-0 mr-3">
               <div className="bg-red-100 p-2 rounded-lg">

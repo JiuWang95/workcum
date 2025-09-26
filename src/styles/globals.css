@@ -7,33 +7,34 @@ body {
   @apply bg-gray-50 text-gray-900;
 }
 
-/* Scrollbar styling */
+/* Hide scrollbar for Chrome, Safari and Opera by default */
 ::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox by default */
+* {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+/* Show scrollbar when needed with custom styling */
+.show-scrollbar::-webkit-scrollbar {
+  display: block;
   width: 8px;
   height: 8px;
 }
 
-::-webkit-scrollbar-track {
+.show-scrollbar::-webkit-scrollbar-track {
   @apply bg-gray-100;
 }
 
-::-webkit-scrollbar-thumb {
+.show-scrollbar::-webkit-scrollbar-thumb {
   @apply bg-gray-300 rounded-full;
 }
 
-::-webkit-scrollbar-thumb:hover {
+.show-scrollbar::-webkit-scrollbar-thumb:hover {
   @apply bg-gray-400;
-}
-
-/* Hide scrollbar for Chrome, Safari and Opera */
-.hide-scrollbar::-webkit-scrollbar {
-  display: none;
-}
-
-/* Hide scrollbar for IE, Edge and Firefox */
-.hide-scrollbar {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
 }
 
 /* Focus styles */
