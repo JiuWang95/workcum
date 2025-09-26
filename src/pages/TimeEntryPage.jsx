@@ -9,6 +9,7 @@ const TimeEntryPage = () => {
   const [entries, setEntries] = useState([]);
   const [shifts, setShifts] = useState([]);
   const [showInstructions, setShowInstructions] = useState(false); // 控制使用说明弹窗显示
+  const [isAddRecordOpen, setIsAddRecordOpen] = useState(true); // 控制添加记录模块的折叠状态
   const editSectionRef = useRef(null);
 
   // Load entries and shifts from localStorage on component mount
@@ -57,9 +58,26 @@ const TimeEntryPage = () => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="lg:col-span-3">
           <CustomShiftManager scrollToEditSection={scrollToEditSection} />
-          <div className="bg-white rounded-lg shadow p-6 mt-8" ref={editSectionRef}>
-            <h2 className="section-heading mb-6">{t('time_entry.add_entry')}</h2>
-            <TimeEntryForm onAddEntry={handleAddEntry} />
+          <div className="bg-white rounded-lg shadow mt-8">
+            <div 
+              className="flex justify-between items-center p-6 cursor-pointer"
+              onClick={() => setIsAddRecordOpen(!isAddRecordOpen)}
+            >
+              <h2 className="section-heading mb-0">{t('time_entry.add_entry')}</h2>
+              <svg 
+                className={`w-5 h-5 text-gray-500 transform transition-transform ${isAddRecordOpen ? 'rotate-180' : ''}`}
+                fill="none" 
+                stroke="currentColor" 
+                viewBox="0 0 24 24"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            </div>
+            {isAddRecordOpen && (
+              <div className="p-6 pt-0" ref={editSectionRef}>
+                <TimeEntryForm onAddEntry={handleAddEntry} />
+              </div>
+            )}
           </div>
         </div>
       </div>

@@ -48,17 +48,6 @@ const TimeEntryForm = ({ onAddEntry }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     
-    // Validate that end time is after start time (only if no custom duration is set)
-    if (!customDuration) {
-      const startDateTime = parse(startTime, 'HH:mm', new Date());
-      const endDateTime = parse(endTime, 'HH:mm', new Date());
-      
-      if (endDateTime <= startDateTime) {
-        alert(t('time_entry.validation.end_time_after_start'));
-        return;
-      }
-    }
-    
     const duration = calculateDuration(startTime, endTime, customDuration);
     
     const newEntry = {
