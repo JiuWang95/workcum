@@ -108,27 +108,43 @@ const DataPage = () => {
         </button>
       </div>
       
+      {/* Usage Instructions Section */}
+      <div className="mt-8 bg-blue-50 rounded-lg shadow p-6 border border-blue-200">
+        <h2 className="section-heading text-blue-800">使用说明</h2>
+        <div className="mt-4 space-y-3 text-blue-700">
+          <div className="flex items-start">
+            <div className="flex-shrink-0 h-5 w-5 text-blue-500 mt-0.5">1.</div>
+            <p className="ml-2">在"计划"页面，可选择预设的自定义班次模板快速填充记录信息，或者手动添加您的工作时间记录。</p>
+          </div>
+          <div className="flex items-start">
+            <div className="flex-shrink-0 h-5 w-5 text-blue-500 mt-0.5">2.</div>
+            <p className="ml-2">在"排班"页面使用周视图或月视图查看和管理日程安排，点击任意日期添加新的排班任务</p>
+          </div>
+          <div className="flex items-start">
+            <div className="flex-shrink-0 h-5 w-5 text-blue-500 mt-0.5">3.</div>
+            <p className="ml-2">在"统计"页面选择日期范围生成工时统计，支持"本周"和"本月"快捷日期选择</p>
+          </div>
+          <div className="flex items-start">
+            <div className="flex-shrink-0 h-5 w-5 text-blue-500 mt-0.5">4.</div>
+            <p className="ml-2">在"我的"页面管理数据，支持导出所有数据为JSON文件进行备份，或从JSON文件导入数据恢复信息</p>
+          </div>
+        </div>
+        <div className="mt-4 p-3 bg-blue-100 rounded-lg">
+          <p className="text-sm text-blue-800">
+            <span className="font-semibold">提示：</span>
+            所有数据均安全存储在您的浏览器本地，不会上传到任何服务器。建议定期导出数据进行备份。
+          </p>
+        </div>
+      </div>
+      
       {/* Project Information Section */}
       <div className="mt-8 bg-white rounded-lg shadow p-6">
-        <h2 className="section-heading">项目信息</h2>
+        <h2 className="section-heading">项目介绍</h2>
         <p className="text-gray-600 mb-4">
           这是一个专为工作时间管理而设计的高效工具，旨在帮助用户轻松跟踪和管理工作时间。项目最初是为了给我的妻子思语小姐创建一个方便计算工时的工具，现已发展成为一个功能完整的工时跟踪系统。如果你有更好的建议或者问题反馈，可以点击联系乐乐。
         </p>
-        <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-4">
-          <div className="flex">
-            <div className="flex-shrink-0">
-              <svg className="h-5 w-5 text-yellow-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
-              </svg>
-            </div>
-            <div className="ml-3">
-              <p className="text-sm text-yellow-700">
-                <strong>免责声明：</strong>本工具仅供个人学习和参考使用，用户应自行承担使用风险。本工具不收集、存储或传输任何用户数据，所有数据均保存在用户本地浏览器中。用户应定期备份重要数据，作者不对数据丢失承担任何责任。本工具不提供任何商业支持或技术保障，使用前请充分了解相关风险。
-              </p>
-            </div>
-          </div>
-        </div>
-        <p className="text-gray-600 mb-4">
+        
+        <p className="text-gray-600 mb-4 mt-6">
           主要功能包括：
         </p>
         <ul className="list-disc list-inside text-gray-600 mb-4">
@@ -216,6 +232,14 @@ const DataPage = () => {
             捐助
           </a>
         </div>
+      </div>
+      
+      {/* Disclaimer Section -独立模块框 */}
+      <div className="mt-8 bg-white rounded-lg shadow p-6">
+        <h2 className="section-heading">⚠️免责声明</h2>
+        <p className="text-gray-600">
+          本工具仅供个人学习和参考使用，用户应自行承担使用风险。本工具不收集、存储或传输任何用户数据，所有数据均保存在用户本地浏览器中。用户应定期备份重要数据，作者不对数据丢失承担任何责任。本工具不提供任何商业支持或技术保障，使用前请充分了解相关风险。
+        </p>
       </div>
       
       {/* Data Management Section */}
