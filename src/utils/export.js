@@ -56,6 +56,26 @@ export const exportToExcel = (entries, schedules, shifts, filename) => {
   // Combine both types of data
   const combinedData = [...formattedEntries, ...formattedSchedules];
 
+  // Calculate total minutes
+  const totalMinutesFromEntries = entries.reduce((sum, entry) => sum + entry.duration, 0);
+  const totalMinutesFromSchedules = formattedSchedules.reduce((sum, schedule) => sum + schedule.Minutes, 0);
+  const totalMinutes = totalMinutesFromEntries + totalMinutesFromSchedules;
+  const totalHours = (totalMinutes / 60).toFixed(1);
+
+  // Add a summary row at the end
+  const summaryRow = {
+    Type: '总计',
+    Date: '',
+    'Start Time': '',
+    'End Time': '',
+    Duration: `${totalHours}h`,
+    Minutes: totalMinutes,
+    Notes: ''
+  };
+
+  // Add the summary row to the combined data
+  combinedData.push(summaryRow);
+
   // Create worksheet
   const ws = utils.json_to_sheet(combinedData);
 

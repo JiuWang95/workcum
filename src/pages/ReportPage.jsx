@@ -176,126 +176,168 @@ const ReportPage = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {/* Display time entries */}
-                  {filteredEntries.map((entry, index) => {
-                    return (
-                      <tr key={`entry-${index}`} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
-                        <td className="py-2 px-4 border-b">{entry.notes || t('time_entry.entry')}</td>
-                        <td className="py-2 px-4 border-b">{entry.startTime}</td>
-                        <td className="py-2 px-4 border-b">{entry.endTime}</td>
-                        <td className="py-2 px-4 border-b">{(entry.duration / 60).toFixed(1)}h</td>
-                        <td className="py-2 px-4 border-b">{entry.date}</td>
-                        <td className="py-2 px-4 border-b">
-                          <span className="bg-green-100 text-green-800 text-xs px-2 py-1 rounded">工时记录</span>
-                        </td>
-                      </tr>
-                    );
-                  })}
-                  
-                  {/* Display schedules */}
-                  {filteredSchedules.map((schedule, index) => {
-                    let duration = 0;
-                    if (schedule.selectedShift) {
-                      const shift = shifts.find(s => s.id === schedule.selectedShift);
-                      if (shift && shift.customDuration) {
-                        duration = convertDurationToHours(shift.customDuration) * 60;
-                      } else {
-                        // Calculate duration from start and end time
-                        const start = new Date(`1970-01-01T${schedule.startTime}:00`);
-                        const end = new Date(`1970-01-01T${schedule.endTime}:00`);
-                        duration = (end - start) / (1000 * 60); // Convert to minutes
-                      }
-                    }
+                  {/* 合并时间记录和排班记录，并按时间顺序排序 */}
+                  {(() => {
+                    // 创建包含所有记录的数组，并添加类型标识
+                    const allRecords = [
+                      ...filteredEntries.map(entry => ({ ...entry, type: 'entry' })),
+                      ...filteredSchedules.map(schedule => ({ ...schedule, type: 'schedule' }))
+                    ];
                     
-                    return (
-                      <tr key={`schedule-${index}`} className={(filteredEntries.length + index) % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
-                        <td className="py-2 px-4 border-b">{schedule.notes || schedule.title || '-'}</td>
-                        <td className="py-2 px-4 border-b">{schedule.startTime}</td>
-                        <td className="py-2 px-4 border-b">{schedule.endTime}</td>
-                        <td className="py-2 px-4 border-b">{(duration / 60).toFixed(1)}h</td>
-                        <td className="py-2 px-4 border-b">{schedule.date}</td>
-                        <td className="py-2 px-4 border-b">
-                          <span className="bg-indigo-100 text-indigo-800 text-xs px-2 py-1 rounded">排班</span>
-                        </td>
-                      </tr>
-                    );
-                  })}
+                    // 按日期和时间排序
+                    allRecords.sort((a, b) => {
+                      // 首先按日期排序
+                      if (a.date !== b.date) {
+                        return a.date.localeCompare(b.date);
+                      }
+                      
+                      // 如果日期相同，按开始时间排序
+                      return a.startTime.localeCompare(b.startTime);
+                    });
+                    
+                    return allRecords.map((record, index) => {
+                      if (record.type === 'entry') {
+                        // 时间记录
+                        return (
+                          <tr key={`entry-${record.id}`} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
+                            <td className="py-2 px-4 border-b">{record.notes || t('time_entry.entry')}</td>
+                            <td className="py-2 px-4 border-b">{record.startTime}</td>
+                            <td className="py-2 px-4 border-b">{record.endTime}</td>
+                            <td className="py-2 px-4 border-b">{(record.duration / 60).toFixed(1)}h</td>
+                            <td className="py-2 px-4 border-b">{record.date}</td>
+                            <td className="py-2 px-4 border-b">
+                              <span className="bg-green-100 text-green-800 text-xs px-2 py-1 rounded">工时记录</span>
+                            </td>
+                          </tr>
+                        );
+                      } else {
+                        // 排班记录
+                        let duration = 0;
+                        if (record.selectedShift) {
+                          const shift = shifts.find(s => s.id === record.selectedShift);
+                          if (shift && shift.customDuration) {
+                            duration = convertDurationToHours(shift.customDuration) * 60;
+                          } else {
+                            // Calculate duration from start and end time
+                            const start = new Date(`1970-01-01T${record.startTime}:00`);
+                            const end = new Date(`1970-01-01T${record.endTime}:00`);
+                            duration = (end - start) / (1000 * 60); // Convert to minutes
+                          }
+                        }
+                        
+                        return (
+                          <tr key={`schedule-${record.id}`} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
+                            <td className="py-2 px-4 border-b">{record.notes || record.title || '-'}</td>
+                            <td className="py-2 px-4 border-b">{record.startTime}</td>
+                            <td className="py-2 px-4 border-b">{record.endTime}</td>
+                            <td className="py-2 px-4 border-b">{(duration / 60).toFixed(1)}h</td>
+                            <td className="py-2 px-4 border-b">{record.date}</td>
+                            <td className="py-2 px-4 border-b">
+                              <span className="bg-indigo-100 text-indigo-800 text-xs px-2 py-1 rounded">排班</span>
+                            </td>
+                          </tr>
+                        );
+                      }
+                    });
+                  })()}
                 </tbody>
               </table>
             </div>
             
             {/* Mobile Card View */}
             <div className="md:hidden space-y-4">
-              {/* Display time entries as cards */}
-              {filteredEntries.map((entry, index) => (
-                <div key={`entry-${index}`} className="bg-white rounded-lg shadow p-4 border-l-4 border-green-500">
-                  <div className="flex justify-between items-start mb-2">
-                    <h3 className="font-bold text-lg">{entry.notes || t('time_entry.entry')}</h3>
-                    <span className="bg-green-100 text-green-800 text-xs px-2 py-1 rounded">工时记录</span>
-                  </div>
-                  <div className="grid grid-cols-2 gap-2 text-sm">
-                    <div>
-                      <span className="font-medium">开始时间:</span>
-                      <span className="ml-1">{entry.startTime}</span>
-                    </div>
-                    <div>
-                      <span className="font-medium">结束时间:</span>
-                      <span className="ml-1">{entry.endTime}</span>
-                    </div>
-                    <div>
-                      <span className="font-medium">工时:</span>
-                      <span className="ml-1">{(entry.duration / 60).toFixed(1)}h</span>
-                    </div>
-                    <div>
-                      <span className="font-medium">日期:</span>
-                      <span className="ml-1">{entry.date}</span>
-                    </div>
-                  </div>
-                </div>
-              ))}
-              
-              {/* Display schedules as cards */}
-              {filteredSchedules.map((schedule, index) => {
-                let duration = 0;
-                if (schedule.selectedShift) {
-                  const shift = shifts.find(s => s.id === schedule.selectedShift);
-                  if (shift && shift.customDuration) {
-                    duration = convertDurationToHours(shift.customDuration) * 60;
-                  } else {
-                    // Calculate duration from start and end time
-                    const start = new Date(`1970-01-01T${schedule.startTime}:00`);
-                    const end = new Date(`1970-01-01T${schedule.endTime}:00`);
-                    duration = (end - start) / (1000 * 60); // Convert to minutes
-                  }
-                }
+              {/* 合并时间记录和排班记录，并按时间顺序排序 */}
+              {(() => {
+                // 创建包含所有记录的数组，并添加类型标识
+                const allRecords = [
+                  ...filteredEntries.map(entry => ({ ...entry, type: 'entry' })),
+                  ...filteredSchedules.map(schedule => ({ ...schedule, type: 'schedule' }))
+                ];
                 
-                return (
-                  <div key={`schedule-${index}`} className="bg-white rounded-lg shadow p-4 border-l-4 border-indigo-500">
-                    <div className="flex justify-between items-start mb-2">
-                      <h3 className="font-bold text-lg">{schedule.notes || schedule.title || '-'}</h3>
-                      <span className="bg-indigo-100 text-indigo-800 text-xs px-2 py-1 rounded">排班</span>
-                    </div>
-                    <div className="grid grid-cols-2 gap-2 text-sm">
-                      <div>
-                        <span className="font-medium">开始时间:</span>
-                        <span className="ml-1">{schedule.startTime}</span>
+                // 按日期和时间排序
+                allRecords.sort((a, b) => {
+                  // 首先按日期排序
+                  if (a.date !== b.date) {
+                    return a.date.localeCompare(b.date);
+                  }
+                  
+                  // 如果日期相同，按开始时间排序
+                  return a.startTime.localeCompare(b.startTime);
+                });
+                
+                return allRecords.map((record, index) => {
+                  if (record.type === 'entry') {
+                    // 时间记录
+                    return (
+                      <div key={`entry-${record.id}`} className="bg-white rounded-lg shadow p-4 border-l-4 border-green-500">
+                        <div className="flex justify-between items-start mb-2">
+                          <h3 className="font-bold text-lg">{record.notes || t('time_entry.entry')}</h3>
+                          <span className="bg-green-100 text-green-800 text-xs px-2 py-1 rounded">工时记录</span>
+                        </div>
+                        <div className="grid grid-cols-2 gap-2 text-sm">
+                          <div>
+                            <span className="font-medium">开始时间:</span>
+                            <span className="ml-1">{record.startTime}</span>
+                          </div>
+                          <div>
+                            <span className="font-medium">结束时间:</span>
+                            <span className="ml-1">{record.endTime}</span>
+                          </div>
+                          <div>
+                            <span className="font-medium">工时:</span>
+                            <span className="ml-1">{(record.duration / 60).toFixed(1)}h</span>
+                          </div>
+                          <div>
+                            <span className="font-medium">日期:</span>
+                            <span className="ml-1">{record.date}</span>
+                          </div>
+                        </div>
                       </div>
-                      <div>
-                        <span className="font-medium">结束时间:</span>
-                        <span className="ml-1">{schedule.endTime}</span>
+                    );
+                  } else {
+                    // 排班记录
+                    let duration = 0;
+                    if (record.selectedShift) {
+                      const shift = shifts.find(s => s.id === record.selectedShift);
+                      if (shift && shift.customDuration) {
+                        duration = convertDurationToHours(shift.customDuration) * 60;
+                      } else {
+                        // Calculate duration from start and end time
+                        const start = new Date(`1970-01-01T${record.startTime}:00`);
+                        const end = new Date(`1970-01-01T${record.endTime}:00`);
+                        duration = (end - start) / (1000 * 60); // Convert to minutes
+                      }
+                    }
+                    
+                    return (
+                      <div key={`schedule-${record.id}`} className="bg-white rounded-lg shadow p-4 border-l-4 border-indigo-500">
+                        <div className="flex justify-between items-start mb-2">
+                          <h3 className="font-bold text-lg">{record.notes || record.title || '-'}</h3>
+                          <span className="bg-indigo-100 text-indigo-800 text-xs px-2 py-1 rounded">排班</span>
+                        </div>
+                        <div className="grid grid-cols-2 gap-2 text-sm">
+                          <div>
+                            <span className="font-medium">开始时间:</span>
+                            <span className="ml-1">{record.startTime}</span>
+                          </div>
+                          <div>
+                            <span className="font-medium">结束时间:</span>
+                            <span className="ml-1">{record.endTime}</span>
+                          </div>
+                          <div>
+                            <span className="font-medium">工时:</span>
+                            <span className="ml-1">{(duration / 60).toFixed(1)}h</span>
+                          </div>
+                          <div>
+                            <span className="font-medium">日期:</span>
+                            <span className="ml-1">{record.date}</span>
+                          </div>
+                        </div>
                       </div>
-                      <div>
-                        <span className="font-medium">工时:</span>
-                        <span className="ml-1">{(duration / 60).toFixed(1)}h</span>
-                      </div>
-                      <div>
-                        <span className="font-medium">日期:</span>
-                        <span className="ml-1">{schedule.date}</span>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
+                    );
+                  }
+                });
+              })()}
             </div>
           </>
         )}
