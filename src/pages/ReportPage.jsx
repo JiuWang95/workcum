@@ -13,7 +13,7 @@ const ReportPage = () => {
   const [endDate, setEndDate] = useState(format(endOfWeek(new Date(), { weekStartsOn: 1 }), 'yyyy-MM-dd'));
   const [filteredEntries, setFilteredEntries] = useState([]);
   const [filteredSchedules, setFilteredSchedules] = useState([]);
-  const [isFileNameModalOpen, setIsFileNameModalOpen] = useState(false);
+  const [isExcelFileNameModalOpen, setIsExcelFileNameModalOpen] = useState(false);
 
   // Load entries and schedules from localStorage on component mount
   useEffect(() => {
@@ -105,11 +105,11 @@ const ReportPage = () => {
 
   // Export to Excel
   const handleExport = () => {
-    setIsFileNameModalOpen(true);
+    setIsExcelFileNameModalOpen(true);
   };
 
-  const handleFileNameConfirm = (fileName) => {
-    setIsFileNameModalOpen(false);
+  const handleExcelFileNameConfirm = (fileName) => {
+    setIsExcelFileNameModalOpen(false);
     exportToExcelReport(filteredEntries, filteredSchedules, shifts, fileName);
   };
 
@@ -118,10 +118,13 @@ const ReportPage = () => {
       <h1 className="page-heading">{t('reports.title')}</h1>
       
       <FileNameModal
-        isOpen={isFileNameModalOpen}
-        onClose={() => setIsFileNameModalOpen(false)}
-        onConfirm={handleFileNameConfirm}
+        isOpen={isExcelFileNameModalOpen}
+        onClose={() => setIsExcelFileNameModalOpen(false)}
+        onConfirm={handleExcelFileNameConfirm}
         defaultFileName={`time-report-${startDate}-to-${endDate}`}
+        title="设置Excel文件名"
+        fileType="Excel"
+        fileExtension=".xlsx"
       />
       
       <div className="bg-white rounded-lg shadow p-6 mb-8">

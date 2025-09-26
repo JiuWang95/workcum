@@ -1,6 +1,14 @@
 import React, { useState } from 'react';
 
-const FileNameModal = ({ isOpen, onClose, onConfirm, defaultFileName }) => {
+const FileNameModal = ({ 
+  isOpen, 
+  onClose, 
+  onConfirm, 
+  defaultFileName,
+  title = "设置JSON文件名",
+  fileType = "JSON",
+  fileExtension = ".json"
+}) => {
   const [fileName, setFileName] = useState(defaultFileName || '');
 
   if (!isOpen) return null;
@@ -17,7 +25,7 @@ const FileNameModal = ({ isOpen, onClose, onConfirm, defaultFileName }) => {
       <div className="bg-white rounded-lg shadow-xl max-w-md w-full">
         <div className="p-6">
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-xl font-bold text-gray-800">设置JSON文件名</h2>
+            <h2 className="text-xl font-bold text-gray-800">{title}</h2>
             <button 
               onClick={onClose}
               className="text-gray-500 hover:text-gray-700"
@@ -31,7 +39,7 @@ const FileNameModal = ({ isOpen, onClose, onConfirm, defaultFileName }) => {
           <form onSubmit={handleSubmit}>
             <div className="mb-4">
               <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="filename">
-                JSON文件名
+                {fileType}文件名
               </label>
               <input
                 type="text"
@@ -41,7 +49,7 @@ const FileNameModal = ({ isOpen, onClose, onConfirm, defaultFileName }) => {
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 placeholder="请输入文件名"
               />
-              <p className="text-gray-500 text-xs mt-2">.json 扩展名将自动添加</p>
+              <p className="text-gray-500 text-xs mt-2">{fileExtension} 扩展名将自动添加</p>
             </div>
             
             <div className="flex justify-end space-x-3">

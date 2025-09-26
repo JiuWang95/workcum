@@ -110,6 +110,9 @@ const DataPage = () => {
         onClose={() => setIsFileNameModalOpen(false)}
         onConfirm={handleFileNameConfirm}
         defaultFileName={`time-tracker-backup-${new Date().toISOString().split('T')[0]}`}
+        title="设置JSON文件名"
+        fileType="JSON"
+        fileExtension=".json"
       />
       
       <div className="flex justify-between items-center">
