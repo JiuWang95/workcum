@@ -318,7 +318,7 @@ const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
                         style={{ color: getShiftColor(shiftType) }}
                       >
                         {formatTime(schedule.startTime)} - {formatTime(schedule.endTime)}
-                        {schedule.selectedShift && shifts.find(s => s.id === schedule.selectedShift)?.customDuration && (
+                        {schedule.selectedShift && shifts.find(s => s.id === schedule.selectedShift)?.customDuration !== undefined && (
                           <span className="ml-1">
                             [{convertDurationToHours(shifts.find(s => s.id === schedule.selectedShift).customDuration).toFixed(1)}h]
                           </span>
