@@ -1,24 +1,32 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import TimeEntryForm from '../components/TimeEntryForm';
 import CustomShiftManager from '../components/CustomShiftManager';
 import InstructionsModal from '../components/InstructionsModal';
 import AddEntryModal from '../components/AddEntryModal';
+import ReplaceConfirmationModal from '../components/ReplaceConfirmationModal';
 import { useTranslation } from 'react-i18next';
+import { isSameDay } from 'date-fns';
 
 const TimeEntryPage = () => {
   const { t } = useTranslation();
   const [entries, setEntries] = useState([]);
+  const [schedules, setSchedules] = useState([]);
   const [shifts, setShifts] = useState([]);
-  const [showInstructions, setShowInstructions] = useState(false); // Control instructions modal display
-  const [isAddEntryModalOpen, setIsAddEntryModalOpen] = useState(false); // Control add entry modal display
+  const [showInstructions, setShowInstructions] = useState(false);
+  const [isAddEntryModalOpen, setIsAddEntryModalOpen] = useState(false);
+  const [showReplaceModal, setShowReplaceModal] = useState(false);
+  const [selectedDateForReplace, setSelectedDateForReplace] = useState(null);
+  const [pendingEntry, setPendingEntry] = useState(null);
   const editSectionRef = useRef(null);
 
-  // Load entries and shifts from localStorage on component mount
-  React.useEffect(() => {
+  // Load entries, schedules and shifts from localStorage on component mount
+  useEffect(() => {
     const savedEntries = JSON.parse(localStorage.getItem('timeEntries') || '[]');
+    const savedSchedules = JSON.parse(localStorage.getItem('schedules') || '[]');
     const savedShifts = JSON.parse(localStorage.getItem('customShifts') || '[]');
     
     setEntries(savedEntries);
+    setSchedules(savedSchedules);
     setShifts(savedShifts);
   }, []);
 
@@ -29,14 +37,65 @@ const TimeEntryPage = () => {
     }
   };
 
+  // Get schedules for a specific date
+  const getSchedulesForDate = (date) => {
+    return schedules.filter(schedule => 
+      isSameDay(new Date(schedule.date), new Date(date))
+    );
+  };
+
+  // Get time entries for a specific date
+  const getTimeEntriesForDate = (date) => {
+    return entries.filter(entry => 
+      isSameDay(new Date(entry.date), new Date(date))
+    );
+  };
+
+  // Check if there are existing schedules or entries for a date
+  const hasExistingDataForDate = (date) => {
+    const existingSchedules = getSchedulesForDate(date);
+    const existingTimeEntries = getTimeEntriesForDate(date);
+    return existingSchedules.length > 0 || existingTimeEntries.length > 0;
+  };
+
   const handleAddEntry = (entry) => {
-    const newEntries = [...entries, entry];
-    setEntries(newEntries);
-    localStorage.setItem('timeEntries', JSON.stringify(newEntries));
+    // Check if there's existing data for the entry's date
+    if (hasExistingDataForDate(entry.date)) {
+      // Show replace confirmation modal
+      setPendingEntry(entry);
+      setSelectedDateForReplace(entry.date);
+      setShowReplaceModal(true);
+    } else {
+      // No existing data, add entry directly
+      const newEntries = [...entries, entry];
+      setEntries(newEntries);
+      localStorage.setItem('timeEntries', JSON.stringify(newEntries));
+    }
+  };
+
+  const handleConfirmReplace = () => {
+    if (pendingEntry) {
+      // Remove existing data for the date
+      const filteredEntries = entries.filter(entry => entry.date !== pendingEntry.date);
+      const filteredSchedules = schedules.filter(schedule => schedule.date !== pendingEntry.date);
+      
+      // Add the new entry
+      const newEntries = [...filteredEntries, pendingEntry];
+      
+      // Update state and localStorage
+      setEntries(newEntries);
+      setSchedules(filteredSchedules);
+      localStorage.setItem('timeEntries', JSON.stringify(newEntries));
+      localStorage.setItem('schedules', JSON.stringify(filteredSchedules));
+      
+      // Close modals
+      setShowReplaceModal(false);
+      setPendingEntry(null);
+      setSelectedDateForReplace(null);
+    }
   };
 
   const handleDeleteEntry = (id) => {
-    // 删除时间记录
     if (window.confirm(t('time_entry.delete_confirm'))) {
       const newEntries = entries.filter(entry => entry.id !== id);
       setEntries(newEntries);
@@ -130,6 +189,16 @@ const TimeEntryPage = () => {
         isOpen={isAddEntryModalOpen} 
         onClose={() => setIsAddEntryModalOpen(false)} 
         onAddEntry={handleAddEntry} 
+      />
+      <ReplaceConfirmationModal
+        isOpen={showReplaceModal}
+        onClose={() => {
+          setShowReplaceModal(false);
+          setPendingEntry(null);
+          setSelectedDateForReplace(null);
+        }}
+        onConfirm={handleConfirmReplace}
+        date={selectedDateForReplace}
       />
     </div>
   );

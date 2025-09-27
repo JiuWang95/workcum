@@ -132,12 +132,14 @@ const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
   const handleDelete = (id) => {
     if (window.confirm(t('schedule.delete_confirm'))) {
       setSchedules(schedules.filter(schedule => schedule.id !== id));
+      setShowModal(false); // 添加这行代码来关闭模态框
     }
   };
 
   const handleDeleteTimeEntry = (id) => {
     if (window.confirm(t('time_entry.delete_confirm') || '确定要删除这个时间记录吗？')) {
       setTimeEntries(timeEntries.filter(entry => entry.id !== id));
+      setShowDeleteModal(false); // 添加这行代码来关闭模态框
     }
   };
 
@@ -230,7 +232,7 @@ const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
   };
 
   return (
-    <div className="bg-white rounded-xl shadow-lg p-2 sm:p-3 md:p-4 hide-scrollbar mt-2">
+    <div className="hide-scrollbar mt-2">
       {/* Week view: Each date occupies a separate row with vertical arrangement */}
       <div className="space-y-2 sm:space-y-3 md:space-y-4">
         {weekDays.map((day, index) => {
@@ -260,26 +262,26 @@ const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
           return (
             <div 
               key={index} 
-              className={`border rounded-lg p-2 sm:p-3 md:p-4 cursor-pointer transition-all duration-200 hover:shadow-md ${
-                isToday ? 'bg-gradient-to-r from-blue-50 to-indigo-50 border-blue-300 shadow-sm' : 'border-gray-200'
+              className={`rounded-lg p-2 sm:p-3 md:p-4 cursor-pointer transition-all duration-200 hover:shadow-md ${
+                isToday ? 'bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-300 shadow-sm' : 'border border-gray-200'
               }`}
               onClick={() => handleDateClick(day)}
             >
               {/* Date header */}
-              <div className={`text-sm sm:text-base md:text-lg font-bold mb-2 sm:mb-3 flex items-center justify-between ${
+              <div className={`text-xs sm:text-sm md:text-base font-bold mb-2 sm:mb-3 flex items-center justify-between ${
                 isToday ? 'text-blue-600' : 'text-gray-700'
               }`}>
                 <div className="flex items-center">
-                  <span className="mr-2">{format(day, 'EEE', { locale: zhCN })}</span>
-                  <span className="text-lg sm:text-xl md:text-2xl">{format(day, 'd', { locale: zhCN })}</span>
+                  <span className="mr-1.5 text-gray-500 text-[0.7rem] sm:text-xs">{format(day, 'EEE', { locale: zhCN })}</span>
+                  <span className="text-lg sm:text-xl md:text-2xl font-bold">{format(day, 'd', { locale: zhCN })}</span>
                 </div>
-                <span className="text-xs sm:text-sm md:text-base bg-gray-100 px-2 py-1 rounded-full">
+                <span className="text-[0.6rem] sm:text-xs md:text-sm bg-white bg-opacity-70 px-1.5 py-0.5 sm:px-2 sm:py-1 rounded-full font-medium text-gray-600 shadow-sm">
                   {format(day, 'M月', { locale: zhCN })}
                 </span>
               </div>
               
               {/* Arrangement of schedules and time entries: vertical on larger screens, horizontal wrap on mobile */}
-              <div className="flex flex-wrap gap-2 sm:gap-3">
+              <div className="flex flex-wrap gap-1.5 sm:gap-2 md:gap-3">
                 {/* Display schedules */}
                 {daySchedules.map((schedule) => {
                   // 获取班次信息
@@ -291,7 +293,7 @@ const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
                   return (
                     <div 
                       key={schedule.id} 
-                      className="text-xs sm:text-sm md:text-base font-semibold p-2 sm:p-3 rounded-lg flex-shrink-0 w-full sm:w-auto transition-all duration-200 hover:scale-[1.02] shadow-sm"
+                      className="text-[0.6rem] sm:text-xs md:text-sm font-semibold p-2 sm:p-3 rounded-lg flex-shrink-0 w-full transition-all duration-200 hover:scale-[1.02] shadow-sm"
                       style={{
                         backgroundColor: getShiftBackgroundColor(shiftType),
                         border: `1px solid ${getShiftColor(shiftType)}`
@@ -303,28 +305,30 @@ const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
                     >
                       <div className="flex items-center">
                         <span 
-                          className="inline-block w-2 h-2 sm:w-3 sm:h-3 rounded-full mr-2"
+                          className="inline-block w-2 h-2 rounded-full mr-1.5 border border-white shadow"
                           style={{ backgroundColor: getShiftColor(shiftType) }}
                         ></span>
-                        <span className="font-bold truncate text-xs sm:text-sm md:text-base">{shiftName}</span>
+                        <span className="font-bold truncate text-[0.6rem] sm:text-xs md:text-sm">{shiftName}</span>
                         {shiftType === 'overnight' && (
-                          <span className="ml-2 inline-flex items-center px-1.5 py-0.5 rounded-full text-[0.6rem] sm:text-xs font-medium bg-gradient-to-r from-red-100 to-red-200 text-red-800 shadow-sm">
+                          <span className="ml-1.5 inline-flex items-center px-1 py-0.5 rounded-full text-[0.5rem] sm:text-[0.6rem] font-medium bg-gradient-to-r from-red-100 to-red-200 text-red-800 shadow-sm">
                             {t('time_entry.custom_shift.overnight_shift')}
                           </span>
                         )}
                         {shiftType === 'rest' && (
-                          <span className="ml-2 inline-flex items-center px-1.5 py-0.5 rounded-full text-[0.6rem] sm:text-xs font-medium bg-gradient-to-r from-green-100 to-green-200 text-green-800 shadow-sm">
+                          <span className="ml-1.5 inline-flex items-center px-1 py-0.5 rounded-full text-[0.5rem] sm:text-[0.6rem] font-medium bg-gradient-to-r from-green-100 to-green-200 text-green-800 shadow-sm">
                             {t('time_entry.custom_shift.rest_day')}
                           </span>
                         )}
                       </div>
                       <div 
-                        className="text-[0.6rem] sm:text-xs md:text-sm mt-1 font-medium"
+                        className="text-[0.5rem] sm:text-[0.6rem] md:text-xs mt-1 font-medium"
                         style={{ color: getShiftColor(shiftType) }}
                       >
-                        {formatTime(schedule.startTime)} - {formatTime(schedule.endTime)}
+                        <span className="bg-white bg-opacity-50 px-1.5 py-0.5 rounded">
+                          {formatTime(schedule.startTime)} - {formatTime(schedule.endTime)}
+                        </span>
                         {schedule.selectedShift && shifts.find(s => s.id === schedule.selectedShift)?.customDuration !== undefined && (
-                          <span className="ml-2 bg-white bg-opacity-50 px-1.5 py-0.5 rounded-full">
+                          <span className="ml-1.5 bg-white bg-opacity-70 px-1.5 py-0.5 rounded font-bold">
                             [{convertDurationToHours(shifts.find(s => s.id === schedule.selectedShift).customDuration).toFixed(1)}h]
                           </span>
                         )}
@@ -339,7 +343,7 @@ const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
                   return (
                     <div 
                       key={entry.id} 
-                      className="text-xs sm:text-sm md:text-base font-semibold p-2 sm:p-3 rounded-lg flex-shrink-0 w-full sm:w-auto cursor-pointer hover:scale-[1.02] transition-all duration-200 shadow-sm"
+                      className="text-[0.6rem] sm:text-xs md:text-sm font-semibold p-2 sm:p-3 rounded-lg flex-shrink-0 w-full cursor-pointer hover:scale-[1.02] transition-all duration-200 shadow-sm"
                       style={{
                         backgroundColor: entryColor.backgroundColor,
                         border: `1px solid ${entryColor.borderColor}`
@@ -351,7 +355,7 @@ const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
                       }}
                     >
                       <div 
-                        className="font-bold truncate text-xs sm:text-sm"
+                        className="font-bold truncate text-[0.6rem] sm:text-xs"
                         style={{
                           color: entryColor.textColor
                         }}
@@ -359,14 +363,16 @@ const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
                         {entry.notes || t('time_entry.entry')}
                       </div>
                       <div 
-                        className="text-[0.6rem] sm:text-xs mt-1 font-medium"
+                        className="text-[0.5rem] sm:text-[0.6rem] mt-1 font-medium"
                         style={{
                           color: entryColor.textColor
                         }}
                       >
-                        {formatTime(entry.startTime)} - {formatTime(entry.endTime)}
+                        <span className="bg-white bg-opacity-50 px-1.5 py-0.5 rounded">
+                          {formatTime(entry.startTime)} - {formatTime(entry.endTime)}
+                        </span>
                         {entry.duration && (
-                          <span className="ml-2 bg-white bg-opacity-50 px-1.5 py-0.5 rounded-full">
+                          <span className="ml-1.5 bg-white bg-opacity-70 px-1.5 py-0.5 rounded font-bold">
                             [{(entry.duration / 60).toFixed(1)}h]
                           </span>
                         )}
@@ -377,7 +383,7 @@ const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
                 
                 {/* Show placeholder if no items */}
                 {daySchedules.length === 0 && dayTimeEntries.length === 0 && (
-                  <div className="text-gray-400 italic py-3 text-center text-sm sm:text-base md:text-lg bg-gray-50 rounded-lg">
+                  <div className="text-gray-400 italic py-3 text-center text-xs sm:text-sm md:text-base bg-gray-50 rounded-lg w-full">
                     {t('schedule.no_events')}
                   </div>
                 )}
@@ -388,61 +394,82 @@ const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
       </div>
 
       {showModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 w-full max-w-md">
-            <h2 className="section-heading text-center mb-6">
-              {formData.id ? t('schedule.edit_schedule') : t('schedule.add_schedule')}
-            </h2>
+        <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl p-6 w-full max-w-md shadow-2xl transform transition-all duration-300 scale-95 animate-in fade-in-90 zoom-in-95">
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-xl font-bold text-gray-800">
+                {formData.id ? t('schedule.edit_schedule') : t('schedule.add_schedule')}
+              </h2>
+              <button
+                onClick={() => setShowModal(false)}
+                className="text-gray-400 hover:text-gray-500 transition-colors duration-200"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+              </button>
+            </div>
             
             <form onSubmit={handleSubmit}>
               {/* 只保留班次选择框 */}
               <div className="mb-6">
-                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="shiftTemplate">
+                <label className="block text-gray-700 text-sm font-bold mb-3" htmlFor="shiftTemplate">
                   {t('time_entry.custom_shift.select_shift')} *
                 </label>
-                <select
-                  id="shiftTemplate"
-                  value={formData.selectedShift}
-                  onChange={(e) => {
-                    setFormData({...formData, selectedShift: e.target.value});
-                  }}
-                  className="shadow appearance-none border-2 border-indigo-300 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  required
-                >
-                  <option value="">{t('time_entry.custom_shift.select_placeholder')}</option>
-                  {shifts.map((shift) => (
-                    <option key={shift.id} value={shift.id}>
-                      {shift.name} ({shift.startTime} - {shift.endTime})
-                      {shift.customDuration && ` [${convertDurationToHours(shift.customDuration).toFixed(1)}h]`}
-                    </option>
-                  ))}
-                </select>
+                <div className="relative">
+                  <select
+                    id="shiftTemplate"
+                    value={formData.selectedShift}
+                    onChange={(e) => {
+                      setFormData({...formData, selectedShift: e.target.value});
+                    }}
+                    className="appearance-none w-full py-3 px-4 pr-10 text-gray-700 bg-white border-2 border-indigo-200 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200"
+                    required
+                  >
+                    <option value="">{t('time_entry.custom_shift.select_placeholder')}</option>
+                    {shifts.map((shift) => (
+                      <option key={shift.id} value={shift.id}>
+                        {shift.name} ({shift.startTime} - {shift.endTime})
+                        {shift.customDuration && ` [${convertDurationToHours(shift.customDuration).toFixed(1)}h]`}
+                      </option>
+                    ))}
+                  </select>
+                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-700">
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                  </div>
+                </div>
+                <p className="mt-2 text-sm text-gray-500">{t('time_entry.custom_shift.select_shift_help')}</p>
               </div>
               
-              <div className="flex justify-between">
+              <div className="flex justify-between items-center pt-4 border-t border-gray-100">
                 <div>
                   {formData.id && (
                     <button
                       type="button"
                       onClick={() => handleDelete(formData.id)}
-                      className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                      className="flex items-center text-red-600 hover:text-red-800 font-medium transition-colors duration-200"
                     >
+                      <svg className="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                      </svg>
                       {t('schedule.form.delete')}
                     </button>
                   )}
                 </div>
                 
-                <div className="flex space-x-2">
+                <div className="flex space-x-3">
                   <button
                     type="button"
                     onClick={() => setShowModal(false)}
-                    className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded"
+                    className="px-5 py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 font-medium rounded-xl transition-all duration-200 shadow-sm hover:shadow-md"
                   >
                     {t('schedule.form.cancel')}
                   </button>
                   <button
                     type="submit"
-                    className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded"
+                    className="px-5 py-2 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-medium rounded-xl shadow-md transition-all duration-200 transform hover:scale-105"
                   >
                     {t('schedule.form.save')}
                   </button>
@@ -454,23 +481,35 @@ const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
       )}
 
       {showDeleteModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 w-full max-w-md">
-            <h2 className="section-heading text-center mb-6">
-              {t('time_entry.delete_entry')}
-            </h2>
+        <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl p-6 w-full max-w-md shadow-2xl transform transition-all duration-300 scale-95 animate-in fade-in-90 zoom-in-95">
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-xl font-bold text-gray-800">
+                {t('time_entry.delete_entry')}
+              </h2>
+              <button
+                onClick={() => setShowDeleteModal(false)}
+                className="text-gray-400 hover:text-gray-500 transition-colors duration-200"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+              </button>
+            </div>
             
             <div className="mb-6">
-              <p className="text-gray-700 text-center">
+              <p className="text-gray-700 text-center mb-4">
                 {t('time_entry.delete_confirm') || '确定要删除这个时间记录吗？'}
               </p>
               {selectedEntry && (
-                <div className="mt-4 p-3 bg-green-50 rounded-md">
-                  <div className="font-bold truncate">{selectedEntry.notes || t('time_entry.entry')}</div>
-                  <div className="text-green-600 text-sm mt-1">
-                    {formatTime(selectedEntry.startTime)} - {formatTime(selectedEntry.endTime)}
+                <div className="mt-4 p-4 bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl border border-green-200">
+                  <div className="font-bold truncate text-gray-800">{selectedEntry.notes || t('time_entry.entry')}</div>
+                  <div className="text-green-700 text-sm mt-2 flex flex-wrap items-center">
+                    <span className="mr-3">
+                      {formatTime(selectedEntry.startTime)} - {formatTime(selectedEntry.endTime)}
+                    </span>
                     {selectedEntry.duration && (
-                      <span className="ml-2">
+                      <span className="bg-white bg-opacity-70 px-2 py-1 rounded-lg font-bold">
                         [{(selectedEntry.duration / 60).toFixed(1)}h]
                       </span>
                     )}
@@ -479,11 +518,11 @@ const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
               )}
             </div>
             
-            <div className="flex justify-between">
+            <div className="flex justify-between items-center pt-4 border-t border-gray-100">
               <button
                 type="button"
                 onClick={() => setShowDeleteModal(false)}
-                className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded"
+                className="px-5 py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 font-medium rounded-xl transition-all duration-200 shadow-sm hover:shadow-md"
               >
                 {t('schedule.form.cancel')}
               </button>
@@ -493,7 +532,7 @@ const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
                   handleDeleteTimeEntry(selectedEntry.id);
                   setShowDeleteModal(false);
                 }}
-                className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                className="px-5 py-2 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-medium rounded-xl shadow-md transition-all duration-200 transform hover:scale-105"
               >
                 {t('schedule.form.delete')}
               </button>
@@ -501,53 +540,74 @@ const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
           </div>
         </div>
       )}
-    {showReplaceModal && (
-            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-              <div className="bg-white rounded-lg p-6 w-full max-w-md">
-                <h2 className="section-heading text-center mb-6">
-                  {t('schedule.replace_confirmation')}
-                </h2>
-                
-                <div className="mb-6">
-                  <p className="text-gray-700 text-center">
-                    {t('schedule.replace_warning') || '该日期已有排班或记录，继续操作将替换现有内容。确定要继续吗？'}
-                  </p>
-                </div>
-                
-                <div className="flex justify-between">
-                  <button
-                    type="button"
-                    onClick={() => setShowReplaceModal(false)}
-                    className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded"
-                  >
-                    {t('schedule.form.cancel')}
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      // 删除该日期的所有排班和时间记录
-                      const dateStr = format(selectedDateForReplace, 'yyyy-MM-dd');
-                      setSchedules(schedules.filter(schedule => schedule.date !== dateStr));
-                      setTimeEntries(timeEntries.filter(entry => entry.date !== dateStr));
-                      
-                      // 打开添加排班模态框
-                      setSelectedDate(selectedDateForReplace);
-                      setFormData({
-                        id: null,
-                        date: dateStr,
-                        selectedShift: ''
-                      });
-                      setShowReplaceModal(false);
-                      setShowModal(true);
-                    }}
-                    className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded"
-                  >
-                    {t('schedule.replace')}
-                  </button>
+      {showReplaceModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl p-6 w-full max-w-md shadow-2xl transform transition-all duration-300 scale-95 animate-in fade-in-90 zoom-in-95">
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-xl font-bold text-gray-800">
+                {t('schedule.replace_confirmation')}
+              </h2>
+              <button
+                onClick={() => setShowReplaceModal(false)}
+                className="text-gray-400 hover:text-gray-500 transition-colors duration-200"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+              </button>
+            </div>
+            
+            <div className="mb-6">
+              <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-r-lg mb-4">
+                <div className="flex">
+                  <div className="flex-shrink-0">
+                    <svg className="h-5 w-5 text-yellow-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                      <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                    </svg>
+                  </div>
+                  <div className="ml-3">
+                    <p className="text-sm text-yellow-700">
+                      {t('schedule.replace_warning') || '该日期已有排班或记录，继续操作将替换现有内容。确定要继续吗？'}
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
-          )}
+            
+            <div className="flex justify-between items-center pt-4 border-t border-gray-100">
+              <button
+                type="button"
+                onClick={() => setShowReplaceModal(false)}
+                className="px-5 py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 font-medium rounded-xl transition-all duration-200 shadow-sm hover:shadow-md"
+              >
+                {t('schedule.form.cancel')}
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  // 删除该日期的所有排班和时间记录
+                  const dateStr = format(selectedDateForReplace, 'yyyy-MM-dd');
+                  setSchedules(schedules.filter(schedule => schedule.date !== dateStr));
+                  setTimeEntries(timeEntries.filter(entry => entry.date !== dateStr));
+                  
+                  // 打开添加排班模态框
+                  setSelectedDate(selectedDateForReplace);
+                  setFormData({
+                    id: null,
+                    date: dateStr,
+                    selectedShift: ''
+                  });
+                  setShowReplaceModal(false);
+                  setShowModal(true);
+                }}
+                className="px-5 py-2 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-medium rounded-xl shadow-md transition-all duration-200 transform hover:scale-105"
+              >
+                {t('schedule.replace')}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
