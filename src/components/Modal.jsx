@@ -40,11 +40,11 @@ const Modal = ({ isOpen, onClose, title, children, footer, size = 'sm' }) => {
         {/* Modal content with enhanced styling and animations */}
         <div 
           ref={modalRef}
-          className={`inline-block align-bottom bg-white rounded-2xl text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:align-middle sm:w-full sm:${sizeClasses[size]} opacity-0 translate-y-4 duration-300 ease-out`}
+          className={`inline-block align-bottom bg-white rounded-2xl text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:align-middle w-full ${sizeClasses[size]} opacity-0 translate-y-4 duration-300 ease-out`}
           onClick={(e) => e.stopPropagation()} // Prevent closing when clicking modal content
         >
           {/* Modal header with improved styling */}
-          <div className="flex justify-between items-center px-4 py-2.5 sm:px-6 sm:py-4 border-b border-gray-100 bg-gradient-to-r from-gray-50 to-gray-100">
+          <div className="flex justify-between items-center px-3 py-2 sm:px-6 sm:py-4 border-b border-gray-100 bg-gradient-to-r from-gray-50 to-gray-100">
             <h3 className="text-base sm:text-xl font-semibold text-gray-800">{title}</h3>
             <button
               type="button"
@@ -59,13 +59,13 @@ const Modal = ({ isOpen, onClose, title, children, footer, size = 'sm' }) => {
           </div>
 
           {/* Modal body with improved padding and spacing */}
-          <div className="px-4 py-3 sm:px-6 sm:py-6">
+          <div className="px-3 py-2.5 sm:px-6 sm:py-6">
             {children}
           </div>
 
           {/* Modal footer with enhanced styling */}
           {footer && (
-            <div className="bg-gray-50 px-4 py-2.5 sm:px-6 sm:py-4 sm:flex sm:flex-row-reverse border-t border-gray-100 rounded-b-2xl">
+            <div className="bg-gray-50 px-3 py-2.5 sm:px-6 sm:py-4 sm:flex sm:flex-row-reverse border-t border-gray-100 rounded-b-2xl">
               {footer}
             </div>
           )}
@@ -78,7 +78,7 @@ const Modal = ({ isOpen, onClose, title, children, footer, size = 'sm' }) => {
 // Modal Header component
 Modal.Header = ({ children, className = '' }) => {
   return (
-    <div className={`mb-2.5 sm:mb-4 ${className}`}>
+    <div className={`mb-2 sm:mb-4 ${className}`}>
       {children}
     </div>
   );

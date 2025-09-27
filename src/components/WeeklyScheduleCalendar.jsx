@@ -394,17 +394,17 @@ const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
       </div>
 
       {showModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl p-6 w-full max-w-md shadow-2xl transform transition-all duration-300 scale-95 animate-in fade-in-90 zoom-in-95">
-            <div className="flex justify-between items-center mb-6">
-              <h2 className="text-xl font-bold text-gray-800">
+        <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 p-2 sm:p-4">
+          <div className="bg-white rounded-2xl p-4 sm:p-6 w-full max-w-md sm:max-w-lg shadow-2xl transform transition-all duration-300 scale-95 animate-in fade-in-90 zoom-in-95">
+            <div className="flex justify-between items-center mb-4 sm:mb-6">
+              <h2 className="text-lg sm:text-xl font-bold text-gray-800">
                 {formData.id ? t('schedule.edit_schedule') : t('schedule.add_schedule')}
               </h2>
               <button
                 onClick={() => setShowModal(false)}
                 className="text-gray-400 hover:text-gray-500 transition-colors duration-200"
               >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
                 </svg>
               </button>
@@ -412,8 +412,8 @@ const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
             
             <form onSubmit={handleSubmit}>
               {/* 只保留班次选择框 */}
-              <div className="mb-6">
-                <label className="block text-gray-700 text-sm font-bold mb-3" htmlFor="shiftTemplate">
+              <div className="mb-4 sm:mb-6">
+                <label className="block text-gray-700 text-sm font-bold mb-2 sm:mb-3" htmlFor="shiftTemplate">
                   {t('time_entry.custom_shift.select_shift')} *
                 </label>
                 <div className="relative">
@@ -423,7 +423,7 @@ const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
                     onChange={(e) => {
                       setFormData({...formData, selectedShift: e.target.value});
                     }}
-                    className="appearance-none w-full py-3 px-4 pr-10 text-gray-700 bg-white border-2 border-indigo-200 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200"
+                    className="appearance-none w-full py-2 px-3 sm:py-3 sm:px-4 pr-8 sm:pr-10 text-gray-700 bg-white border-2 border-indigo-200 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 text-sm sm:text-base"
                     required
                   >
                     <option value="">{t('time_entry.custom_shift.select_placeholder')}</option>
@@ -434,24 +434,24 @@ const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
                       </option>
                     ))}
                   </select>
-                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-700">
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 sm:px-3 text-gray-700">
+                    <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
                     </svg>
                   </div>
                 </div>
-                <p className="mt-2 text-sm text-gray-500">{t('time_entry.custom_shift.select_shift_help')}</p>
+                <p className="mt-1 sm:mt-2 text-xs sm:text-sm text-gray-500">{t('time_entry.custom_shift.select_shift_help')}</p>
               </div>
               
-              <div className="flex justify-between items-center pt-4 border-t border-gray-100">
+              <div className="flex justify-between items-center pt-3 sm:pt-4 border-t border-gray-100">
                 <div>
                   {formData.id && (
                     <button
                       type="button"
                       onClick={() => handleDelete(formData.id)}
-                      className="flex items-center text-red-600 hover:text-red-800 font-medium transition-colors duration-200"
+                      className="flex items-center text-red-600 hover:text-red-800 font-medium transition-colors duration-200 text-sm sm:text-base"
                     >
-                      <svg className="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <svg className="w-4 h-4 sm:w-5 sm:h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
                       </svg>
                       {t('schedule.form.delete')}
@@ -459,17 +459,17 @@ const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
                   )}
                 </div>
                 
-                <div className="flex space-x-3">
+                <div className="flex space-x-2 sm:space-x-3">
                   <button
                     type="button"
                     onClick={() => setShowModal(false)}
-                    className="px-5 py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 font-medium rounded-xl transition-all duration-200 shadow-sm hover:shadow-md"
+                    className="px-3 py-1.5 sm:px-5 sm:py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 font-medium rounded-xl transition-all duration-200 shadow-sm hover:shadow-md text-sm sm:text-base"
                   >
                     {t('schedule.form.cancel')}
                   </button>
                   <button
                     type="submit"
-                    className="px-5 py-2 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-medium rounded-xl shadow-md transition-all duration-200 transform hover:scale-105"
+                    className="px-3 py-1.5 sm:px-5 sm:py-2 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-medium rounded-xl shadow-md transition-all duration-200 transform hover:scale-105 text-sm sm:text-base"
                   >
                     {t('schedule.form.save')}
                   </button>
