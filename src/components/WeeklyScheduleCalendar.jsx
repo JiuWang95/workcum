@@ -29,56 +29,40 @@ const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
   const [showReplaceModal, setShowReplaceModal] = useState(false);
   const [selectedDateForReplace, setSelectedDateForReplace] = useState(null);
 
-  // Load schedules from localStorage
+  // Load schedules, time entries and shifts from localStorage
   useEffect(() => {
     const savedSchedules = JSON.parse(localStorage.getItem('schedules') || '[]');
-    setSchedules(savedSchedules);
-  }, []);
-
-  // Load time entries from localStorage
-  useEffect(() => {
     const savedEntries = JSON.parse(localStorage.getItem('timeEntries') || '[]');
-    setTimeEntries(savedEntries);
-  }, []);
-
-  // 添加一个useEffect来监听localStorage的变化
-  useEffect(() => {
-    const handleStorageChange = (e) => {
-      if (e.key === 'timeEntries') {
-        const savedEntries = JSON.parse(e.newValue || '[]');
-        setTimeEntries(savedEntries);
-      }
-    };
-
-    window.addEventListener('storage', handleStorageChange);
-    
-    // Cleanup event listener on component unmount
-    return () => {
-      window.removeEventListener('storage', handleStorageChange);
-    };
-  }, []);
-
-  // 添加一个useEffect来监听localStorage的变化
-  useEffect(() => {
-    const handleStorageChange = (e) => {
-      if (e.key === 'timeEntries') {
-        const savedEntries = JSON.parse(e.newValue || '[]');
-        setTimeEntries(savedEntries);
-      }
-    };
-
-    window.addEventListener('storage', handleStorageChange);
-    
-    // Cleanup event listener on component unmount
-    return () => {
-      window.removeEventListener('storage', handleStorageChange);
-    };
-  }, []);
-
-  // Load custom shifts from localStorage
-  useEffect(() => {
     const savedShifts = JSON.parse(localStorage.getItem('customShifts') || '[]');
+    
+    setSchedules(savedSchedules);
+    setTimeEntries(savedEntries);
     setShifts(savedShifts);
+  }, []);
+
+  // 添加一个useEffect来监听localStorage的变化
+  useEffect(() => {
+    const handleStorageChange = (e) => {
+      if (e.key === 'timeEntries') {
+        const savedEntries = JSON.parse(e.newValue || '[]');
+        setTimeEntries(savedEntries);
+      }
+      if (e.key === 'schedules') {
+        const savedSchedules = JSON.parse(e.newValue || '[]');
+        setSchedules(savedSchedules);
+      }
+      if (e.key === 'customShifts') {
+        const savedShifts = JSON.parse(e.newValue || '[]');
+        setShifts(savedShifts);
+      }
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    
+    // Cleanup event listener on component unmount
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+    };
   }, []);
 
   // Save schedules to localStorage whenever they change
@@ -268,13 +252,30 @@ const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
             }
             return sum;
           }, 0);
-
+          
+          // Determine background color based on content
+          let dayBackgroundColor = 'bg-white'; // Default background
+          let dayBorderColor = 'border-gray-200'; // Default border
+          
+          // If there are schedules, use the first schedule's shift type for background
+          if (daySchedules.length > 0 && daySchedules[0].selectedShift) {
+            const shiftInfo = shifts.find(shift => shift.id === daySchedules[0].selectedShift);
+            const shiftType = shiftInfo ? shiftInfo.shiftType : 'day';
+            dayBackgroundColor = getShiftBackgroundColor(shiftType) + ' bg-opacity-20';
+            dayBorderColor = 'border-' + getShiftColor(shiftType);
+          } 
+          // If there are time entries but no schedules, use time entry color
+          else if (dayTimeEntries.length > 0) {
+            dayBackgroundColor = 'bg-yellow-100'; // Time entry background color
+            dayBorderColor = 'border-yellow-300';
+          }
+          
           return (
             <div 
               key={index} 
-              className={`border rounded-lg p-2 sm:p-3 md:p-4 cursor-pointer transition-all duration-200 hover:shadow-md ${
-                isToday ? 'bg-gradient-to-r from-blue-50 to-indigo-50 border-blue-300 shadow-sm' : 'border-gray-200'
-              }`}
+              className={`rounded-lg p-2 sm:p-3 md:p-4 cursor-pointer transition-all duration-200 hover:shadow-md ${
+                isToday ? 'bg-gradient-to-r from-blue-50 to-indigo-50 border-blue-300 shadow-sm' : dayBackgroundColor + ' ' + dayBorderColor
+              } border-2`}
               onClick={() => handleDateClick(day)}
             >
               {/* Date header */}
@@ -292,7 +293,7 @@ const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
               
               {/* Arrangement of schedules and time entries: vertical on larger screens, horizontal wrap on mobile */}
               <div className="flex flex-wrap gap-2 sm:gap-3">
-                {/* Display schedules */}
+                {/* 显示排班 */}
                 {daySchedules.map((schedule) => {
                   // 获取班次信息
                   const shiftInfo = shifts.find(shift => shift.id === schedule.selectedShift);
@@ -303,10 +304,10 @@ const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
                   return (
                     <div 
                       key={schedule.id} 
-                      className="text-xs sm:text-sm md:text-base font-semibold p-2 sm:p-3 rounded-lg flex-shrink-0 w-full sm:w-auto transition-all duration-200 hover:scale-[1.02] shadow-sm"
+                      className="text-xs sm:text-sm md:text-base font-semibold p-2 sm:p-3 rounded-lg flex-shrink-0 w-full sm:w-auto transition-all duration-200 hover:scale-[1.02] shadow-sm cursor-pointer"
                       style={{
-                        background: `linear-gradient(135deg, ${getShiftBackgroundColor(shiftType)}, ${getShiftColor(shiftType)}20)`,
-                        borderLeft: `3px solid ${getShiftColor(shiftType)}`
+                        background: `linear-gradient(135deg, ${getShiftBackgroundColor(shiftType)}, ${getShiftColor(shiftType)}30)`,
+                        border: `1px solid ${getShiftColor(shiftType)}`
                       }}
                       onClick={(e) => {
                         e.stopPropagation();
@@ -345,19 +346,23 @@ const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
                   );
                 })}
                 
-                {/* Display time entries */}
+                {/* 显示时间记录 */}
                 {dayTimeEntries.map((entry) => (
                   <div 
                     key={entry.id} 
-                    className="text-xs sm:text-sm md:text-base font-semibold bg-gradient-to-r from-orange-100 to-amber-100 text-orange-800 p-2 sm:p-3 rounded-lg flex-shrink-0 w-full sm:w-auto cursor-pointer hover:scale-[1.02] transition-all duration-200 shadow-sm border-l-3 border-orange-500"
+                    className="text-xs sm:text-sm md:text-base font-semibold p-2 sm:p-3 rounded-lg flex-shrink-0 w-full sm:w-auto cursor-pointer hover:scale-[1.02] transition-all duration-200 shadow-sm"
+                    style={{
+                      background: `linear-gradient(135deg, #FDE68A, #F59E0B30)`,
+                      border: `1px solid #F59E0B`
+                    }}
                     onClick={(e) => {
                       e.stopPropagation();
                       setSelectedEntry(entry);
                       setShowDeleteModal(true);
                     }}
                   >
-                    <div className="font-bold truncate text-xs sm:text-sm">{entry.notes || t('time_entry.entry')}</div>
-                    <div className="text-orange-700 text-[0.6rem] sm:text-xs mt-1 font-medium">
+                    <div className="font-bold truncate text-xs sm:text-sm" style={{ color: '#92400E' }}>{entry.notes || t('time_entry.entry')}</div>
+                    <div className="text-[0.6rem] sm:text-xs mt-1 font-medium" style={{ color: '#92400E' }}>
                       {formatTime(entry.startTime)} - {formatTime(entry.endTime)}
                       {entry.duration && (
                         <span className="ml-2 bg-white bg-opacity-50 px-1.5 py-0.5 rounded-full">
@@ -370,7 +375,7 @@ const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
                 
                 {/* Show placeholder if no items */}
                 {daySchedules.length === 0 && dayTimeEntries.length === 0 && (
-                  <div className="text-gray-400 italic py-3 text-center text-sm sm:text-base md:text-lg bg-gray-50 rounded-lg">
+                  <div className="text-gray-400 italic py-3 text-center text-sm sm:text-base md:text-lg bg-gray-50 rounded-lg w-full">
                     {t('schedule.no_events')}
                   </div>
                 )}

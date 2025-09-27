@@ -103,7 +103,7 @@ const TimeEntryPage = () => {
       <div className="fixed md:hidden bottom-28 left-1/2 transform -translate-x-1/2 z-10">
         <button
           onClick={() => setIsAddEntryModalOpen(true)}
-          className="px-6 py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-full hover:from-green-600 hover:to-emerald-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 text-sm font-medium flex items-center shadow-lg transition-all duration-200 transform hover:scale-105"
+          className="px-3 py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-full hover:from-green-600 hover:to-emerald-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 text-sm font-medium flex items-center shadow-lg transition-all duration-200 transform hover:scale-105"
         >
           <svg 
             className="w-5 h-5 mr-2" 

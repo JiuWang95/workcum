@@ -38,14 +38,21 @@ const CalendarDay = ({
       const shiftName = shiftInfo ? shiftInfo.name : schedule.title;
       const shiftType = shiftInfo ? shiftInfo.shiftType : 'day';
       
+      // 将班次名称拆分为单个字符并垂直排列
+      const shiftNameChars = shiftName.split('');
+      
       return (
         <div 
-          className="text-xs sm:text-sm md:text-base truncate mb-1 p-1 rounded-lg shadow-sm"
+          className="text-xs sm:text-sm md:text-base mb-1 p-1 rounded-lg shadow-sm flex flex-col items-center justify-center h-full"
           style={{
             background: `linear-gradient(135deg, ${getShiftBackgroundColor(shiftType)}, ${getShiftColor(shiftType)}20)`
           }}
         >
-          <span className="font-bold">{shiftName}</span>
+          <div className="font-bold flex flex-col items-center">
+            {shiftNameChars.map((char, index) => (
+              <span key={index} className="leading-none">{char}</span>
+            ))}
+          </div>
         </div>
       );
     }
@@ -53,14 +60,23 @@ const CalendarDay = ({
     // 显示时间记录
     if (dayTimeEntries.length > 0) {
       const entry = dayTimeEntries[0];
+      const entryText = entry.notes || t('time_entry.entry');
+      
+      // 将时间记录文本拆分为单个字符并垂直排列
+      const entryTextChars = entryText.split('');
+      
       return (
         <div 
-          className="text-xs sm:text-sm md:text-base truncate mb-1 p-1 rounded-lg shadow-sm"
+          className="text-xs sm:text-sm md:text-base mb-1 p-1 rounded-lg shadow-sm flex flex-col items-center justify-center h-full"
           style={{
             background: 'linear-gradient(135deg, #fed7aa, #fdba74)'
           }}
         >
-          <span className="font-bold">{entry.notes || t('time_entry.entry')}</span>
+          <div className="font-bold flex flex-col items-center">
+            {entryTextChars.map((char, index) => (
+              <span key={index} className="leading-none">{char}</span>
+            ))}
+          </div>
         </div>
       );
     }
@@ -79,15 +95,22 @@ const CalendarDay = ({
         const shiftType = shiftInfo ? shiftInfo.shiftType : 'day';
         const bgColor = getShiftBackgroundColor(shiftType);
         
+        // 将班次名称拆分为单个字符并垂直排列
+        const shiftNameChars = shiftName.split('');
+        
         return (
           <div 
-            className="w-full h-full flex items-start justify-start p-1 rounded-lg truncate shadow-sm"
+            className="w-full h-full flex items-start justify-start p-1 rounded-lg shadow-sm"
             style={{
               background: `linear-gradient(to bottom right, ${bgColor} 50%, ${dayTimeEntries.length > 0 ? '#fed7aa' : bgColor} 50%)`
             }}
           >
-            <div className="text-xs sm:text-sm md:text-base truncate p-1 rounded-lg bg-white bg-opacity-90 font-bold">
-              <span className="font-bold">{shiftName}</span>
+            <div className="text-xs sm:text-sm md:text-base p-1 rounded-lg bg-white bg-opacity-90 font-bold flex flex-col items-center justify-center h-full">
+              <div className="font-bold flex flex-col items-center">
+                {shiftNameChars.map((char, index) => (
+                  <span key={index} className="leading-none">{char}</span>
+                ))}
+              </div>
             </div>
           </div>
         );
@@ -96,13 +119,17 @@ const CalendarDay = ({
       // 第一个项目（时间记录）
       dayTimeEntries.length > 0 && (
         <div 
-          className="w-full h-full flex items-start justify-start p-1 rounded-lg truncate shadow-sm"
+          className="w-full h-full flex items-start justify-start p-1 rounded-lg shadow-sm"
           style={{
             background: `linear-gradient(to bottom right, #fed7aa 50%, #fdba74 50%)`
           }}
         >
-          <div className="text-xs sm:text-sm md:text-base truncate p-1 rounded-lg bg-white bg-opacity-90 font-bold">
-            <span className="font-bold">{dayTimeEntries[0].notes || t('time_entry.entry')}</span>
+          <div className="text-xs sm:text-sm md:text-base p-1 rounded-lg bg-white bg-opacity-90 font-bold flex flex-col items-center justify-center h-full">
+            <div className="font-bold flex flex-col items-center">
+              {dayTimeEntries[0].notes ? dayTimeEntries[0].notes.split('').map((char, index) => (
+                <span key={index} className="leading-none">{char}</span>
+              )) : <span>{t('time_entry.entry')}</span>}
+            </div>
           </div>
         </div>
       )
@@ -111,12 +138,16 @@ const CalendarDay = ({
     // 第二个项目（时间记录或额外排班）
     const secondItem = dayTimeEntries.length > 0 ? (
       <div 
-        className="text-xs sm:text-sm md:text-base truncate p-1 rounded-lg absolute bottom-0 right-0 shadow-sm"
+        className="text-xs sm:text-sm md:text-base p-1 rounded-lg absolute bottom-0 right-0 shadow-sm flex flex-col items-center justify-center"
         style={{
           background: 'linear-gradient(135deg, #fed7aa, #fdba74)'
         }}
       >
-        <span className="font-bold">{dayTimeEntries[0].notes || t('time_entry.entry')}</span>
+        <div className="font-bold flex flex-col items-center">
+          {dayTimeEntries[0].notes ? dayTimeEntries[0].notes.split('').map((char, index) => (
+            <span key={index} className="leading-none">{char}</span>
+          )) : <span>{t('time_entry.entry')}</span>}
+        </div>
       </div>
     ) : daySchedules.length > 1 ? (
       (() => {
@@ -128,14 +159,21 @@ const CalendarDay = ({
         const secondShiftType = shiftInfo ? shiftInfo.shiftType : 'day';
         const secondBgColor = getShiftBackgroundColor(secondShiftType);
         
+        // 将班次名称拆分为单个字符并垂直排列
+        const shiftNameChars = shiftName.split('');
+        
         return (
           <div 
-            className="text-xs sm:text-sm md:text-base truncate p-1 rounded-lg absolute bottom-0 right-0 shadow-sm"
+            className="text-xs sm:text-sm md:text-base p-1 rounded-lg absolute bottom-0 right-0 shadow-sm flex flex-col items-center justify-center"
             style={{
               background: `linear-gradient(135deg, ${secondBgColor}, ${getShiftColor(secondShiftType)}20)`
             }}
           >
-            <span className="font-bold">{shiftName}</span>
+            <div className="font-bold flex flex-col items-center">
+              {shiftNameChars.map((char, index) => (
+                <span key={index} className="leading-none">{char}</span>
+              ))}
+            </div>
           </div>
         );
       })()
@@ -151,7 +189,7 @@ const CalendarDay = ({
 
   return (
     <div 
-      className={`min-h-16 sm:min-h-20 md:min-h-24 border rounded-lg p-1 sm:p-2 md:p-3 flex flex-col transition-all duration-200 hover:shadow-md ${
+      className={`min-h-24 sm:min-h-28 md:min-h-32 border rounded-lg p-1 sm:p-2 md:p-3 flex flex-col transition-all duration-200 hover:shadow-md ${
         isCurrentMonth ? 'bg-white' : 'bg-gray-50 text-gray-400'
       } ${isTodayProp ? 'border-blue-500 border-2 shadow-sm' : 'border-gray-200'}`}
       style={daySchedules.length > 0 ? { backgroundColor: dayBackgroundColor } : {}}
