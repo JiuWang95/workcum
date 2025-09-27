@@ -283,7 +283,7 @@ const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
               }`}>
                 <span className="mr-1 font-bold">{format(day, 'EEE', { locale: zhCN })}</span>
                 <span className="text-sm sm:text-base md:text-lg">{format(day, 'd', { locale: zhCN })}</span>
-                <span className="ml-1 text-[0.6rem] sm:text-xs md:text-sm">{format(day, 'MMMM', { locale: zhCN })}</span>
+                <span className="ml-1 text-[0.6rem] sm:text-xs md:text-sm">{format(day, 'M月', { locale: zhCN })}</span>
               </div>
               
               {/* Arrangement of schedules and time entries: vertical on larger screens, horizontal wrap on mobile */}

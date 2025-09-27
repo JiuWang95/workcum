@@ -34,12 +34,15 @@ const SchedulePage = () => {
   // Get week range for display
   const getWeekRange = (date) => {
     const weekOfMonth = getWeekOfMonth(date, { weekStartsOn: 1 });
-    return `${format(date, 'MMM', { locale: zhCN })} ${t('schedule.week_prefix')}${weekOfMonth}${t('schedule.week_suffix')}`;
+    const month = format(date, 'M', { locale: zhCN });
+return `${month}月 ${t('schedule.week_prefix')}${weekOfMonth}${t('schedule.week_suffix')}`;
   };
 
   // Get month range for display
   const getMonthRange = (date) => {
-    return format(date, 'yyyy MMMM', { locale: zhCN });
+    const year = format(date, 'yyyy', { locale: zhCN });
+    const month = format(date, 'MM', { locale: zhCN });
+    return `${year}年${parseInt(month)}月`;
   };
 
   return (
