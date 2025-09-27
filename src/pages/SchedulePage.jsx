@@ -54,7 +54,7 @@ return `${month}月 ${t('schedule.week_prefix')}${weekOfMonth}${t('schedule.week
             onClick={() => setViewMode('week')}
             className={`px-3 py-1.5 sm:px-4 sm:py-2 rounded-md text-sm font-medium transition-all duration-200 ${
               viewMode === 'week' 
-                ? 'bg-indigo-600 text-white shadow-sm' 
+                ? 'bg-gradient-to-r from-indigo-100 to-indigo-200 text-indigo-800 shadow-sm' 
                 : 'text-gray-600 hover:text-gray-900 hover:bg-gray-200'
             }`}
           >
@@ -64,7 +64,7 @@ return `${month}月 ${t('schedule.week_prefix')}${weekOfMonth}${t('schedule.week
             onClick={() => setViewMode('month')}
             className={`px-3 py-1.5 sm:px-4 sm:py-2 rounded-md text-sm font-medium transition-all duration-200 ${
               viewMode === 'month' 
-                ? 'bg-indigo-600 text-white shadow-sm' 
+                ? 'bg-gradient-to-r from-indigo-100 to-indigo-200 text-indigo-800 shadow-sm' 
                 : 'text-gray-600 hover:text-gray-900 hover:bg-gray-200'
             }`}
           >
