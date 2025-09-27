@@ -108,6 +108,7 @@
     "add_entry": "添加差异上班记录",
     "entry": "时间记录",
     "delete": "删除",
+    "delete_entry": "删除记录",
     "delete_confirm": "确定要删除这条时间记录吗？",
     "validation": {
       "end_time_after_start": "结束时间必须晚于开始时间"
