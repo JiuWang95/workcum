@@ -55,7 +55,7 @@ const DurationPicker = ({ value, onChange, id, label, className = "" }) => {
   return (
     <div className={`flex flex-col ${className}`}>
       {label && (
-        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor={id}>
+        <label className="block text-gray-700 text-sm font-bold mb-1" htmlFor={id}>
           {label}
         </label>
       )}

@@ -89,9 +89,9 @@ const TimeEntryForm = ({ onAddEntry, onCancel }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div className="mb-4">
-        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="date">
+    <form id="timeEntryForm" onSubmit={handleSubmit} className="space-y-4">
+      <div>
+        <label className="block text-gray-700 text-sm font-bold mb-1" htmlFor="date">
           {t('time_entry.date')}
         </label>
         <input
@@ -99,22 +99,22 @@ const TimeEntryForm = ({ onAddEntry, onCancel }) => {
           id="date"
           value={date}
           onChange={(e) => setDate(e.target.value)}
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline text-sm"
           required
         />
       </div>
       
       {/* Shift template selector */}
       {shifts.length > 0 && (
-        <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="shiftTemplate">
+        <div>
+          <label className="block text-gray-700 text-sm font-bold mb-1" htmlFor="shiftTemplate">
             {t('time_entry.custom_shift.select_shift')}
           </label>
           <select
             id="shiftTemplate"
             value={selectedShift}
             onChange={handleShiftChange}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline text-sm"
           >
             <option value="">{t('time_entry.custom_shift.select_placeholder')}</option>
             {shifts.map((shift) => (
@@ -127,8 +127,8 @@ const TimeEntryForm = ({ onAddEntry, onCancel }) => {
         </div>
       )}
       
-      <div className="mb-4">
-        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="notes">
+      <div>
+        <label className="block text-gray-700 text-sm font-bold mb-1" htmlFor="notes">
           {t('time_entry.shift_name')}
         </label>
         <input
@@ -136,14 +136,14 @@ const TimeEntryForm = ({ onAddEntry, onCancel }) => {
           id="notes"
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline text-sm"
           placeholder={t('time_entry.shift_name_placeholder')}
         />
       </div>
       
-      <div className="grid grid-cols-2 gap-4 mb-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
         <div>
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="startTime">
+          <label className="block text-gray-700 text-sm font-bold mb-1" htmlFor="startTime">
             {t('time_entry.start_time')}
           </label>
           <input
@@ -158,7 +158,7 @@ const TimeEntryForm = ({ onAddEntry, onCancel }) => {
         </div>
         
         <div>
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="endTime">
+          <label className="block text-gray-700 text-sm font-bold mb-1" htmlFor="endTime">
             {t('time_entry.end_time')}
           </label>
           <input
@@ -174,33 +174,16 @@ const TimeEntryForm = ({ onAddEntry, onCancel }) => {
       </div>
       
       {/* Custom duration input */}
-      <div className="mb-4">
+      <div>
         <DurationPicker
           id="customDuration"
           label={t('time_entry.custom_shift.custom_duration')}
           value={customDuration}
           onChange={setCustomDuration}
         />
-        <p className="text-gray-500 text-xs md:text-sm mt-1">
-          {t('time_entry.custom_shift.custom_duration_help') || "选择自定义工时"}
-        </p>
       </div>
       
-      <div className="flex items-center justify-between mt-6">
-        <button
-          type="button"
-          onClick={onCancel}
-          className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-        >
-          {t('common.cancel')}
-        </button>
-        <button
-          type="submit"
-          className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-        >
-          {t('time_entry.add_entry')}
-        </button>
-      </div>
+      {/* 移除原来的按钮，因为现在使用Modal的footer按钮 */}
     </form>
   );
 };

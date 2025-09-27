@@ -1,11 +1,10 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 
 const Modal = ({ isOpen, onClose, title, children, footer, size = 'md' }) => {
   const { t } = useTranslation();
+  const modalRef = useRef(null);
   
-  if (!isOpen) return null;
-
   // Set modal width based on size property
   const sizeClasses = {
     sm: 'max-w-md',
@@ -15,49 +14,81 @@ const Modal = ({ isOpen, onClose, title, children, footer, size = 'md' }) => {
     full: 'max-w-full'
   };
 
+  // Apply entrance animation when modal opens
+  useEffect(() => {
+    if (isOpen && modalRef.current) {
+      // Trigger reflow to ensure the animation plays
+      modalRef.current.offsetHeight;
+      // Apply the visible state
+      modalRef.current.classList.remove('opacity-0', 'translate-y-4');
+      modalRef.current.classList.add('opacity-100', 'translate-y-0');
+    }
+  }, [isOpen]);
+
+  if (!isOpen) return null;
+
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto">
-      {/* Background overlay */}
+      {/* Background overlay with blur effect */}
       <div 
-        className="fixed inset-0 bg-black bg-opacity-50 transition-opacity"
+        className="fixed inset-0 bg-black bg-opacity-40 backdrop-blur-sm transition-opacity duration-300"
         onClick={onClose}
       ></div>
 
-      {/* Modal container */}
+      {/* Modal container with smooth entrance animation */}
       <div className="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
-        {/* Modal content */}
+        {/* Modal content with enhanced styling and animations */}
         <div 
-          className={`inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:w-full sm:${sizeClasses[size]}`}
+          ref={modalRef}
+          className={`inline-block align-bottom bg-white rounded-2xl text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:align-middle sm:w-full sm:${sizeClasses[size]} opacity-0 translate-y-4 duration-300 ease-out`}
           onClick={(e) => e.stopPropagation()} // Prevent closing when clicking modal content
         >
-          {/* Modal header */}
-          <div className="flex justify-between items-center px-4 py-3 border-b border-gray-200">
-            <h3 className="text-lg font-medium text-gray-900">{title}</h3>
+          {/* Modal header with improved styling */}
+          <div className="flex justify-between items-center px-6 py-4 border-b border-gray-100 bg-gradient-to-r from-gray-50 to-gray-100">
+            <h3 className="text-xl font-semibold text-gray-800">{title}</h3>
             <button
               type="button"
-              className="text-gray-400 hover:text-gray-500 focus:outline-none"
+              className="text-gray-500 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-300 rounded-full p-1 transition-all duration-200"
               onClick={onClose}
+              aria-label={t('common.close')}
             >
-              <span className="sr-only">{t('common.close')}</span>
               <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
           </div>
 
-          {/* Modal body */}
-          <div className="px-4 py-5 sm:px-6">
+          {/* Modal body with improved padding and spacing */}
+          <div className="px-6 py-6 sm:px-8">
             {children}
           </div>
 
-          {/* Modal footer */}
+          {/* Modal footer with enhanced styling */}
           {footer && (
-            <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse border-t border-gray-200">
+            <div className="bg-gray-50 px-6 py-4 sm:px-8 sm:flex sm:flex-row-reverse border-t border-gray-100 rounded-b-2xl">
               {footer}
             </div>
           )}
         </div>
       </div>
+    </div>
+  );
+};
+
+// Modal Header component
+Modal.Header = ({ children, className = '' }) => {
+  return (
+    <div className={`mb-4 ${className}`}>
+      {children}
+    </div>
+  );
+};
+
+// Modal Body component
+Modal.Body = ({ children, className = '' }) => {
+  return (
+    <div className={className}>
+      {children}
     </div>
   );
 };
