@@ -58,6 +58,10 @@ const InstructionsModal = ({ isOpen, onClose }) => {
                 <div className="flex-shrink-0 h-5 w-5 text-blue-500 mt-1">•</div>
                 <p className="ml-2 text-gray-700 text-base">{t('instructions.planning.item2')}</p>
               </div>
+              <div className="flex items-start mt-2">
+                <div className="flex-shrink-0 h-5 w-5 text-blue-500 mt-1">•</div>
+                <p className="ml-2 text-gray-700 text-base">{t('instructions.planning.item3')}</p>
+              </div>
             </div>
 
             {/* Scheduling */}

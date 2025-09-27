@@ -50,7 +50,8 @@
     "planning": {
       "title": "Planning",
       "item1": "You can select preset custom shift templates to quickly populate record information.",
-      "item2": "Or manually add your work time records. If the schedule indicates a rest day but you actually worked, you can add a record to account for the difference."
+      "item2": "Or manually add your work time records. If the schedule indicates a rest day but you actually worked, you can add a record to account for the difference.",
+      "item3": "When adding a differential entry, if there is already a schedule in the calendar, it will replace the schedule to ensure the validity of the differential and working hours."
     },
     "scheduling": {
       "title": "Scheduling",
