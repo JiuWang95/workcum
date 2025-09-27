@@ -13,7 +13,7 @@ const InstructionsModal = ({ isOpen, onClose }) => {
           <h2 className="text-xl sm:text-2xl font-bold text-blue-800 mb-4">{t('instructions.title')}</h2>
           
           <div className="space-y-4 text-left mx-auto max-w-lg sm:max-w-md">
-            {/* 方便使用 */}
+            {/* Convenience */}
             <div>
               <h3 className="text-base sm:text-lg font-semibold text-blue-700 mb-1">{t('instructions.convenience.title')}</h3>
               <div className="flex items-start">
@@ -26,7 +26,7 @@ const InstructionsModal = ({ isOpen, onClose }) => {
               </div>
             </div>
 
-            {/* 计划 */}
+            {/* Planning */}
             <div>
               <h3 className="text-base sm:text-lg font-semibold text-blue-700 mb-1">{t('instructions.planning.title')}</h3>
               <div className="flex items-start">
@@ -39,7 +39,7 @@ const InstructionsModal = ({ isOpen, onClose }) => {
               </div>
             </div>
 
-            {/* 排班 */}
+            {/* Scheduling */}
             <div>
               <h3 className="text-base sm:text-lg font-semibold text-blue-700 mb-1">{t('instructions.scheduling.title')}</h3>
               <div className="flex items-start">
@@ -52,7 +52,7 @@ const InstructionsModal = ({ isOpen, onClose }) => {
               </div>
             </div>
 
-            {/* 统计 */}
+            {/* Statistics */}
             <div>
               <h3 className="text-base sm:text-lg font-semibold text-blue-700 mb-1">{t('instructions.statistics.title')}</h3>
               <div className="flex items-start">
@@ -69,7 +69,7 @@ const InstructionsModal = ({ isOpen, onClose }) => {
               </div>
             </div>
 
-            {/* 我的 */}
+            {/* My */}
             <div>
               <h3 className="text-base sm:text-lg font-semibold text-blue-700 mb-1">{t('instructions.my.title')}</h3>
               <div className="flex items-start">

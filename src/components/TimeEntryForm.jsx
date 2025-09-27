@@ -79,13 +79,13 @@ const TimeEntryForm = ({ onAddEntry }) => {
         setStartTime(shift.startTime);
         setEndTime(shift.endTime);
         setCustomDuration(shift.customDuration || '');
-        // 自动填充班次名称
+        // Auto-fill shift name
         setNotes(shift.name);
       }
     } else {
       // Reset custom duration when no shift is selected
       setCustomDuration('');
-      // 清空班次名称
+      // Clear shift name
       setNotes('');
     }
   };

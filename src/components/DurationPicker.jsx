@@ -41,12 +41,12 @@ const DurationPicker = ({ value, onChange, id, label, className = "" }) => {
     setMinutes(parsed.minutes);
   }, [value]);
   
-  // 生成小时选项 (0-24)
+  // Generate hour options (0-24)
   const hourOptions = Array.from({ length: 25 }, (_, i) => (
     <option key={i} value={i}>{i}</option>
   ));
   
-  // 生成分钟选项 (0-59，步长为5)
+  // Generate minute options (0-59, step by 5)
   const minuteOptions = Array.from({ length: 12 }, (_, i) => {
     const min = i * 5;
     return <option key={min} value={min}>{min}</option>;

@@ -8,8 +8,8 @@ const TimeEntryPage = () => {
   const { t } = useTranslation();
   const [entries, setEntries] = useState([]);
   const [shifts, setShifts] = useState([]);
-  const [showInstructions, setShowInstructions] = useState(false); // 控制使用说明弹窗显示
-  const [isAddRecordOpen, setIsAddRecordOpen] = useState(false); // 控制添加记录模块的折叠状态（默认折叠）
+  const [showInstructions, setShowInstructions] = useState(false); // Control instructions modal display
+  const [isAddRecordOpen, setIsAddRecordOpen] = useState(false); // Control add record module collapse state (default collapsed)
   const editSectionRef = useRef(null);
 
   // Load entries and shifts from localStorage on component mount
@@ -21,7 +21,7 @@ const TimeEntryPage = () => {
     setShifts(savedShifts);
   }, []);
 
-  // 滚动到编辑区域的函数
+  // Function to scroll to edit section
   const scrollToEditSection = () => {
     if (editSectionRef.current) {
       editSectionRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });

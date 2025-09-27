@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import FileNameModal from '../components/FileNameModal';
 import ConfirmOverrideModal from '../components/ConfirmOverrideModal';
-import { exportAllDataToExcel } from '../utils/exportData';
 
 const DataPage = () => {
   const { t, i18n } = useTranslation();
@@ -20,25 +19,6 @@ const DataPage = () => {
   // Export all data to JSON
   const handleExportAllData = () => {
     setIsFileNameModalOpen(true);
-  };
-
-  // Export all data to Excel
-  const handleExportAllDataToExcel = () => {
-    try {
-      // Get all data from localStorage
-      const timeEntries = JSON.parse(localStorage.getItem('timeEntries') || '[]');
-      const schedules = JSON.parse(localStorage.getItem('schedules') || '[]');
-      const customShifts = JSON.parse(localStorage.getItem('customShifts') || '[]');
-      
-      // Export to Excel
-      exportAllDataToExcel(timeEntries, schedules, customShifts, `time-tracker-export-${new Date().toISOString().split('T')[0]}`, t);
-      
-      setExportStatus(t('data.export.success'));
-      setTimeout(() => setExportStatus(''), 3000);
-    } catch (error) {
-      setExportStatus(t('data.export.error') + error.message);
-      setTimeout(() => setExportStatus(''), 3000);
-    }
   };
 
   const handleFileNameConfirm = (fileName) => {
@@ -370,25 +350,16 @@ const DataPage = () => {
                   {t('data.export.description')}
                 </p>
                 <div className="flex flex-col sm:flex-row gap-3">
-                  <button
-                    onClick={handleExportAllData}
-                    className="inline-flex items-center px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-lg transition-all duration-200 shadow hover:shadow-md"
-                  >
-                    <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
-                    </svg>
-                    {t('data.export.json_button')}
-                  </button>
-                  <button
-                    onClick={handleExportAllDataToExcel}
-                    className="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-all duration-200 shadow hover:shadow-md"
-                  >
-                    <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                    </svg>
-                    {t('data.export.excel_button')}
-                  </button>
-                </div>
+                <button
+                  onClick={handleExportAllData}
+                  className="inline-flex items-center px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-lg transition-all duration-200 shadow hover:shadow-md"
+                >
+                  <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                  </svg>
+                  {t('data.export.json_button')}
+                </button>
+              </div>
                 {exportStatus && (
                   <div className="mt-4 p-3 bg-emerald-100 text-emerald-700 rounded-lg">
                     {exportStatus}

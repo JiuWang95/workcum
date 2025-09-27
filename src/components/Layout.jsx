@@ -11,18 +11,18 @@ const Layout = () => {
     i18n.changeLanguage(newLang);
   };
 
-  // 桌面端导航栏按钮的活动状态样式
+  // Desktop navigation link active state styles
   const getDesktopLinkClass = (path) => {
     const baseClass = "px-3 py-2 rounded-md text-sm font-medium transition-colors";
     const activeClass = "bg-indigo-100 text-indigo-700";
     const inactiveClass = "text-gray-700 hover:text-indigo-600 hover:bg-gray-100";
     
-    // 特殊处理根路径
+    // Special handling for root path
     if (path === "/" && location.pathname === "/") {
       return `${baseClass} ${activeClass}`;
     }
     
-    // 其他路径的匹配
+    // Matching for other paths
     if (path !== "/" && location.pathname.startsWith(path)) {
       return `${baseClass} ${activeClass}`;
     }
@@ -30,18 +30,18 @@ const Layout = () => {
     return `${baseClass} ${inactiveClass}`;
   };
 
-  // 移动端导航栏按钮的活动状态样式
+  // Mobile navigation link active state styles
   const getMobileLinkClass = (path) => {
     const baseClass = "flex flex-col items-center p-2 text-xs transition-colors";
     const activeClass = "text-indigo-600 bg-indigo-50 rounded-lg";
     const inactiveClass = "text-gray-700 hover:text-indigo-600";
     
-    // 特殊处理根路径
+    // Special handling for root path
     if (path === "/" && location.pathname === "/") {
       return `${baseClass} ${activeClass}`;
     }
     
-    // 其他路径的匹配
+    // Matching for other paths
     if (path !== "/" && location.pathname.startsWith(path)) {
       return `${baseClass} ${activeClass}`;
     }

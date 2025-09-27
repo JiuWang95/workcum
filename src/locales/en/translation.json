@@ -141,40 +141,14 @@
     "hours": "hours",
     "minutes": "minutes"
   },
-  "reports": {
-    "title": "Statistics",
-    "summary": "Summary",
-    "details": "Details",
-    "total_duration": "Total Hours",
-    "export": "Export to Excel",
-    "last_week": "Last Week",
-    "this_week": "This Week",
-    "next_week": "Next Week",
-    "table": {
-      "date": "Date",
-      "shift": "Shift",
-      "duration": "Hours",
-      "notes": "Notes",
-      "type": "Type",
-      "time_entry": "Time Entry",
-      "schedule": "Schedule"
-    },
-    "summary_item": "Summary Item",
-    "value": "Value",
-    "entries_count": "Total Time Entries",
-    "schedules_count": "Total Schedules",
-    "custom_shifts_count": "Total Custom Shifts",
-    "total_hours": "Total Hours",
-    "total_minutes": "Total Minutes"
-  },
   "schedule": {
     "title": "Schedule",
     "week": "Week",
     "month": "Month",
     "previous_week": "Last",
     "next_week": "Next",
-    "previous_month": "Previous Month",
-    "next_month": "Next Month",
+    "previous_month": "Last",
+    "next_month": "Next",
     "today": "Today",
     "week_prefix": "Week ",
     "week_suffix": "",
@@ -296,6 +270,10 @@
     "total_hours": "Total Hours",
     "total_minutes": "Total Minutes",
     "total_time_tracked": "Total time tracked from {{startDate}} to {{endDate}}",
-    "no_entries": "No entries for this period"
+    "no_entries": "No entries for this period",
+    "export": "Export to Excel",
+    "export_modal": {
+      "title": "Set Excel File Name"
+    }
   }
 }

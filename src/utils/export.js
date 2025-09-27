@@ -13,7 +13,7 @@ const convertDurationToHours = (durationStr) => {
   return hours + (minutes / 60);
 };
 
-// 定义居中样式
+// Define centered style
 const centeredStyle = {
   alignment: {
     horizontal: "center",
@@ -38,14 +38,14 @@ export const exportToExcelReport = (entries, schedules, shifts, filename, t) => 
   // 1. Format time entries data for Excel
   const formattedEntries = sortedEntries.map(entry => {
     return {
-      Type: t ? t('reports.table.time_entry') : '工时记录',
-      Date: entry.date,
-      'Start Time': entry.startTime,
-      'End Time': entry.endTime,
-      Duration: `${(entry.duration / 60).toFixed(1)}h`,
-      Minutes: entry.duration,
-      Notes: entry.notes || ''
-    };
+        Type: t ? t('reports.table.time_entry') : t('reports.table.time_entry'),
+        Date: entry.date,
+        'Start Time': entry.startTime,
+        'End Time': entry.endTime,
+        Duration: `${(entry.duration / 60).toFixed(1)}h`,
+        Minutes: entry.duration,
+        Notes: entry.notes || ''
+      };
   });
 
   // Add time entries worksheet if there are entries
@@ -63,7 +63,7 @@ export const exportToExcelReport = (entries, schedules, shifts, filename, t) => 
       }
     }
     
-    utils.book_append_sheet(wb, wsEntries, t ? t('reports.table.time_entry') : '工时记录');
+    utils.book_append_sheet(wb, wsEntries, t ? t('reports.table.time_entry') : t('reports.table.time_entry'));
   }
 
   // Sort schedules by date and start time
@@ -79,12 +79,12 @@ export const exportToExcelReport = (entries, schedules, shifts, filename, t) => 
   // 2. Format schedules data for Excel
   const formattedSchedules = sortedSchedules.map(schedule => {
     let duration = 0;
-    // 优先使用排班记录中保存的自定义工时
+    // Prioritize using custom duration saved in schedule record
     if (schedule.customDuration !== undefined && schedule.customDuration !== null && schedule.customDuration !== "") {
       duration = convertDurationToHours(schedule.customDuration) * 60;
     } else if (schedule.selectedShift) {
       const shift = shifts.find(s => s.id === schedule.selectedShift);
-      // 修改逻辑：如果自定义工时存在（即使是0），也使用自定义工时
+      // Modify logic: If custom duration exists (even if 0), use custom duration
       if (shift && shift.customDuration !== undefined && shift.customDuration !== null && shift.customDuration !== "") {
         duration = convertDurationToHours(shift.customDuration) * 60;
       } else {
@@ -96,14 +96,14 @@ export const exportToExcelReport = (entries, schedules, shifts, filename, t) => 
     }
     
     return {
-      Type: t ? t('reports.table.schedule') : '排班',
-      Date: schedule.date,
-      'Start Time': schedule.startTime,
-      'End Time': schedule.endTime,
-      Duration: `${(duration / 60).toFixed(1)}h`,
-      Minutes: duration,
-      Notes: schedule.notes || schedule.title || ''
-    };
+        Type: t ? t('reports.table.schedule') : t('reports.table.schedule'),
+        Date: schedule.date,
+        'Start Time': schedule.startTime,
+        'End Time': schedule.endTime,
+        Duration: `${(duration / 60).toFixed(1)}h`,
+        Minutes: duration,
+        Notes: schedule.notes || schedule.title || ''
+      };
   });
 
   // Add schedules worksheet if there are schedules
@@ -121,17 +121,17 @@ export const exportToExcelReport = (entries, schedules, shifts, filename, t) => 
       }
     }
     
-    utils.book_append_sheet(wb, wsSchedules, t ? t('schedule.title') : '排班表');
+    utils.book_append_sheet(wb, wsSchedules, t ? t('schedule.title') : t('schedule.title'));
   }
 
   // 3. Format custom shifts data for Excel
   const formattedShifts = shifts.map(shift => {
     return {
-      [t ? t('shifts.name') : '班次名称']: shift.name,
-      [t ? t('shifts.start_time') : '开始时间']: shift.startTime,
-      [t ? t('shifts.end_time') : '结束时间']: shift.endTime,
-      [t ? t('shifts.custom_duration') : '自定义工时']: shift.customDuration || '',
-      [t ? t('shifts.shift_type') : '班次类型']: shift.shiftType || 'day'
+      [t ? t('shifts.name') : t('shifts.name')]: shift.name,
+      [t ? t('shifts.start_time') : t('shifts.start_time')]: shift.startTime,
+      [t ? t('shifts.end_time') : t('shifts.end_time')]: shift.endTime,
+      [t ? t('shifts.custom_duration') : t('shifts.custom_duration')]: shift.customDuration || '',
+      [t ? t('shifts.shift_type') : t('shifts.shift_type')]: shift.shiftType || 'day'
     };
   });
 
@@ -150,7 +150,7 @@ export const exportToExcelReport = (entries, schedules, shifts, filename, t) => 
       }
     }
     
-    utils.book_append_sheet(wb, wsShifts, t ? t('shifts.custom_shifts') : '自定义班次');
+    utils.book_append_sheet(wb, wsShifts, t ? t('shifts.custom_shifts') : t('shifts.custom_shifts'));
   }
 
   // 4. Create summary data
@@ -162,12 +162,12 @@ export const exportToExcelReport = (entries, schedules, shifts, filename, t) => 
 
   // Summary data
   const summaryData = [
-    { [t ? t('reports.summary_item') : '统计项目']: t ? t('reports.entries_count') : '工时记录总数', [t ? t('reports.value') : '数值']: entries.length },
-    { [t ? t('reports.summary_item') : '统计项目']: t ? t('reports.schedules_count') : '排班记录总数', [t ? t('reports.value') : '数值']: schedules.length },
-    { [t ? t('reports.summary_item') : '统计项目']: t ? t('reports.custom_shifts_count') : '自定义班次总数', [t ? t('reports.value') : '数值']: shifts.length },
-    { [t ? t('reports.summary_item') : '统计项目']: t ? t('reports.total_hours') : '总工时(小时)', [t ? t('reports.value') : '数值']: totalHours },
-    { [t ? t('reports.summary_item') : '统计项目']: t ? t('reports.total_minutes') : '总工时(分钟)', [t ? t('reports.value') : '数值']: totalMinutes }
-  ];
+      { [t ? t('reports.summary_item') : t('reports.summary_item')]: t ? t('reports.entries_count') : t('reports.entries_count'), [t ? t('reports.value') : t('reports.value')]: entries.length },
+      { [t ? t('reports.summary_item') : t('reports.summary_item')]: t ? t('reports.schedules_count') : t('reports.schedules_count'), [t ? t('reports.value') : t('reports.value')]: schedules.length },
+      { [t ? t('reports.summary_item') : t('reports.summary_item')]: t ? t('reports.custom_shifts_count') : t('reports.custom_shifts_count'), [t ? t('reports.value') : t('reports.value')]: shifts.length },
+      { [t ? t('reports.summary_item') : t('reports.summary_item')]: t ? t('reports.total_hours') : t('reports.total_hours'), [t ? t('reports.value') : t('reports.value')]: totalHours },
+      { [t ? t('reports.summary_item') : t('reports.summary_item')]: t ? t('reports.total_minutes') : t('reports.total_minutes'), [t ? t('reports.value') : t('reports.value')]: totalMinutes }
+    ];
 
   const wsSummary = utils.json_to_sheet(summaryData);
   
@@ -182,7 +182,7 @@ export const exportToExcelReport = (entries, schedules, shifts, filename, t) => 
     }
   }
   
-  utils.book_append_sheet(wb, wsSummary, t ? t('reports.summary') : '统计');
+  utils.book_append_sheet(wb, wsSummary, t ? t('reports.summary') : t('reports.summary'));
 
   // Export to file
   writeFile(wb, `${filename}.xlsx`);

@@ -13,9 +13,9 @@ const CustomShiftManager = ({ scrollToEditSection }) => {
   const [startTime, setStartTime] = useState('09:00');
   const [endTime, setEndTime] = useState('17:00');
   const [customDuration, setCustomDuration] = useState('');
-  const [shiftType, setShiftType] = useState('day'); // 添加班次类型状态
+  const [shiftType, setShiftType] = useState('day'); // Add shift type state
   
-  // 拖动排序相关状态
+  // Drag and drop sorting related state
   const [draggedItem, setDraggedItem] = useState(null);
   const [draggedOver, setDraggedOver] = useState(null);
 

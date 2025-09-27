@@ -169,7 +169,10 @@
     "schedules_count": "排班记录总数",
     "custom_shifts_count": "自定义班次总数",
     "total_hours": "总工时(小时)",
-    "total_minutes": "总工时(分钟)"
+    "total_minutes": "总工时(分钟)",
+    "export_modal": {
+      "title": "设置Excel文件名"
+    }
   },
   "schedule": {
     "title": "排班",

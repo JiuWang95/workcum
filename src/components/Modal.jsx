@@ -6,7 +6,7 @@ const Modal = ({ isOpen, onClose, title, children, footer, size = 'md' }) => {
   
   if (!isOpen) return null;
 
-  // 根据size属性设置模态框宽度
+  // Set modal width based on size property
   const sizeClasses = {
     sm: 'max-w-md',
     md: 'max-w-lg',
@@ -17,20 +17,20 @@ const Modal = ({ isOpen, onClose, title, children, footer, size = 'md' }) => {
 
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto">
-      {/* 背景遮罩 */}
+      {/* Background overlay */}
       <div 
         className="fixed inset-0 bg-black bg-opacity-50 transition-opacity"
         onClick={onClose}
       ></div>
 
-      {/* 模态框容器 */}
+      {/* Modal container */}
       <div className="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
-        {/* 模态框内容 */}
+        {/* Modal content */}
         <div 
           className={`inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:w-full sm:${sizeClasses[size]}`}
-          onClick={(e) => e.stopPropagation()} // 防止点击模态框内容时关闭
+          onClick={(e) => e.stopPropagation()} // Prevent closing when clicking modal content
         >
-          {/* 模态框头部 */}
+          {/* Modal header */}
           <div className="flex justify-between items-center px-4 py-3 border-b border-gray-200">
             <h3 className="text-lg font-medium text-gray-900">{title}</h3>
             <button
@@ -45,12 +45,12 @@ const Modal = ({ isOpen, onClose, title, children, footer, size = 'md' }) => {
             </button>
           </div>
 
-          {/* 模态框主体 */}
+          {/* Modal body */}
           <div className="px-4 py-5 sm:px-6">
             {children}
           </div>
 
-          {/* 模态框底部 */}
+          {/* Modal footer */}
           {footer && (
             <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse border-t border-gray-200">
               {footer}

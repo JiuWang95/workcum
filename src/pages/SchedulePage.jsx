@@ -39,7 +39,7 @@ const SchedulePage = () => {
 
   // Get month range for display
   const getMonthRange = (date) => {
-    return format(date, 'yyyy年 MMMM', { locale: zhCN });
+    return format(date, 'yyyy MMMM', { locale: zhCN });
   };
 
   return (

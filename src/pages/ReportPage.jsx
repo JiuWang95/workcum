@@ -122,7 +122,7 @@ const ReportPage = () => {
         onClose={() => setIsExcelFileNameModalOpen(false)}
         onConfirm={handleExcelFileNameConfirm}
         defaultFileName={`time-report-${startDate}-to-${endDate}`}
-        title="设置Excel文件名"
+        title={t('reports.export_modal.title')}
         fileType="Excel"
         fileExtension=".xlsx"
       />
@@ -362,19 +362,19 @@ const ReportPage = () => {
                             </div>
                         <div className="grid grid-cols-2 gap-2 text-sm">
                           <div>
-                            <span className="font-medium">开始时间:</span>
+                            <span className="font-medium">{t('reports.table.start_time')}:</span>
                             <span className="ml-1">{record.startTime}</span>
                           </div>
                           <div>
-                            <span className="font-medium">结束时间:</span>
+                            <span className="font-medium">{t('reports.table.end_time')}:</span>
                             <span className="ml-1">{record.endTime}</span>
                           </div>
                           <div>
-                            <span className="font-medium">工时:</span>
+                            <span className="font-medium">{t('reports.table.duration')}:</span>
                             <span className="ml-1">{(record.duration / 60).toFixed(1)}h</span>
                           </div>
                           <div>
-                            <span className="font-medium">日期:</span>
+                            <span className="font-medium">{t('reports.table.date')}:</span>
                             <span className="ml-1">{record.date}</span>
                           </div>
                         </div>
@@ -406,19 +406,19 @@ const ReportPage = () => {
                             </div>
                         <div className="grid grid-cols-2 gap-2 text-sm">
                           <div>
-                            <span className="font-medium">开始时间:</span>
+                            <span className="font-medium">{t('reports.table.start_time')}:</span>
                             <span className="ml-1">{record.startTime}</span>
                           </div>
                           <div>
-                            <span className="font-medium">结束时间:</span>
+                            <span className="font-medium">{t('reports.table.end_time')}:</span>
                             <span className="ml-1">{record.endTime}</span>
                           </div>
                           <div>
-                            <span className="font-medium">工时:</span>
+                            <span className="font-medium">{t('reports.table.duration')}:</span>
                             <span className="ml-1">{(duration / 60).toFixed(1)}h</span>
                           </div>
                           <div>
-                            <span className="font-medium">日期:</span>
+                            <span className="font-medium">{t('reports.table.date')}:</span>
                             <span className="ml-1">{record.date}</span>
                           </div>
                         </div>
