@@ -117,7 +117,7 @@ const ScheduleCalendar = ({ currentDate }) => {
   return (
     <div className="bg-white rounded-lg shadow p-6">
       <div className="grid grid-cols-7 gap-2 mb-4">
-        {['一', '二', '三', '四', '五', '六', '日'].map((day, index) => (
+        {[t('common.weekdays.monday'), t('common.weekdays.tuesday'), t('common.weekdays.wednesday'), t('common.weekdays.thursday'), t('common.weekdays.friday'), t('common.weekdays.saturday'), t('common.weekdays.sunday')].map((day, index) => (
           <div key={index} className="text-center font-semibold text-gray-700 py-2">
             {day}
           </div>

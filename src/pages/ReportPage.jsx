@@ -356,10 +356,10 @@ const ReportPage = () => {
                     // 时间记录
                     return (
                       <div key={`entry-${record.id}`} className="bg-white rounded-lg shadow p-4 border-l-4 border-orange-500">
-                        <div className="flex justify-between items-start mb-2">
-                          <h3 className="font-bold text-lg md:text-xl">{record.notes || t('time_entry.entry')}</h3>
-                          <span className="bg-orange-100 text-orange-800 text-xs px-2 py-1 rounded">工时记录</span>
-                        </div>
+                            <div className="flex justify-between items-start mb-2">
+                              <h3 className="font-bold text-lg md:text-xl">{record.notes || t('time_entry.entry')}</h3>
+                              <span className="bg-orange-100 text-orange-800 text-xs px-2 py-1 rounded">{t('reports.table.time_entry')}</span>
+                            </div>
                         <div className="grid grid-cols-2 gap-2 text-sm">
                           <div>
                             <span className="font-medium">开始时间:</span>
@@ -400,10 +400,10 @@ const ReportPage = () => {
                     
                     return (
                       <div key={`schedule-${record.id}`} className="bg-white rounded-lg shadow p-4 border-l-4 border-indigo-500">
-                        <div className="flex justify-between items-start mb-2">
-                          <h3 className="font-bold text-lg md:text-xl">{record.notes || record.title || '-'}</h3>
-                          <span className="bg-indigo-100 text-indigo-800 text-xs px-2 py-1 rounded">排班</span>
-                        </div>
+                            <div className="flex justify-between items-start mb-2">
+                              <h3 className="font-bold text-lg md:text-xl">{record.notes || record.title || '-'}</h3>
+                              <span className="bg-indigo-100 text-indigo-800 text-xs px-2 py-1 rounded">{t('reports.table.schedule')}</span>
+                            </div>
                         <div className="grid grid-cols-2 gap-2 text-sm">
                           <div>
                             <span className="font-medium">开始时间:</span>

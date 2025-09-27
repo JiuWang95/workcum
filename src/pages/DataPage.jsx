@@ -348,7 +348,7 @@ const DataPage = () => {
       
       {/* Data Management Section */}
       <div className="mt-6">
-        <h2 className="text-lg font-bold text-gray-800 mb-3 md:text-xl md:mb-4">数据管理</h2>
+        <h2 className="text-lg font-bold text-gray-800 mb-3 md:text-xl md:mb-4">{t('data.management')}</h2>
       </div>
       
       <div className="grid grid-cols-1 gap-6 mt-8">

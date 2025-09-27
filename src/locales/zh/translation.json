@@ -13,7 +13,21 @@
     "save": "保存",
     "cancel": "取消",
     "confirm": "确认",
-    "close": "关闭"
+    "close": "关闭",
+    "export": "导出",
+    "import": "导入",
+    "clear": "清空",
+    "select_all": "全选",
+    "deselect_all": "取消全选",
+    "loading": "加载中...",
+    "error": "错误",
+    "success": "成功",
+    "warning": "警告",
+    "info": "信息",
+    "ok": "确定",
+    "yes": "是",
+    "no": "否",
+    "json": "JSON"
   },
   "instructions": {
     "title": "使用说明",
@@ -117,6 +131,9 @@
       },
       "delete_confirm": "确定要删除这个班次模板吗？",
       "color_preview": "颜色预览",
+      "color_test": "班次颜色测试",
+      "text_color": "文字颜色",
+      "background_color": "背景颜色",
       "shift_type": "班次类型",
       "day_shift": "白天班",
       "rest_day": "休息日",
@@ -203,20 +220,21 @@
     "shift_type": "班次类型"
   },
   "data": {
-      "title": "关于我们",
-      "export_data": "导出数据",
-      "import_data": "导入数据",
-      "export_success": "数据导出成功！",
-      "import_success": "数据导入成功！",
-      "import_error": "导入数据时出错。请检查文件格式。",
-      "export": {
-        "title": "导出数据",
-        "description": "将所有数据导出为JSON文件或Excel文件，以便备份或迁移。",
-        "json_button": "导出为JSON",
-        "excel_button": "导出为Excel",
-        "success": "数据导出成功！",
-        "error": "数据导出失败: "
-      },
+    "title": "关于我们",
+    "export_data": "导出数据",
+    "import_data": "导入数据",
+    "export_success": "数据导出成功！",
+    "import_success": "数据导入成功！",
+    "import_error": "导入数据时出错。请检查文件格式。",
+    "management": "数据管理",
+    "export": {
+      "title": "导出数据",
+      "description": "将所有数据导出为JSON文件或Excel文件，以便备份或迁移。",
+      "json_button": "导出为JSON",
+      "excel_button": "导出为Excel",
+      "success": "数据导出成功！",
+      "error": "数据导出失败: "
+    },
     "import": {
       "title": "导入数据",
       "description": "从JSON文件导入时间跟踪数据。这将覆盖您当前的数据。",
@@ -237,7 +255,7 @@
       "message": "本地已有数据，导入将覆盖现有数据。是否继续？"
     },
     "export_modal": {
-      "title": "设置JSON文件名",
+      "title": "设置文件名",
       "filename": "文件名",
       "placeholder": "请输入文件名",
       "extension": "扩展名将自动添加"

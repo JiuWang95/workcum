@@ -88,7 +88,7 @@ const MonthlyScheduleCalendar = ({ currentDate, onDateChange }) => {
       {/* Calendar grid */}
       <div className="grid grid-cols-7 gap-0.5 sm:gap-1">
         {/* Weekday headers */}
-        {['日', '一', '二', '三', '四', '五', '六'].map((day, index) => (
+        {[t('common.weekdays.sunday'), t('common.weekdays.monday'), t('common.weekdays.tuesday'), t('common.weekdays.wednesday'), t('common.weekdays.thursday'), t('common.weekdays.friday'), t('common.weekdays.saturday')].map((day, index) => (
           <div key={index} className="text-center text-xs sm:text-sm md:text-base font-medium text-gray-500 py-1">
             {day}
           </div>
