@@ -1,4 +1,4 @@
-import { utils, writeFile } from 'xlsx';
+import { utils, writeFile } from 'xlsx-js-style';
 
 // Function to convert duration string to hours
 const convertDurationToHours = (durationStr) => {
@@ -11,6 +11,14 @@ const convertDurationToHours = (durationStr) => {
   const minutes = minutesMatch ? parseFloat(minutesMatch[1]) : 0;
   
   return hours + (minutes / 60);
+};
+
+// 定义居中样式
+const centeredStyle = {
+  alignment: {
+    horizontal: "center",
+    vertical: "center"
+  }
 };
 
 // Sort entries by date and start time
@@ -60,6 +68,18 @@ export const exportAllDataToExcel = (timeEntries, schedules, customShifts, filen
   // Add time entries worksheet if there are entries
   if (formattedEntries.length > 0) {
     const wsEntries = utils.json_to_sheet(formattedEntries);
+    
+    // Apply centered style to all cells in the worksheet
+    const range = utils.decode_range(wsEntries['!ref']);
+    for (let row = range.s.r; row <= range.e.r; row++) {
+      for (let col = range.s.c; col <= range.e.c; col++) {
+        const cellRef = utils.encode_cell({ r: row, c: col });
+        if (wsEntries[cellRef]) {
+          wsEntries[cellRef].s = centeredStyle;
+        }
+      }
+    }
+    
     utils.book_append_sheet(wb, wsEntries, '工时记录');
   }
 
@@ -99,6 +119,18 @@ export const exportAllDataToExcel = (timeEntries, schedules, customShifts, filen
   // Add schedules worksheet if there are schedules
   if (formattedSchedules.length > 0) {
     const wsSchedules = utils.json_to_sheet(formattedSchedules);
+    
+    // Apply centered style to all cells in the worksheet
+    const range = utils.decode_range(wsSchedules['!ref']);
+    for (let row = range.s.r; row <= range.e.r; row++) {
+      for (let col = range.s.c; col <= range.e.c; col++) {
+        const cellRef = utils.encode_cell({ r: row, c: col });
+        if (wsSchedules[cellRef]) {
+          wsSchedules[cellRef].s = centeredStyle;
+        }
+      }
+    }
+    
     utils.book_append_sheet(wb, wsSchedules, '排班表');
   }
 
@@ -116,6 +148,18 @@ export const exportAllDataToExcel = (timeEntries, schedules, customShifts, filen
   // Add shifts worksheet if there are shifts
   if (formattedShifts.length > 0) {
     const wsShifts = utils.json_to_sheet(formattedShifts);
+    
+    // Apply centered style to all cells in the worksheet
+    const range = utils.decode_range(wsShifts['!ref']);
+    for (let row = range.s.r; row <= range.e.r; row++) {
+      for (let col = range.s.c; col <= range.e.c; col++) {
+        const cellRef = utils.encode_cell({ r: row, c: col });
+        if (wsShifts[cellRef]) {
+          wsShifts[cellRef].s = centeredStyle;
+        }
+      }
+    }
+    
     utils.book_append_sheet(wb, wsShifts, '自定义班次');
   }
 
@@ -136,6 +180,18 @@ export const exportAllDataToExcel = (timeEntries, schedules, customShifts, filen
   ];
 
   const wsSummary = utils.json_to_sheet(summaryData);
+  
+  // Apply centered style to all cells in the worksheet
+  const range = utils.decode_range(wsSummary['!ref']);
+  for (let row = range.s.r; row <= range.e.r; row++) {
+    for (let col = range.s.c; col <= range.e.c; col++) {
+      const cellRef = utils.encode_cell({ r: row, c: col });
+      if (wsSummary[cellRef]) {
+        wsSummary[cellRef].s = centeredStyle;
+      }
+    }
+  }
+  
   utils.book_append_sheet(wb, wsSummary, '统计');
 
   // Export to file
