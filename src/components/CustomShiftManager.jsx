@@ -182,14 +182,20 @@ const CustomShiftManager = ({ scrollToEditSection }) => {
 
   return (
     <div className="max-w-4xl mx-auto p-2 sm:p-4 md:p-6">
-      <div className="flex justify-between items-center mb-4 sm:mb-6">
-        <h2 className="text-xl sm:text-2xl font-bold text-gray-800">
-          {t('time_entry.custom_shift.title')}
-        </h2>
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-6 sm:mb-8">
+        <div className="flex items-center">
+          <div className="bg-gradient-to-r from-indigo-500 to-purple-600 w-1 h-6 sm:h-8 rounded-full mr-3"></div>
+          <h2 className="text-2xl sm:text-3xl font-bold text-gray-800 bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent">
+            {t('time_entry.custom_shift.title')}
+          </h2>
+        </div>
         <button
           onClick={() => setShowForm(true)}
-          className="bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white font-bold py-2 px-4 rounded-lg shadow-md transition-all duration-300 transform hover:scale-105 text-sm sm:text-base"
+          className="flex items-center justify-center bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white font-bold py-2.5 px-5 rounded-lg shadow-lg transition-all duration-300 transform hover:scale-105 text-sm sm:text-base whitespace-nowrap"
         >
+          <svg className="w-4 h-4 sm:w-5 sm:h-5 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+          </svg>
           {t('time_entry.custom_shift.add_shift')}
         </button>
       </div>

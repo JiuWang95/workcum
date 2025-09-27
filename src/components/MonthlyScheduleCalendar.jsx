@@ -1,156 +1,129 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  format, 
-  startOfMonth, 
-  endOfMonth, 
-  startOfWeek, 
-  endOfWeek, 
-  addDays, 
-  isSameMonth, 
-  isSameDay,
-  addMonths,
-  subMonths,
-  isToday
-} from 'date-fns';
+import { format, isSameDay, isSameMonth, startOfMonth, endOfMonth, startOfWeek, endOfWeek, addDays } from 'date-fns';
 import { zhCN } from 'date-fns/locale';
 import { useTranslation } from 'react-i18next';
 
-import { getShiftColor, getShiftBackgroundColor } from '../utils/shiftColor';
+// Helper function to get shift color based on shift type
+const getShiftColor = (shiftType) => {
+  switch (shiftType) {
+    case 'day': return '#10b981'; // emerald-500
+    case 'rest': return '#8b5cf6'; // violet-500
+    case 'night': return '#3b82f6'; // blue-500
+    default: return '#10b981'; // emerald-500
+  }
+};
 
-// CalendarDay 组件用于渲染单个日期单元格
-const CalendarDay = ({ 
-  day, 
-  isCurrentMonth, 
-  isToday: isTodayProp, 
-  daySchedules, 
-  dayTimeEntries, 
-  shifts, 
-  dayBackgroundColor,
-  t,
-  getShiftBackgroundColor 
-}) => {
-  // 渲染单个项目
+// Helper function to get shift background color based on shift type
+const getShiftBackgroundColor = (shiftType) => {
+  switch (shiftType) {
+    case 'day': return '#d1fae5'; // emerald-100
+    case 'rest': return '#ede9fe'; // violet-100
+    case 'night': return '#dbeafe'; // blue-100
+    default: return '#d1fae5'; // emerald-100
+  }
+};
+
+const CalendarDay = ({ day, isCurrentMonth, isToday: isTodayProp, daySchedules, dayTimeEntries, shifts, dayBackgroundColor, t, getShiftBackgroundColor }) => {
+  // Render single schedule or time entry
   const renderSingleItem = () => {
-    // 优先显示排班
     if (daySchedules.length > 0) {
-      const firstSchedule = daySchedules[0];
-      const shiftInfo = shifts.find(shift => shift.id === firstSchedule.selectedShift);
-      const shiftName = shiftInfo ? shiftInfo.name : firstSchedule.title;
+      const schedule = daySchedules[0];
+      const shiftInfo = shifts.find(shift => shift.id === schedule.selectedShift);
+      const shiftName = shiftInfo ? shiftInfo.name : schedule.title;
+      
+      // 获取班次类型和背景色
       const shiftType = shiftInfo ? shiftInfo.shiftType : 'day';
       const bgColor = getShiftBackgroundColor(shiftType);
       
-      // 将班次名称拆分为单个字符并垂直排列
-      const shiftNameChars = shiftName.split('');
+      // 处理班次名称在移动端的显示
+      const displayShiftName = shiftName ? shiftName : t('time_entry.entry');
+      const truncatedShiftName = displayShiftName.length > 8 ? 
+        displayShiftName.substring(0, 6) + '...' : displayShiftName;
       
       return (
         <div 
-          className="text-xs sm:text-sm md:text-base mb-1 p-1 rounded-lg shadow-sm flex flex-col items-center justify-center h-full"
-          style={{
-            background: `linear-gradient(135deg, ${bgColor}, ${getShiftColor(shiftType)}20)`
-          }}
+          className="text-[0.6rem] sm:text-xs md:text-sm p-0.5 sm:p-1 rounded-md sm:rounded-lg h-full flex items-center justify-center leading-tight"
+          style={{ background: `linear-gradient(135deg, ${bgColor}, ${getShiftColor(shiftType)}20)` }}
         >
-          <div className="font-bold flex flex-col items-center">
-            {shiftNameChars.map((char, index) => (
-              <span key={index} className="leading-none">{char}</span>
-            ))}
+          <div className="font-bold text-center truncate w-full px-0.5">
+            {truncatedShiftName}
           </div>
         </div>
       );
-    } 
-    // 如果没有排班，显示时间记录
-    else if (dayTimeEntries.length > 0) {
-      const firstEntry = dayTimeEntries[0];
-      // 使用默认的"day"类型来获取背景色，使时间记录显示逻辑与排班保持一致
-      const bgColor = getShiftBackgroundColor('day');
-      
-      // 将时间记录备注拆分为单个字符并垂直排列
-      const entryTextChars = firstEntry.notes ? firstEntry.notes.split('') : [t('time_entry.entry')];
+    } else if (dayTimeEntries.length > 0) {
+      const entry = dayTimeEntries[0];
+      // 处理时间条目名称在移动端的显示
+      const displayEntryName = entry.notes ? entry.notes : t('time_entry.entry');
+      const truncatedEntryName = displayEntryName.length > 8 ? 
+        displayEntryName.substring(0, 6) + '...' : displayEntryName;
       
       return (
         <div 
-          className="text-xs sm:text-sm md:text-base mb-1 p-1 rounded-lg shadow-sm flex flex-col items-center justify-center h-full"
-          style={{
-            background: `linear-gradient(135deg, ${bgColor}, ${getShiftColor('day')}20)`
-          }}
+          className="text-[0.6rem] sm:text-xs md:text-sm p-0.5 sm:p-1 rounded-md sm:rounded-lg h-full flex items-center justify-center leading-tight"
+          style={{ background: 'linear-gradient(135deg, #fed7aa, #f9731620)' }}
         >
-          <div className="font-bold flex flex-col items-center">
-            {entryTextChars.map((char, index) => (
-              <span key={index} className="leading-none">{char}</span>
-            ))}
+          <div className="font-bold text-center text-orange-800 truncate w-full px-0.5">
+            {truncatedEntryName}
           </div>
         </div>
       );
     }
-    
     return null;
   };
 
-  // 渲染多个项目时的对角线分割显示
+  // Render multiple schedules or time entries with diagonal split
   const renderMultipleItems = () => {
-    // 第一个项目（排班）
+    // First item (schedule or time entry)
     const firstItem = daySchedules.length > 0 ? (
       (() => {
         const firstSchedule = daySchedules[0];
         const shiftInfo = shifts.find(shift => shift.id === firstSchedule.selectedShift);
         const shiftName = shiftInfo ? shiftInfo.name : firstSchedule.title;
-        const shiftType = shiftInfo ? shiftInfo.shiftType : 'day';
-        const bgColor = getShiftBackgroundColor(shiftType);
         
-        // 将班次名称拆分为单个字符并垂直排列
-        const shiftNameChars = shiftName.split('');
+        // 获取第一个排班的背景色
+        const firstShiftType = shiftInfo ? shiftInfo.shiftType : 'day';
+        const firstBgColor = getShiftBackgroundColor(firstShiftType);
+        
+        // 处理班次名称在移动端的显示
+        const displayShiftName = shiftName ? shiftName : t('time_entry.entry');
+        const truncatedShiftName = displayShiftName.length > 6 ? 
+          displayShiftName.substring(0, 4) + '..' : displayShiftName;
         
         return (
           <div 
-            className="w-full h-full flex items-start justify-start p-1 rounded-lg shadow-sm"
+            className="text-[0.5rem] sm:text-[0.6rem] md:text-xs p-0.5 sm:p-1 rounded-md sm:rounded-lg absolute inset-0 shadow-sm flex items-center justify-center leading-tight"
             style={{
-              background: `linear-gradient(to bottom right, ${bgColor} 50%, ${dayTimeEntries.length > 0 ? getShiftBackgroundColor('day') : bgColor} 50%)`
+              background: `linear-gradient(135deg, ${firstBgColor}, ${getShiftColor(firstShiftType)}20)`
             }}
           >
-            <div className="text-xs sm:text-sm md:text-base p-1 rounded-lg bg-white bg-opacity-90 font-bold flex flex-col items-center justify-center h-full">
-              <div className="font-bold flex flex-col items-center">
-                {shiftNameChars.map((char, index) => (
-                  <span key={index} className="leading-none">{char}</span>
-                ))}
-              </div>
+            <div className="font-bold text-center truncate w-full px-0.5">
+              {truncatedShiftName}
             </div>
           </div>
         );
       })()
-    ) : (
-      // 第一个项目（时间记录）
-      dayTimeEntries.length > 0 && (
-        <div 
-          className="w-full h-full flex items-start justify-start p-1 rounded-lg shadow-sm"
-          style={{
-            background: `linear-gradient(to bottom right, ${getShiftBackgroundColor('day')} 50%, ${getShiftBackgroundColor('day')} 50%)`
-          }}
-        >
-          <div className="text-xs sm:text-sm md:text-base p-1 rounded-lg bg-white bg-opacity-90 font-bold flex flex-col items-center justify-center h-full">
-            <div className="font-bold flex flex-col items-center">
-              {dayTimeEntries[0].notes ? dayTimeEntries[0].notes.split('').map((char, index) => (
-                <span key={index} className="leading-none">{char}</span>
-              )) : <span>{t('time_entry.entry')}</span>}
+    ) : dayTimeEntries.length > 0 ? (
+      // 处理时间条目名称在移动端的显示
+      (() => {
+        const displayEntryName = dayTimeEntries[0].notes ? dayTimeEntries[0].notes : t('time_entry.entry');
+        const truncatedEntryName = displayEntryName.length > 6 ? 
+          displayEntryName.substring(0, 4) + '..' : displayEntryName;
+        
+        return (
+          <div 
+            className="text-[0.5rem] sm:text-[0.6rem] md:text-xs p-0.5 sm:p-1 rounded-md sm:rounded-lg absolute inset-0 shadow-sm flex items-center justify-center leading-tight"
+            style={{ background: 'linear-gradient(135deg, #fed7aa, #f9731620)' }}
+          >
+            <div className="font-bold text-center text-orange-800 truncate w-full px-0.5">
+              {truncatedEntryName}
             </div>
           </div>
-        </div>
-      )
-    );
+        );
+      })()
+    ) : null;
     
-    // 第二个项目（时间记录或额外排班）
-    const secondItem = dayTimeEntries.length > 0 ? (
-      <div 
-        className="text-xs sm:text-sm md:text-base p-1 rounded-lg absolute bottom-0 right-0 shadow-sm flex flex-col items-center justify-center"
-        style={{
-          background: `linear-gradient(135deg, ${getShiftBackgroundColor('day')}, ${getShiftColor('day')}20)`
-        }}
-      >
-        <div className="font-bold flex flex-col items-center">
-          {dayTimeEntries[0].notes ? dayTimeEntries[0].notes.split('').map((char, index) => (
-            <span key={index} className="leading-none">{char}</span>
-          )) : <span>{t('time_entry.entry')}</span>}
-        </div>
-      </div>
-    ) : daySchedules.length > 1 ? (
+    // Second item (schedule or time entry)
+    const secondItem = daySchedules.length > 1 ? (
       (() => {
         const secondSchedule = daySchedules[1];
         const shiftInfo = shifts.find(shift => shift.id === secondSchedule.selectedShift);
@@ -160,20 +133,66 @@ const CalendarDay = ({
         const secondShiftType = shiftInfo ? shiftInfo.shiftType : 'day';
         const secondBgColor = getShiftBackgroundColor(secondShiftType);
         
-        // 将班次名称拆分为单个字符并垂直排列
-        const shiftNameChars = shiftName.split('');
+        // 处理班次名称在移动端的显示
+        const displayShiftName = shiftName ? shiftName : t('time_entry.entry');
+        const truncatedShiftName = displayShiftName.length > 4 ? 
+          displayShiftName.substring(0, 3) + '.' : displayShiftName;
         
         return (
           <div 
-            className="text-xs sm:text-sm md:text-base p-1 rounded-lg absolute bottom-0 right-0 shadow-sm flex flex-col items-center justify-center"
+            className="text-[0.4rem] sm:text-[0.5rem] md:text-[0.6rem] p-0.5 sm:p-1 rounded-md sm:rounded-lg absolute bottom-0 right-0 shadow-sm flex items-center justify-center leading-tight"
             style={{
-              background: `linear-gradient(135deg, ${secondBgColor}, ${getShiftColor(secondShiftType)}20)`
+              background: `linear-gradient(135deg, ${secondBgColor}, ${getShiftColor(secondShiftType)}20)`,
+              width: '50%',
+              height: '50%'
             }}
           >
-            <div className="font-bold flex flex-col items-center">
-              {shiftNameChars.map((char, index) => (
-                <span key={index} className="leading-none">{char}</span>
-              ))}
+            <div className="font-bold text-center truncate w-full px-0.5">
+              {truncatedShiftName}
+            </div>
+          </div>
+        );
+      })()
+    ) : dayTimeEntries.length > 0 && daySchedules.length === 0 ? (
+      // 处理时间条目名称在移动端的显示
+      (() => {
+        const displayEntryName = dayTimeEntries[0].notes ? dayTimeEntries[0].notes : t('time_entry.entry');
+        const truncatedEntryName = displayEntryName.length > 4 ? 
+          displayEntryName.substring(0, 3) + '.' : displayEntryName;
+        
+        return (
+          <div 
+            className="text-[0.4rem] sm:text-[0.5rem] md:text-[0.6rem] p-0.5 sm:p-1 rounded-md sm:rounded-lg absolute bottom-0 right-0 shadow-sm flex items-center justify-center leading-tight"
+            style={{ 
+              background: 'linear-gradient(135deg, #fed7aa, #f9731620)',
+              width: '50%',
+              height: '50%'
+            }}
+          >
+            <div className="font-bold text-center text-orange-800 truncate w-full px-0.5">
+              {truncatedEntryName}
+            </div>
+          </div>
+        );
+      })()
+    ) : dayTimeEntries.length > 1 ? (
+      // 处理第二个时间条目名称在移动端的显示
+      (() => {
+        const displayEntryName = dayTimeEntries[1].notes ? dayTimeEntries[1].notes : t('time_entry.entry');
+        const truncatedEntryName = displayEntryName.length > 4 ? 
+          displayEntryName.substring(0, 3) + '.' : displayEntryName;
+        
+        return (
+          <div 
+            className="text-[0.4rem] sm:text-[0.5rem] md:text-[0.6rem] p-0.5 sm:p-1 rounded-md sm:rounded-lg absolute bottom-0 right-0 shadow-sm flex items-center justify-center leading-tight"
+            style={{ 
+              background: 'linear-gradient(135deg, #fed7aa, #f9731620)',
+              width: '50%',
+              height: '50%'
+            }}
+          >
+            <div className="font-bold text-center text-orange-800 truncate w-full px-0.5">
+              {truncatedEntryName}
             </div>
           </div>
         );
@@ -189,17 +208,16 @@ const CalendarDay = ({
   };
 
   return (
-    <div 
-      className={`min-h-24 sm:min-h-28 md:min-h-32 border rounded-lg p-1 sm:p-2 md:p-3 flex flex-col transition-all duration-200 hover:shadow-md ${
-        isCurrentMonth ? 'bg-white' : 'bg-gray-50 text-gray-400'
-      } ${isTodayProp ? 'border-blue-500 border-2 shadow-sm' : 'border-gray-200'}`}
-      style={daySchedules.length > 0 ? { backgroundColor: dayBackgroundColor } : {}}
+    <div className={`border rounded-lg p-0.5 sm:p-1 flex flex-col transition-all duration-200 hover:shadow-md active:scale-95 min-h-16 sm:min-h-20 md:min-h-24 lg:min-h-28 ${
+      isCurrentMonth ? 'bg-white' : 'bg-gray-50 text-gray-400'
+    } ${isTodayProp ? 'border-blue-500 border-2 shadow-sm' : 'border-gray-200'}`}
+      style={daySchedules.length > 0 || dayTimeEntries.length > 0 ? { backgroundColor: dayBackgroundColor } : {}}
     >
-      <div className={`text-right ${isTodayProp ? 'bg-blue-500 text-white rounded-full w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center ml-auto' : ''}`}>
-        <span className="text-sm sm:text-base md:text-lg font-bold">{format(day, 'd', { locale: zhCN })}</span>
+      <div className={`text-right ${isTodayProp ? 'bg-blue-500 text-white rounded-full w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center ml-auto text-[10px] sm:text-xs' : ''}`}>
+        <span className="font-bold">{format(day, 'd', { locale: zhCN })}</span>
       </div>
       
-      <div className="flex-1 overflow-hidden relative">
+      <div className="flex-1 overflow-hidden relative mt-0.5 sm:mt-1">
         {/* 多个项目时使用对角线分割显示 */}
         {(daySchedules.length + dayTimeEntries.length) >= 2 ? 
           renderMultipleItems() : 
@@ -208,7 +226,7 @@ const CalendarDay = ({
         
         {/* 显示额外项目数量 */}
         {(daySchedules.length + dayTimeEntries.length) > 2 && (
-          <div className="text-[0.6rem] sm:text-xs md:text-sm text-gray-600 truncate relative z-10 bg-white bg-opacity-80 px-1.5 py-0.5 rounded-full shadow-sm">
+          <div className="text-[0.5rem] sm:text-[0.6rem] md:text-xs text-gray-600 truncate relative z-10 bg-white bg-opacity-80 px-1 py-0.5 rounded-full shadow-sm mt-1">
             +{(daySchedules.length + dayTimeEntries.length) - 2} {t('schedule.more_items')}
           </div>
         )}
@@ -216,6 +234,7 @@ const CalendarDay = ({
     </div>
   );
 };
+
 const MonthlyScheduleCalendar = ({ currentDate, onDateChange }) => {
   const { t } = useTranslation();
   const [schedules, setSchedules] = useState([]);
@@ -285,12 +304,12 @@ const MonthlyScheduleCalendar = ({ currentDate, onDateChange }) => {
   };
 
   return (
-    <div className="bg-white rounded-xl shadow-lg p-2 sm:p-3 md:p-4 hide-scrollbar mt-2">
+    <div className="bg-white rounded-xl shadow-lg p-1 sm:p-2 md:p-3 hide-scrollbar mt-1">
       {/* Calendar grid */}
-      <div className="grid grid-cols-7 gap-1 sm:gap-2">
+      <div className="grid grid-cols-7 gap-0.5 sm:gap-1">
         {/* Weekday headers */}
         {[t('common.weekdays.sunday'), t('common.weekdays.monday'), t('common.weekdays.tuesday'), t('common.weekdays.wednesday'), t('common.weekdays.thursday'), t('common.weekdays.friday'), t('common.weekdays.saturday')].map((day, index) => (
-          <div key={index} className="text-center text-sm sm:text-base md:text-lg font-bold text-gray-600 py-2 sm:py-3 bg-gradient-to-b from-gray-50 to-white rounded-lg shadow-sm">
+          <div key={index} className="text-center text-xs sm:text-sm md:text-base font-bold text-gray-600 py-1 sm:py-2 bg-gradient-to-b from-gray-50 to-white rounded-lg shadow-sm">
             {day}
           </div>
         ))}

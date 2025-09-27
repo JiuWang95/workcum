@@ -46,13 +46,13 @@ return `${month}月 ${t('schedule.week_prefix')}${weekOfMonth}${t('schedule.week
   };
 
   return (
-    <div className="max-w-6xl mx-auto">
-      <div className="flex justify-between items-center mb-6">
+    <div className="max-w-6xl mx-auto w-full px-1 sm:px-2">
+      <div className="flex justify-between items-center mb-4 sm:mb-6">
         <h1 className="page-heading">{t('schedule.title')}</h1>
         <div className="flex items-center space-x-1 bg-gray-100 p-1 rounded-lg">
           <button
             onClick={() => setViewMode('week')}
-            className={`px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 ${
+            className={`px-3 py-1.5 sm:px-4 sm:py-2 rounded-md text-sm font-medium transition-all duration-200 ${
               viewMode === 'week' 
                 ? 'bg-indigo-600 text-white shadow-sm' 
                 : 'text-gray-600 hover:text-gray-900 hover:bg-gray-200'
@@ -62,7 +62,7 @@ return `${month}月 ${t('schedule.week_prefix')}${weekOfMonth}${t('schedule.week
           </button>
           <button
             onClick={() => setViewMode('month')}
-            className={`px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 ${
+            className={`px-3 py-1.5 sm:px-4 sm:py-2 rounded-md text-sm font-medium transition-all duration-200 ${
               viewMode === 'month' 
                 ? 'bg-indigo-600 text-white shadow-sm' 
                 : 'text-gray-600 hover:text-gray-900 hover:bg-gray-200'
@@ -73,24 +73,24 @@ return `${month}月 ${t('schedule.week_prefix')}${weekOfMonth}${t('schedule.week
         </div>
       </div>
       
-      <div className="p-4 mt-4 mb-1">
-        <div className="flex justify-between items-center mb-3">
+      <div className="p-0.5 sm:p-1 md:p-2 mt-1 mb-0.5">
+        <div className="flex justify-between items-center mb-2 sm:mb-3">
           <button
             onClick={goToPreviousPeriod}
-            className="bg-gray-100 hover:bg-gray-200 text-gray-800 font-medium py-2 px-4 rounded-lg border border-gray-300 shadow-sm transition-all duration-200 hover:shadow-md"
+            className="bg-gray-100 hover:bg-gray-200 text-gray-800 font-medium py-1.5 px-3 sm:py-2 sm:px-4 rounded-lg border border-gray-300 shadow-sm transition-all duration-200 hover:shadow-md text-sm sm:text-base"
           >
             {viewMode === 'week' ? t('schedule.previous_week') : t('schedule.previous_month')}
           </button>
           
           <div className="text-center">
-            <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-800 bg-gradient-to-r from-indigo-50 to-blue-50 px-6 py-3 rounded-xl shadow-sm border border-gray-100">
+            <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-800 bg-gradient-to-r from-indigo-50 to-blue-50 px-2 py-1 sm:px-4 sm:py-2 rounded-xl shadow-sm border border-gray-100">
               {viewMode === 'week' ? getWeekRange(currentWeek) : getMonthRange(currentWeek)}
             </h2>
           </div>
           
           <button
             onClick={goToNextPeriod}
-            className="bg-gray-100 hover:bg-gray-200 text-gray-800 font-medium py-2 px-4 rounded-lg border border-gray-300 shadow-sm transition-all duration-200 hover:shadow-md"
+            className="bg-gray-100 hover:bg-gray-200 text-gray-800 font-medium py-1.5 px-3 sm:py-2 sm:px-4 rounded-lg border border-gray-300 shadow-sm transition-all duration-200 hover:shadow-md text-sm sm:text-base"
           >
             {viewMode === 'week' ? t('schedule.next_week') : t('schedule.next_month')}
           </button>
@@ -102,10 +102,14 @@ return `${month}月 ${t('schedule.week_prefix')}${weekOfMonth}${t('schedule.week
             onDateChange={setCurrentWeek}
           />
         ) : (
-          <MonthlyScheduleCalendar 
-            currentDate={currentWeek}
-            onDateChange={setCurrentWeek}
-          />
+          <div className="w-full overflow-x-auto -mx-1 sm:-mx-2 md:mx-0">
+            <div className="min-w-full md:min-w-0">
+              <MonthlyScheduleCalendar 
+                currentDate={currentWeek}
+                onDateChange={setCurrentWeek}
+              />
+            </div>
+          </div>
         )}
       </div>
     </div>
