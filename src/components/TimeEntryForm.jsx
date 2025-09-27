@@ -3,7 +3,7 @@ import { format, parse } from 'date-fns';
 import { useTranslation } from 'react-i18next';
 import DurationPicker from './DurationPicker';
 
-const TimeEntryForm = ({ onAddEntry }) => {
+const TimeEntryForm = ({ onAddEntry, onCancel }) => {
   const { t } = useTranslation();
   const [date, setDate] = useState(format(new Date(), 'yyyy-MM-dd'));
   const [startTime, setStartTime] = useState('09:00');
@@ -67,8 +67,6 @@ const TimeEntryForm = ({ onAddEntry }) => {
     setCustomDuration('');
   };
 
-
-
   const handleShiftChange = (e) => {
     const shiftId = e.target.value;
     setSelectedShift(shiftId);
@@ -91,114 +89,119 @@ const TimeEntryForm = ({ onAddEntry }) => {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow p-6">
-      <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit}>
+      <div className="mb-4">
+        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="date">
+          {t('time_entry.date')}
+        </label>
+        <input
+          type="date"
+          id="date"
+          value={date}
+          onChange={(e) => setDate(e.target.value)}
+          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          required
+        />
+      </div>
+      
+      {/* Shift template selector */}
+      {shifts.length > 0 && (
         <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="date">
-            {t('time_entry.date')}
+          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="shiftTemplate">
+            {t('time_entry.custom_shift.select_shift')}
           </label>
-          <input
-            type="date"
-            id="date"
-            value={date}
-            onChange={(e) => setDate(e.target.value)}
+          <select
+            id="shiftTemplate"
+            value={selectedShift}
+            onChange={handleShiftChange}
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            required
-          />
-        </div>
-        
-        {/* Shift template selector */}
-        {shifts.length > 0 && (
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="shiftTemplate">
-              {t('time_entry.custom_shift.select_shift')}
-            </label>
-            <select
-              id="shiftTemplate"
-              value={selectedShift}
-              onChange={handleShiftChange}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            >
-              <option value="">{t('time_entry.custom_shift.select_placeholder')}</option>
-              {shifts.map((shift) => (
-                <option key={shift.id} value={shift.id}>
-                  {shift.name} ({shift.startTime} - {shift.endTime})
-                  {shift.customDuration && ` [${shift.customDuration}]`}
-                </option>
-              ))}
-            </select>
-          </div>
-        )}
-        
-        <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="notes">
-            {t('time_entry.shift_name')}
-          </label>
-          <input
-            type="text"
-            id="notes"
-            value={notes}
-            onChange={(e) => setNotes(e.target.value)}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            placeholder={t('time_entry.shift_name_placeholder')}
-          />
-        </div>
-        
-        <div className="grid grid-cols-2 gap-4 mb-4">
-          <div>
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="startTime">
-              {t('time_entry.start_time')}
-            </label>
-            <input
-              type="time"
-              id="startTime"
-              value={startTime}
-              onChange={(e) => setStartTime(e.target.value)}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              required={!customDuration}
-              disabled={!!customDuration}
-            />
-          </div>
-          
-          <div>
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="endTime">
-              {t('time_entry.end_time')}
-            </label>
-            <input
-              type="time"
-              id="endTime"
-              value={endTime}
-              onChange={(e) => setEndTime(e.target.value)}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              required={!customDuration}
-              disabled={!!customDuration}
-            />
-          </div>
-        </div>
-        
-        {/* Custom duration input */}
-        <div className="mb-4">
-          <DurationPicker
-            id="customDuration"
-            label={t('time_entry.custom_shift.custom_duration')}
-            value={customDuration}
-            onChange={setCustomDuration}
-          />
-          <p className="text-gray-500 text-xs md:text-sm mt-1">
-            {t('time_entry.custom_shift.custom_duration_help') || "选择自定义工时"}
-          </p>
-        </div>
-        
-        <div className="flex items-center justify-between">
-          <button
-            type="submit"
-            className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
           >
-            {t('time_entry.add_entry')}
-          </button>
+            <option value="">{t('time_entry.custom_shift.select_placeholder')}</option>
+            {shifts.map((shift) => (
+              <option key={shift.id} value={shift.id}>
+                {shift.name} ({shift.startTime} - {shift.endTime})
+                {shift.customDuration && ` [${shift.customDuration}]`}
+              </option>
+            ))}
+          </select>
         </div>
-      </form>
-    </div>
+      )}
+      
+      <div className="mb-4">
+        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="notes">
+          {t('time_entry.shift_name')}
+        </label>
+        <input
+          type="text"
+          id="notes"
+          value={notes}
+          onChange={(e) => setNotes(e.target.value)}
+          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          placeholder={t('time_entry.shift_name_placeholder')}
+        />
+      </div>
+      
+      <div className="grid grid-cols-2 gap-4 mb-4">
+        <div>
+          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="startTime">
+            {t('time_entry.start_time')}
+          </label>
+          <input
+            type="time"
+            id="startTime"
+            value={startTime}
+            onChange={(e) => setStartTime(e.target.value)}
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            required={!customDuration}
+            disabled={!!customDuration}
+          />
+        </div>
+        
+        <div>
+          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="endTime">
+            {t('time_entry.end_time')}
+          </label>
+          <input
+            type="time"
+            id="endTime"
+            value={endTime}
+            onChange={(e) => setEndTime(e.target.value)}
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            required={!customDuration}
+            disabled={!!customDuration}
+          />
+        </div>
+      </div>
+      
+      {/* Custom duration input */}
+      <div className="mb-4">
+        <DurationPicker
+          id="customDuration"
+          label={t('time_entry.custom_shift.custom_duration')}
+          value={customDuration}
+          onChange={setCustomDuration}
+        />
+        <p className="text-gray-500 text-xs md:text-sm mt-1">
+          {t('time_entry.custom_shift.custom_duration_help') || "选择自定义工时"}
+        </p>
+      </div>
+      
+      <div className="flex items-center justify-between mt-6">
+        <button
+          type="button"
+          onClick={onCancel}
+          className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+        >
+          {t('common.cancel')}
+        </button>
+        <button
+          type="submit"
+          className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+        >
+          {t('time_entry.add_entry')}
+        </button>
+      </div>
+    </form>
   );
 };
 

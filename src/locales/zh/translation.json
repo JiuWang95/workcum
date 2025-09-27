@@ -105,7 +105,7 @@
     "notes_placeholder": "请输入备注信息...",
     "shift_name": "班次名称",
     "shift_name_placeholder": "选择班次模板将自动填充名称",
-    "add_entry": "添加记录",
+    "add_entry": "添加差异上班记录",
     "entry": "时间记录",
     "delete": "删除",
     "delete_confirm": "确定要删除这条时间记录吗？",
