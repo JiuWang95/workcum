@@ -11,6 +11,7 @@ import {
 import { zhCN } from 'date-fns/locale';
 import { useTranslation } from 'react-i18next';
 import { getShiftColor, getShiftBackgroundColor } from '../utils/shiftColor'; // 导入颜色工具函数
+import { getEntryColor } from '../utils/entryColor'; // 导入时间记录颜色工具函数
 
 const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
   const { t } = useTranslation();
@@ -333,31 +334,46 @@ const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
                 })}
                 
                 {/* Display time entries */}
-                {dayTimeEntries.map((entry) => (
-                  <div 
-                    key={entry.id} 
-                    className="text-xs sm:text-sm md:text-base font-semibold p-2 sm:p-3 rounded-lg flex-shrink-0 w-full sm:w-auto cursor-pointer hover:scale-[1.02] transition-all duration-200 shadow-sm"
-                    style={{
-                      backgroundColor: '#FDE68A',
-                      border: '1px solid #F59E0B'
-                    }}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setSelectedEntry(entry);
-                      setShowDeleteModal(true);
-                    }}
-                  >
-                    <div className="font-bold truncate text-xs sm:text-sm">{entry.notes || t('time_entry.entry')}</div>
-                    <div className="text-orange-700 text-[0.6rem] sm:text-xs mt-1 font-medium">
-                      {formatTime(entry.startTime)} - {formatTime(entry.endTime)}
-                      {entry.duration && (
-                        <span className="ml-2 bg-white bg-opacity-50 px-1.5 py-0.5 rounded-full">
-                          [{(entry.duration / 60).toFixed(1)}h]
-                        </span>
-                      )}
+                {dayTimeEntries.map((entry) => {
+                  const entryColor = getEntryColor(entry.customHue);
+                  return (
+                    <div 
+                      key={entry.id} 
+                      className="text-xs sm:text-sm md:text-base font-semibold p-2 sm:p-3 rounded-lg flex-shrink-0 w-full sm:w-auto cursor-pointer hover:scale-[1.02] transition-all duration-200 shadow-sm"
+                      style={{
+                        backgroundColor: entryColor.backgroundColor,
+                        border: `1px solid ${entryColor.borderColor}`
+                      }}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setSelectedEntry(entry);
+                        setShowDeleteModal(true);
+                      }}
+                    >
+                      <div 
+                        className="font-bold truncate text-xs sm:text-sm"
+                        style={{
+                          color: entryColor.textColor
+                        }}
+                      >
+                        {entry.notes || t('time_entry.entry')}
+                      </div>
+                      <div 
+                        className="text-[0.6rem] sm:text-xs mt-1 font-medium"
+                        style={{
+                          color: entryColor.textColor
+                        }}
+                      >
+                        {formatTime(entry.startTime)} - {formatTime(entry.endTime)}
+                        {entry.duration && (
+                          <span className="ml-2 bg-white bg-opacity-50 px-1.5 py-0.5 rounded-full">
+                            [{(entry.duration / 60).toFixed(1)}h]
+                          </span>
+                        )}
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
                 
                 {/* Show placeholder if no items */}
                 {daySchedules.length === 0 && dayTimeEntries.length === 0 && (

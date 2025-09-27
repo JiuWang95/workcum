@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { format, parse } from 'date-fns';
 import { useTranslation } from 'react-i18next';
 import DurationPicker from './DurationPicker';
+import ColorPicker from './ColorPicker'; // 导入颜色选择器组件
 
 const TimeEntryForm = ({ onAddEntry, onCancel, onSubmit }) => {
   const { t } = useTranslation();
@@ -12,6 +13,7 @@ const TimeEntryForm = ({ onAddEntry, onCancel, onSubmit }) => {
   const [shifts, setShifts] = useState([]);
   const [selectedShift, setSelectedShift] = useState('');
   const [customDuration, setCustomDuration] = useState('');
+  const [customHue, setCustomHue] = useState(30); // 添加自定义色调状态，默认为橙色
 
   // Load custom shifts from localStorage
   useEffect(() => {
@@ -56,7 +58,8 @@ const TimeEntryForm = ({ onAddEntry, onCancel, onSubmit }) => {
       startTime,
       endTime,
       duration,
-      notes
+      notes,
+      customHue // 添加自定义颜色
     };
     
     // 调用onAddEntry或onSubmit，确保至少有一个被调用
@@ -70,6 +73,7 @@ const TimeEntryForm = ({ onAddEntry, onCancel, onSubmit }) => {
     setNotes('');
     setSelectedShift('');
     setCustomDuration('');
+    setCustomHue(30); // 重置为默认值
   };
 
   const handleShiftChange = (e) => {
@@ -187,6 +191,17 @@ const TimeEntryForm = ({ onAddEntry, onCancel, onSubmit }) => {
           onChange={setCustomDuration}
         />
       </div>
+      
+      {/* Color picker for time entries - only 3 options and different from shift colors */}
+      <ColorPicker 
+        selectedColor={customHue} 
+        onColorChange={setCustomHue} 
+        colorOptions={[
+          { name: t('time_entry.custom_shift.colors.orange'), hue: 30 },
+          { name: t('time_entry.custom_shift.colors.red'), hue: 0 },
+          { name: t('time_entry.custom_shift.colors.pink'), hue: 330 }
+        ]}
+      />
       
       {/* 移除原来的按钮，因为现在使用Modal的footer按钮 */}
     </form>

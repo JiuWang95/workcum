@@ -3,6 +3,7 @@ import { format, subDays, startOfWeek, endOfWeek, startOfMonth, endOfMonth } fro
 import { exportToExcelReport } from '../utils/export';
 import { useTranslation } from 'react-i18next';
 import FileNameModal from '../components/FileNameModal';
+import { getEntryColor } from '../utils/entryColor'; // 导入时间记录颜色工具函数
 
 const ReportPage = () => {
   const { t } = useTranslation();
@@ -263,15 +264,33 @@ const ReportPage = () => {
                     return allRecords.map((record, index) => {
                       if (record.type === 'entry') {
                         // 时间记录
+                        const entryColor = getEntryColor(record.customHue);
                         return (
                           <tr key={`entry-${record.id}`} className={`border-b border-gray-100 ${index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}`}>
-                            <td className="py-2 px-3 text-sm">{record.notes || t('time_entry.entry')}</td>
+                            <td className="py-2 px-3 text-sm">
+                              <span 
+                                className="font-medium"
+                                style={{
+                                  color: entryColor.textColor
+                                }}
+                              >
+                                {record.notes || t('time_entry.entry')}
+                              </span>
+                            </td>
                             <td className="py-2 px-3 text-sm">{record.startTime}</td>
                             <td className="py-2 px-3 text-sm">{record.endTime}</td>
                             <td className="py-2 px-3 text-sm font-medium text-indigo-600">{(record.duration / 60).toFixed(1)}h</td>
                             <td className="py-2 px-3 text-sm">{record.date}</td>
                             <td className="py-2 px-3">
-                              <span className="bg-orange-100 text-orange-800 text-xs px-2 py-1 rounded">{t('reports.table.time_entry')}</span>
+                              <span 
+                                className="text-xs px-2 py-1 rounded"
+                                style={{
+                                  backgroundColor: entryColor.backgroundColor,
+                                  color: entryColor.textColor
+                                }}
+                              >
+                                {t('reports.table.time_entry')}
+                              </span>
                             </td>
                           </tr>
                         );
@@ -336,11 +355,34 @@ const ReportPage = () => {
                 return allRecords.map((record, index) => {
                   if (record.type === 'entry') {
                     // 时间记录
+                    const entryColor = getEntryColor(record.customHue);
                     return (
-                      <div key={`entry-${record.id}`} className="bg-white p-3 rounded-lg border border-gray-200">
+                      <div 
+                        key={`entry-${record.id}`} 
+                        className="p-3 rounded-lg border"
+                        style={{
+                          backgroundColor: entryColor.backgroundColor,
+                          borderColor: entryColor.borderColor
+                        }}
+                      >
                         <div className="flex justify-between items-start mb-2">
-                          <h3 className="font-medium text-sm">{record.notes || t('time_entry.entry')}</h3>
-                          <span className="bg-orange-100 text-orange-800 text-xs px-2 py-1 rounded">{t('reports.table.time_entry')}</span>
+                          <h3 
+                            className="font-medium text-sm"
+                            style={{
+                              color: entryColor.textColor
+                            }}
+                          >
+                            {record.notes || t('time_entry.entry')}
+                          </h3>
+                          <span 
+                            className="text-xs px-2 py-1 rounded"
+                            style={{
+                              backgroundColor: entryColor.backgroundColor,
+                              color: entryColor.textColor
+                            }}
+                          >
+                            {t('reports.table.time_entry')}
+                          </span>
                         </div>
                         <div className="grid grid-cols-2 gap-2">
                           <div>
@@ -353,7 +395,14 @@ const ReportPage = () => {
                           </div>
                           <div>
                             <p className="text-xs text-gray-500">{t('reports.table.duration')}</p>
-                            <p className="text-sm font-medium text-orange-600">{(record.duration / 60).toFixed(1)}h</p>
+                            <p 
+                              className="text-sm font-medium"
+                              style={{
+                                color: entryColor.textColor
+                              }}
+                            >
+                              {(record.duration / 60).toFixed(1)}h
+                            </p>
                           </div>
                           <div>
                             <p className="text-xs text-gray-500">{t('reports.table.date')}</p>

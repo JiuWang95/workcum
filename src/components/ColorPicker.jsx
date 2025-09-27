@@ -1,11 +1,11 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
-const ColorPicker = ({ selectedColor, onColorChange }) => {
+const ColorPicker = ({ selectedColor, onColorChange, colorOptions }) => {
   const { t } = useTranslation();
   
-  // 预定义的颜色选项
-  const colorOptions = [
+  // 预定义的颜色选项（默认选项）
+  const defaultColorOptions = [
     { name: t('time_entry.custom_shift.colors.green'), hue: 120 },
     { name: t('time_entry.custom_shift.colors.blue'), hue: 220 },
     { name: t('time_entry.custom_shift.colors.purple'), hue: 280 },
@@ -15,6 +15,9 @@ const ColorPicker = ({ selectedColor, onColorChange }) => {
     { name: t('time_entry.custom_shift.colors.teal'), hue: 180 },
     { name: t('time_entry.custom_shift.colors.yellow'), hue: 60 }
   ];
+  
+  // 使用传入的颜色选项或默认选项
+  const options = colorOptions || defaultColorOptions;
 
   // 根据色调生成颜色值
   const getColorValue = (hue) => `hsl(${hue}, 80%, 50%)`;
@@ -27,7 +30,7 @@ const ColorPicker = ({ selectedColor, onColorChange }) => {
       </label>
       {/* 在移动端使用更紧凑的网格布局 */}
       <div className="grid grid-cols-4 sm:grid-cols-4 gap-1 sm:gap-1.5">
-        {colorOptions.map((color, index) => (
+        {options.map((color, index) => (
           <button
             key={index}
             type="button"
