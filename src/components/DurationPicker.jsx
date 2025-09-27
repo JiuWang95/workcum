@@ -55,36 +55,36 @@ const DurationPicker = ({ value, onChange, id, label, className = "" }) => {
   return (
     <div className={`flex flex-col ${className}`}>
       {label && (
-        <label className="block text-gray-700 text-sm font-bold mb-1" htmlFor={id}>
+        <label className="block text-gray-700 text-xs sm:text-sm font-bold mb-1" htmlFor={id}>
           {label}
         </label>
       )}
       <div className="flex space-x-2">
-        <div className="flex-1">
-          <label className="block text-gray-700 text-xs mb-1" htmlFor={`${id}-hours`}>
-            {t('time_entry.custom_shift.hours')}
-          </label>
+        <div className="flex-1 relative">
           <select
             id={`${id}-hours`}
             value={hours}
             onChange={(e) => setHours(parseInt(e.target.value) || 0)}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline pr-8"
           >
             {hourOptions}
           </select>
+          <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none text-gray-500 text-xs">
+            {t('time_entry.custom_shift.hours')}
+          </div>
         </div>
-        <div className="flex-1">
-          <label className="block text-gray-700 text-xs mb-1" htmlFor={`${id}-minutes`}>
-            {t('time_entry.custom_shift.minutes')}
-          </label>
+        <div className="flex-1 relative">
           <select
             id={`${id}-minutes`}
             value={minutes}
             onChange={(e) => setMinutes(parseInt(e.target.value) || 0)}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline pr-8"
           >
             {minuteOptions}
           </select>
+          <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none text-gray-500 text-xs">
+            {t('time_entry.custom_shift.minutes')}
+          </div>
         </div>
       </div>
     </div>
