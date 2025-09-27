@@ -31,12 +31,13 @@ const CalendarDay = ({
 }) => {
   // 渲染单个项目
   const renderSingleItem = () => {
-    // 显示排班
+    // 优先显示排班
     if (daySchedules.length > 0) {
-      const schedule = daySchedules[0];
-      const shiftInfo = shifts.find(shift => shift.id === schedule.selectedShift);
-      const shiftName = shiftInfo ? shiftInfo.name : schedule.title;
+      const firstSchedule = daySchedules[0];
+      const shiftInfo = shifts.find(shift => shift.id === firstSchedule.selectedShift);
+      const shiftName = shiftInfo ? shiftInfo.name : firstSchedule.title;
       const shiftType = shiftInfo ? shiftInfo.shiftType : 'day';
+      const bgColor = getShiftBackgroundColor(shiftType);
       
       // 将班次名称拆分为单个字符并垂直排列
       const shiftNameChars = shiftName.split('');
@@ -45,7 +46,7 @@ const CalendarDay = ({
         <div 
           className="text-xs sm:text-sm md:text-base mb-1 p-1 rounded-lg shadow-sm flex flex-col items-center justify-center h-full"
           style={{
-            background: `linear-gradient(135deg, ${getShiftBackgroundColor(shiftType)}, ${getShiftColor(shiftType)}20)`
+            background: `linear-gradient(135deg, ${bgColor}, ${getShiftColor(shiftType)}20)`
           }}
         >
           <div className="font-bold flex flex-col items-center">
@@ -55,21 +56,21 @@ const CalendarDay = ({
           </div>
         </div>
       );
-    }
-    
-    // 显示时间记录
-    if (dayTimeEntries.length > 0) {
-      const entry = dayTimeEntries[0];
-      const entryText = entry.notes || t('time_entry.entry');
+    } 
+    // 如果没有排班，显示时间记录
+    else if (dayTimeEntries.length > 0) {
+      const firstEntry = dayTimeEntries[0];
+      // 使用默认的"day"类型来获取背景色，使时间记录显示逻辑与排班保持一致
+      const bgColor = getShiftBackgroundColor('day');
       
-      // 将时间记录文本拆分为单个字符并垂直排列
-      const entryTextChars = entryText.split('');
+      // 将时间记录备注拆分为单个字符并垂直排列
+      const entryTextChars = firstEntry.notes ? firstEntry.notes.split('') : [t('time_entry.entry')];
       
       return (
         <div 
           className="text-xs sm:text-sm md:text-base mb-1 p-1 rounded-lg shadow-sm flex flex-col items-center justify-center h-full"
           style={{
-            background: 'linear-gradient(135deg, #fed7aa, #fdba74)'
+            background: `linear-gradient(135deg, ${bgColor}, ${getShiftColor('day')}20)`
           }}
         >
           <div className="font-bold flex flex-col items-center">
@@ -102,7 +103,7 @@ const CalendarDay = ({
           <div 
             className="w-full h-full flex items-start justify-start p-1 rounded-lg shadow-sm"
             style={{
-              background: `linear-gradient(to bottom right, ${bgColor} 50%, ${dayTimeEntries.length > 0 ? '#fed7aa' : bgColor} 50%)`
+              background: `linear-gradient(to bottom right, ${bgColor} 50%, ${dayTimeEntries.length > 0 ? getShiftBackgroundColor('day') : bgColor} 50%)`
             }}
           >
             <div className="text-xs sm:text-sm md:text-base p-1 rounded-lg bg-white bg-opacity-90 font-bold flex flex-col items-center justify-center h-full">
@@ -121,7 +122,7 @@ const CalendarDay = ({
         <div 
           className="w-full h-full flex items-start justify-start p-1 rounded-lg shadow-sm"
           style={{
-            background: `linear-gradient(to bottom right, #fed7aa 50%, #fdba74 50%)`
+            background: `linear-gradient(to bottom right, ${getShiftBackgroundColor('day')} 50%, ${getShiftBackgroundColor('day')} 50%)`
           }}
         >
           <div className="text-xs sm:text-sm md:text-base p-1 rounded-lg bg-white bg-opacity-90 font-bold flex flex-col items-center justify-center h-full">
@@ -140,7 +141,7 @@ const CalendarDay = ({
       <div 
         className="text-xs sm:text-sm md:text-base p-1 rounded-lg absolute bottom-0 right-0 shadow-sm flex flex-col items-center justify-center"
         style={{
-          background: 'linear-gradient(135deg, #fed7aa, #fdba74)'
+          background: `linear-gradient(135deg, ${getShiftBackgroundColor('day')}, ${getShiftColor('day')}20)`
         }}
       >
         <div className="font-bold flex flex-col items-center">
