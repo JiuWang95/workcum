@@ -32,7 +32,13 @@ const AddEntryModal = ({ isOpen, onClose, onAddEntry, customShifts, onCustomShif
           </button>
           <button
             type="button"
-            form="timeEntryForm"
+            onClick={() => {
+              // 触发表单提交
+              const form = document.getElementById('timeEntryForm');
+              if (form) {
+                form.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
+              }
+            }}
             className="w-full sm:w-auto inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:text-sm"
           >
             {t('common.add')}
