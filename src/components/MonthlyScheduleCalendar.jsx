@@ -107,15 +107,20 @@ const MonthlyScheduleCalendar = ({ currentDate, onDateChange }) => {
             ...dayTimeEntries.map(item => ({...item, itemType: 'entry'}))
           ];
           
-          // Determine background color based on the first schedule item
+          // Determine background color based on the first item (schedule or time entry)
           let dayBackgroundColor = '';
           let dayBorderColor = '';
           if (daySchedules.length > 0) {
+            // If there are schedules, use the first schedule's color
             const firstSchedule = daySchedules[0];
             const shiftInfo = shifts.find(shift => shift.id === firstSchedule.selectedShift);
             const shiftType = shiftInfo ? shiftInfo.shiftType : 'day';
             dayBackgroundColor = getShiftBackgroundColor(shiftType);
             dayBorderColor = getShiftColor(shiftType);
+          } else if (dayTimeEntries.length > 0) {
+            // If there are only time entries, use orange color
+            dayBackgroundColor = '#fed7aa'; // orange-200 equivalent
+            dayBorderColor = '#f97316'; // orange-500 equivalent
           }
           
           return (
@@ -149,7 +154,7 @@ const MonthlyScheduleCalendar = ({ currentDate, onDateChange }) => {
                           <div 
                             className="w-full h-full flex items-start justify-start p-0.5 rounded truncate"
                             style={{
-                              background: `linear-gradient(to bottom right, ${bgColor} 50%, ${dayTimeEntries.length > 0 ? '#dcfce7' : bgColor} 50%)`
+                              background: `linear-gradient(to bottom right, ${bgColor} 50%, ${dayTimeEntries.length > 0 ? '#fed7aa' : bgColor} 50%)`
                             }}
                           >
                             <div className="text-[0.7rem] sm:text-sm md:text-base truncate p-0.5 rounded bg-white bg-opacity-80">
@@ -168,7 +173,7 @@ const MonthlyScheduleCalendar = ({ currentDate, onDateChange }) => {
                           }}
                         >
                           <div className="text-[0.7rem] sm:text-sm md:text-base truncate p-0.5 rounded bg-white bg-opacity-80">
-                            <span className="font-bold">{t('time_entry.entry')}</span>
+                            <span className="font-bold">{dayTimeEntries[0].notes || t('time_entry.entry')}</span>
                           </div>
                         </div>
                       )
@@ -176,7 +181,12 @@ const MonthlyScheduleCalendar = ({ currentDate, onDateChange }) => {
                     
                     {/* Second item (time entry or additional schedule) */}
                     {dayTimeEntries.length > 0 ? (
-                      <div className="text-[0.7rem] sm:text-sm md:text-base truncate p-0.5 rounded absolute bottom-0 right-0 bg-white bg-opacity-80">
+                      <div 
+                        className="text-[0.7rem] sm:text-sm md:text-base truncate p-0.5 rounded absolute bottom-0 right-0"
+                        style={{
+                          backgroundColor: '#fed7aa' // orange-200 equivalent
+                        }}
+                      >
                         <span className="font-bold">{dayTimeEntries[0].notes || t('time_entry.entry')}</span>
                       </div>
                     ) : daySchedules.length > 1 ? (
@@ -220,7 +230,10 @@ const MonthlyScheduleCalendar = ({ currentDate, onDateChange }) => {
                       return (
                         <div 
                           key={entry.id}
-                          className="text-[0.7rem] sm:text-sm md:text-base truncate mb-0.5 p-0.5 rounded bg-green-100 text-green-800"
+                          className="text-[0.7rem] sm:text-sm md:text-base truncate mb-0.5 p-0.5 rounded"
+                          style={{
+                            backgroundColor: '#fed7aa' // orange-200 equivalent
+                          }}
                         >
                           <span className="font-bold">{entry.notes || t('time_entry.entry')}</span>
                         </div>
