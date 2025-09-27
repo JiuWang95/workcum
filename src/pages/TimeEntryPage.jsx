@@ -176,7 +176,7 @@ const TimeEntryPage = () => {
       </div>
       
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <div className="lg:col-span-3">
+        <div className="lg:col-span-3 mt-8">
           <CustomShiftManager scrollToEditSection={scrollToEditSection} />
         </div>
       </div>
