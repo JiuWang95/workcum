@@ -108,6 +108,15 @@ const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
   const weekDays = getWeekDays(currentDate);
 
   const handleDateClick = (date) => {
+    // 检查该日期是否已有排班
+    const existingSchedules = getScheduleForDate(date);
+    
+    if (existingSchedules.length > 0) {
+      // 如果已有排班，提示用户
+      alert(t('schedule.unique_schedule_warning') || '该日期已有排班任务，每个日期只能添加一个排班任务。');
+      return;
+    }
+    
     setSelectedDate(date);
     setFormData({
       id: null,
