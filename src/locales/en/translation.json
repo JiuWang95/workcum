@@ -139,7 +139,7 @@
     "notes": "Notes",
     "shift_name": "Shift Name",
     "shift_name_placeholder": "Selecting a shift template will auto-fill the name",
-    "add_entry": "Add Differential Work Record",
+    "add_entry": "Add Differential Record",
     "edit_entry": "Edit Time Entry",
     "delete_confirm": "Are you sure you want to delete this time entry?",
     "validation": {
