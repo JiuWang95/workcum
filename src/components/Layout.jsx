@@ -53,10 +53,10 @@ const Layout = () => {
     <div className="min-h-screen bg-gray-50">
       {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center justify-between bg-white shadow-md p-4 sticky top-0 z-40 backdrop-blur-sm bg-opacity-90">
+          <h1 className="nav-title">
+            {t('app_title')}
+          </h1>
           <div className="flex items-center space-x-2">
-            <h1 className="nav-title">
-              {t('app_title')}
-            </h1>
             <div className="flex space-x-2 md:space-x-3 items-center">
               <Link to="/schedule" className={getDesktopLinkClass("/schedule")}>
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-1 inline" fill="none" viewBox="0 0 24 24" stroke="currentColor">
