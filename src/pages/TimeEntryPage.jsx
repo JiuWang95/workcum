@@ -49,7 +49,7 @@ const TimeEntryPage = () => {
       <div className="flex justify-between items-center mb-6">
         <h1 className="page-heading">{t('navigation.time_entry')}</h1>
         <div className="flex space-x-2">
-          {/* 桌面端的添加差异记录按钮放在使用说明按钮的左边 */}
+          {/* 桌面端和移动端横屏添加记录按钮 */}
           <button
             onClick={() => setIsAddEntryModalOpen(true)}
             className="hidden md:flex px-4 py-2 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-md hover:from-green-600 hover:to-emerald-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 text-sm font-medium items-center shadow-md transition-all duration-200"
@@ -70,7 +70,6 @@ const TimeEntryPage = () => {
             </svg>
             {t('time_entry.add_entry')}
           </button>
-          {/* 使用说明按钮 */}
           <button
             onClick={() => setShowInstructions(true)}
             className="p-2 bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-md hover:from-indigo-600 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 text-sm font-medium flex items-center shadow-md transition-all duration-200 transform hover:scale-105"
@@ -103,10 +102,10 @@ const TimeEntryPage = () => {
       <div className="mt-20 flex justify-center md:hidden">
         <button
           onClick={() => setIsAddEntryModalOpen(true)}
-          className="flex px-4 py-2 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-md hover:from-green-600 hover:to-emerald-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 text-sm font-medium items-center shadow-md transition-all duration-200"
+          className="flex items-center px-8 py-4 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-2xl hover:from-green-600 hover:to-emerald-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 text-lg font-bold shadow-lg transition-all duration-200 transform hover:scale-105 active:scale-95"
         >
           <svg 
-            className="w-4 h-4 mr-1" 
+            className="w-7 h-7 mr-3" 
             fill="none" 
             stroke="currentColor" 
             viewBox="0 0 24 24" 
@@ -119,9 +118,12 @@ const TimeEntryPage = () => {
               d="M12 6v6m0 0v6m0-6h6m-6 0H6" 
             />
           </svg>
-          {t('time_entry.add_entry')}
+          <span className="whitespace-nowrap">{t('time_entry.add_entry')}</span>
         </button>
       </div>
+      
+      {/* 在页面底部添加一个占位元素，防止内容被固定按钮遮挡 */}
+      <div className="md:hidden h-24"></div>
       
       <InstructionsModal isOpen={showInstructions} onClose={() => setShowInstructions(false)} />
       <AddEntryModal 

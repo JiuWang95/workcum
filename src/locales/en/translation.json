@@ -102,7 +102,7 @@
     "date": "Date",
     "shift": "Shift",
     "custom_shift": {
-      "title": "Custom Shift Management",
+      "title": "Custom Shifts",
       "shift_name": "Shift Name",
       "shift_name_placeholder": "e.g., Morning Shift, Evening Shift",
       "start_time": "Start Time",

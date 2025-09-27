@@ -105,7 +105,7 @@
     "notes_placeholder": "请输入备注信息...",
     "shift_name": "班次名称",
     "shift_name_placeholder": "选择班次模板将自动填充名称",
-    "add_entry": "添加差异记录",
+    "add_entry": "添加差异上班记录",
     "entry": "时间记录",
     "delete": "删除",
     "delete_confirm": "确定要删除这条时间记录吗？",
@@ -115,7 +115,7 @@
     "sync_to_schedule": "同步到排班",
     "sync_success": "时间记录已同步到排班！",
     "custom_shift": {
-      "title": "自定义班次管理",
+      "title": "自定义班次",
       "shift_name": "班次名称",
       "shift_name_placeholder": "例如：早班、晚班",
       "start_time": "开始时间",
