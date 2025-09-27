@@ -161,6 +161,10 @@
       "button": "Clear All Data"
     },
     "clear_confirm": "Are you sure you want to delete all data? This action cannot be undone.",
-    "clear_success": "All data has been cleared."
+    "clear_success": "All data has been cleared.",
+    "import_override": {
+      "title": "Confirm Override",
+      "message": "There is existing data locally. Importing will overwrite the current data. Continue?"
+    }
   }
 }

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import FileNameModal from '../components/FileNameModal';
+import ConfirmOverrideModal from '../components/ConfirmOverrideModal';
 
 const DataPage = () => {
   const { t, i18n } = useTranslation();
@@ -12,6 +13,8 @@ const DataPage = () => {
   const [importStatus, setImportStatus] = useState('');
   const [exportStatus, setExportStatus] = useState('');
   const [isFileNameModalOpen, setIsFileNameModalOpen] = useState(false);
+  const [isOverrideModalOpen, setIsOverrideModalOpen] = useState(false);
+  const [pendingImportFile, setPendingImportFile] = useState(null);
 
   // Export all data to JSON
   const handleExportAllData = () => {
@@ -58,6 +61,30 @@ const DataPage = () => {
     const file = event.target.files[0];
     if (!file) return;
 
+    // Check if there's existing data
+    const existingTimeEntries = localStorage.getItem('timeEntries');
+    const existingSchedules = localStorage.getItem('schedules');
+    const existingCustomShifts = localStorage.getItem('customShifts');
+
+    const hasExistingData = 
+      (existingTimeEntries && JSON.parse(existingTimeEntries).length > 0) ||
+      (existingSchedules && JSON.parse(existingSchedules).length > 0) ||
+      (existingCustomShifts && JSON.parse(existingCustomShifts).length > 0);
+
+    if (hasExistingData) {
+      // Show confirmation modal if there's existing data
+      setPendingImportFile(file);
+      setIsOverrideModalOpen(true);
+      // Reset file input
+      event.target.value = '';
+    } else {
+      // No existing data, proceed with import
+      processImportData(file);
+    }
+  };
+
+  // Process the actual import
+  const processImportData = (file) => {
     const reader = new FileReader();
     reader.onload = (e) => {
       try {
@@ -78,15 +105,9 @@ const DataPage = () => {
         
         setImportStatus(t('data.import.success'));
         setTimeout(() => setImportStatus(''), 3000);
-        
-        // Reset file input
-        event.target.value = '';
       } catch (error) {
         setImportStatus(t('data.import.error') + error.message);
         setTimeout(() => setImportStatus(''), 3000);
-        
-        // Reset file input
-        event.target.value = '';
       }
     };
     reader.readAsText(file);
@@ -115,6 +136,23 @@ const DataPage = () => {
         fileExtension=".json"
       />
       
+      <ConfirmOverrideModal
+        isOpen={isOverrideModalOpen}
+        onClose={() => {
+          setIsOverrideModalOpen(false);
+          setPendingImportFile(null);
+        }}
+        onConfirm={() => {
+          setIsOverrideModalOpen(false);
+          if (pendingImportFile) {
+            processImportData(pendingImportFile);
+            setPendingImportFile(null);
+          }
+        }}
+        title={t('data.import_override.title')}
+        message={t('data.import_override.message')}
+      />
+      
       <div className="flex justify-between items-center">
         <h1 className="page-heading my-0 text-xl md:text-2xl">{t('data.title')}</h1>
         <button 
@@ -128,7 +166,7 @@ const DataPage = () => {
       
       
       {/* Project Information Section */}
-      <div className="mt-6 bg-gradient-to-r from-indigo-50 to-purple-50 rounded-xl shadow-md overflow-hidden">
+      <div className="mt-6 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-xl shadow-md overflow-hidden">
         <div className="p-1 bg-gradient-to-r from-indigo-500 to-purple-600"></div>
         <div className="p-4 md:p-6">
           <div className="flex items-start">

@@ -6,6 +6,15 @@
     "schedule": "排班",
     "data": "我的"
   },
+  "common": {
+    "add": "添加",
+    "edit": "编辑",
+    "delete": "删除",
+    "save": "保存",
+    "cancel": "取消",
+    "confirm": "确认",
+    "close": "关闭"
+  },
   "time_entry": {
     "title": "记录",
     "recent_entries": "最近记录",
@@ -146,6 +155,10 @@
       "button": "清除所有数据"
     },
     "clear_confirm": "确定要删除所有数据吗？此操作无法撤销。",
-    "clear_success": "所有数据已清除。"
+    "clear_success": "所有数据已清除。",
+    "import_override": {
+      "title": "确认覆盖",
+      "message": "本地已有数据，导入将覆盖现有数据。是否继续？"
+    }
   }
 }
