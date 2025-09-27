@@ -5,8 +5,8 @@ const ConfirmOverrideModal = ({
   isOpen, 
   onClose, 
   onConfirm,
-  title = "确认覆盖",
-  message = "本地已有数据，导入将覆盖现有数据。是否继续？"
+  title,
+  message
 }) => {
   const { t } = useTranslation();
 
@@ -17,7 +17,7 @@ const ConfirmOverrideModal = ({
       <div className="bg-white rounded-lg shadow-xl max-w-md w-full">
         <div className="p-6">
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-xl font-bold text-gray-800">{title}</h2>
+            <h2 className="text-xl font-bold text-gray-800">{title || t('data.import_modal.title')}</h2>
             <button 
               onClick={onClose}
               className="text-gray-500 hover:text-gray-700"
@@ -29,7 +29,7 @@ const ConfirmOverrideModal = ({
           </div>
           
           <div className="mb-6">
-            <p className="text-gray-700">{message}</p>
+            <p className="text-gray-700">{message || t('data.import_modal.message')}</p>
           </div>
           
           <div className="flex justify-end space-x-3">

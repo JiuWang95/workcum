@@ -34,7 +34,7 @@ const SchedulePage = () => {
   // Get week range for display
   const getWeekRange = (date) => {
     const weekOfMonth = getWeekOfMonth(date, { weekStartsOn: 1 });
-    return `${format(date, 'MMM')} 第${weekOfMonth}周`;
+    return `${format(date, 'MMM', { locale: zhCN })} ${t('schedule.week_prefix')}${weekOfMonth}${t('schedule.week_suffix')}`;
   };
 
   // Get month range for display

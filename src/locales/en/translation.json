@@ -17,6 +17,61 @@
     "confirm": "Confirm",
     "close": "Close"
   },
+  "instructions": {
+    "title": "Instructions",
+    "convenience": {
+      "title": "Convenience",
+      "item1": "Open this website with your device's built-in browser or browsers like Safari, Edge, Chrome, Huawei Browser, etc., and you will be prompted to install it to your desktop.",
+      "item2": "After installation, you can open it directly from the desktop without opening the browser every time. Or click the web menu and select 'Add to Home Screen'."
+    },
+    "planning": {
+      "title": "Planning",
+      "item1": "You can select preset custom shift templates to quickly populate record information.",
+      "item2": "Or manually add your work time records. If the schedule indicates a rest day but you actually worked, you can add a record to account for the difference."
+    },
+    "scheduling": {
+      "title": "Scheduling",
+      "item1": "Use the weekly calendar to add and manage schedules. Click on any date to add a new schedule task. Only one schedule task can be added per date.",
+      "item2": "Use the monthly calendar to view the entire month's schedule."
+    },
+    "statistics": {
+      "title": "Statistics",
+      "item1": "Select a date range to generate time statistics, with quick date selection for 'This Week' and 'This Month'.",
+      "item2": "Click 'Export to Excel' to customize the Excel file name.",
+      "item3": "After exporting, a time statistics report will be generated for the selected date range."
+    },
+    "my": {
+      "title": "My",
+      "item1": "Includes project introduction, data management, supports exporting all data to a JSON file for backup, or importing data from a JSON file to restore information.",
+      "item2": "This method can also achieve data synchronization between different devices."
+    },
+    "tip": "Tip: All data is securely stored locally in your browser and will not be uploaded to any server. It is recommended to regularly export data for backup.",
+    "acknowledge": "I Understand"
+  },
+  "project": {
+    "title": "Project Introduction",
+    "introduction": {
+      "paragraph1": "This is an efficient tool designed specifically for work time management, aimed at helping users easily track and manage work hours. The project was initially created for my wife, Sisi, as a convenient tool for calculating work hours, and has now developed into a complete time tracking system.",
+      "paragraph2": "If you have better suggestions or feedback, you can click to contact Lele."
+    },
+    "features": {
+      "title": "Main Features",
+      "item1": "Intuitive schedule calendar view",
+      "item2": "Detailed time recording functionality",
+      "item3": "Comprehensive data export and import support",
+      "item4": "Visual report analysis"
+    },
+    "support": {
+      "text": "If you'd like to thank the author, you can buy Sisi a cup of milk tea, or you can tip the author in the GitHub repository. You can also click to donate for public welfare contributions.",
+      "github": "GitHub Repository",
+      "contact": "Contact Lele",
+      "donate": "Donate Support"
+    }
+  },
+  "disclaimer": {
+    "title": "Disclaimer",
+    "content": "This tool is for personal learning and reference use only. Users should bear the risks of using it themselves. This tool does not collect, store, or transmit any user data. All data is saved in the user's local browser. Users should regularly back up important data. The author is not responsible for any data loss. This tool does not provide any commercial support or technical guarantees. Please fully understand the relevant risks before use."
+  },
   "time_entry": {
     "title": "Time Entries",
     "recent_entries": "Recent Entries",
@@ -82,20 +137,32 @@
       "date": "Date",
       "shift": "Shift",
       "duration": "Hours",
-      "notes": "Notes"
-    }
+      "notes": "Notes",
+      "type": "Type",
+      "time_entry": "Time Entry",
+      "schedule": "Schedule"
+    },
+    "summary_item": "Summary Item",
+    "value": "Value",
+    "entries_count": "Total Time Entries",
+    "schedules_count": "Total Schedules",
+    "custom_shifts_count": "Total Custom Shifts",
+    "total_hours": "Total Hours",
+    "total_minutes": "Total Minutes"
   },
   "schedule": {
     "title": "Schedule",
     "week": "Week",
     "month": "Month",
-    "previous_week": "Previous Week",
-    "next_week": "Next Week",
+    "previous_week": "Last",
+    "next_week": "Next",
     "previous_month": "Previous Month",
     "next_month": "Next Month",
     "today": "Today",
-    "week_view": "Week Calendar",
-    "month_view": "Month Calendar",
+    "week_prefix": "Week ",
+    "week_suffix": "",
+    "week_view": "Week",
+    "month_view": "Month",
     "no_schedules": "No schedules for this week",
     "add_schedule": "Add Schedule",
     "edit_schedule": "Edit Schedule",
@@ -121,6 +188,14 @@
       "shift_required": "Please select a shift template"
     }
   },
+  "shifts": {
+    "custom_shifts": "Custom Shifts",
+    "name": "Shift Name",
+    "start_time": "Start Time",
+    "end_time": "End Time",
+    "custom_duration": "Custom Duration",
+    "shift_type": "Shift Type"
+  },
   "settings": {
     "title": "Settings",
     "language": "Language",
@@ -134,19 +209,20 @@
     "import_error": "Error importing data. Please check the file format."
   },
   "data": {
-    "title": "About Us",
-    "export_data": "Export Data",
-    "import_data": "Import Data",
-    "export_success": "Data exported successfully!",
-    "import_success": "Data imported successfully!",
-    "import_error": "Error importing data. Please check the file format.",
-    "export": {
-      "title": "Export Data",
-      "description": "Export all time tracking data to a JSON file for backup or transfer.",
-      "button": "Export Data",
-      "success": "Data exported successfully!",
-      "error": "Error exporting data: "
-    },
+      "title": "About Us",
+      "export_data": "Export Data",
+      "import_data": "Import Data",
+      "export_success": "Data exported successfully!",
+      "import_success": "Data imported successfully!",
+      "import_error": "Error importing data. Please check the file format.",
+      "export": {
+        "title": "Export Data",
+        "description": "Export all your data to JSON or Excel files for backup or transfer.",
+        "json_button": "Export as JSON",
+        "excel_button": "Export as Excel",
+        "success": "Data exported successfully!",
+        "error": "Error exporting data: "
+      },
     "import": {
       "title": "Import Data",
       "description": "Import time tracking data from a JSON file. This will overwrite your current data.",
@@ -165,6 +241,12 @@
     "import_override": {
       "title": "Confirm Override",
       "message": "There is existing data locally. Importing will overwrite the current data. Continue?"
+    },
+    "export_modal": {
+      "title": "Set JSON File Name",
+      "filename": "File Name",
+      "placeholder": "Please enter file name",
+      "extension": "extension will be added automatically"
     }
   }
 }

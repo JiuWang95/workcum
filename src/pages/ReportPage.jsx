@@ -110,7 +110,7 @@ const ReportPage = () => {
 
   const handleExcelFileNameConfirm = (fileName) => {
     setIsExcelFileNameModalOpen(false);
-    exportToExcelReport(filteredEntries, filteredSchedules, shifts, fileName);
+    exportToExcelReport(filteredEntries, filteredSchedules, shifts, fileName, t);
   };
 
   return (
@@ -255,7 +255,7 @@ const ReportPage = () => {
                     <th className="py-2 px-4 text-left">{t('reports.table.end_time')}</th>
                     <th className="py-2 px-4 text-left">{t('reports.table.duration')}</th>
                     <th className="py-2 px-4 text-left">{t('reports.table.date')}</th>
-                    <th className="py-2 px-4 text-left">类型</th>
+                    <th className="py-2 px-4 text-left">{t('reports.table.type')}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -289,7 +289,7 @@ const ReportPage = () => {
                             <td className="py-2 px-4 border-b">{(record.duration / 60).toFixed(1)}h</td>
                             <td className="py-2 px-4 border-b">{record.date}</td>
                             <td className="py-2 px-4 border-b">
-                              <span className="bg-orange-100 text-orange-800 text-xs px-2 py-1 rounded">工时记录</span>
+                              <span className="bg-orange-100 text-orange-800 text-xs px-2 py-1 rounded">{t('reports.table.time_entry')}</span>
                             </td>
                           </tr>
                         );
@@ -319,7 +319,7 @@ const ReportPage = () => {
                             <td className="py-2 px-4 border-b">{(duration / 60).toFixed(1)}h</td>
                             <td className="py-2 px-4 border-b">{record.date}</td>
                             <td className="py-2 px-4 border-b">
-                              <span className="bg-indigo-100 text-indigo-800 text-xs px-2 py-1 rounded">排班</span>
+                              <span className="bg-indigo-100 text-indigo-800 text-xs px-2 py-1 rounded">{t('reports.table.schedule')}</span>
                             </td>
                           </tr>
                         );

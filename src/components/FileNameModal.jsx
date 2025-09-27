@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 const FileNameModal = ({ 
   isOpen, 
   onClose, 
   onConfirm, 
   defaultFileName,
-  title = "设置JSON文件名",
-  fileType = "JSON",
-  fileExtension = ".json"
+  title,
+  fileType,
+  fileExtension
 }) => {
+  const { t } = useTranslation();
   const [fileName, setFileName] = useState(defaultFileName || '');
 
   if (!isOpen) return null;
@@ -25,7 +27,7 @@ const FileNameModal = ({
       <div className="bg-white rounded-lg shadow-xl max-w-md w-full">
         <div className="p-6">
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-xl font-bold text-gray-800">{title}</h2>
+            <h2 className="text-xl font-bold text-gray-800">{title || t('data.export_modal.title')}</h2>
             <button 
               onClick={onClose}
               className="text-gray-500 hover:text-gray-700"
@@ -39,7 +41,7 @@ const FileNameModal = ({
           <form onSubmit={handleSubmit}>
             <div className="mb-4">
               <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="filename">
-                {fileType}文件名
+                {fileType || 'JSON'}{t('data.export_modal.filename')}
               </label>
               <input
                 type="text"
@@ -47,9 +49,9 @@ const FileNameModal = ({
                 value={fileName}
                 onChange={(e) => setFileName(e.target.value)}
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                placeholder="请输入文件名"
+                placeholder={t('data.export_modal.placeholder')}
               />
-              <p className="text-gray-500 text-xs mt-2">{fileExtension} 扩展名将自动添加</p>
+              <p className="text-gray-500 text-xs mt-2">{fileExtension || '.json'} {t('data.export_modal.extension')}</p>
             </div>
             
             <div className="flex justify-end space-x-3">
@@ -58,13 +60,13 @@ const FileNameModal = ({
                 onClick={onClose}
                 className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
               >
-                取消
+                {t('common.cancel')}
               </button>
               <button
                 type="submit"
                 className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
               >
-                确定
+                {t('common.confirm')}
               </button>
             </div>
           </form>

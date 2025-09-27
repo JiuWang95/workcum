@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import FileNameModal from '../components/FileNameModal';
 import ConfirmOverrideModal from '../components/ConfirmOverrideModal';
+import { exportAllDataToExcel } from '../utils/exportData';
 
 const DataPage = () => {
   const { t, i18n } = useTranslation();
@@ -19,6 +20,25 @@ const DataPage = () => {
   // Export all data to JSON
   const handleExportAllData = () => {
     setIsFileNameModalOpen(true);
+  };
+
+  // Export all data to Excel
+  const handleExportAllDataToExcel = () => {
+    try {
+      // Get all data from localStorage
+      const timeEntries = JSON.parse(localStorage.getItem('timeEntries') || '[]');
+      const schedules = JSON.parse(localStorage.getItem('schedules') || '[]');
+      const customShifts = JSON.parse(localStorage.getItem('customShifts') || '[]');
+      
+      // Export to Excel
+      exportAllDataToExcel(timeEntries, schedules, customShifts, `time-tracker-export-${new Date().toISOString().split('T')[0]}`, t);
+      
+      setExportStatus(t('data.export.success'));
+      setTimeout(() => setExportStatus(''), 3000);
+    } catch (error) {
+      setExportStatus(t('data.export.error') + error.message);
+      setTimeout(() => setExportStatus(''), 3000);
+    }
   };
 
   const handleFileNameConfirm = (fileName) => {
@@ -166,7 +186,7 @@ const DataPage = () => {
       
       
       {/* Project Information Section */}
-      <div className="mt-6 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-xl shadow-md overflow-hidden">
+      <div className="mt-6 bg-white rounded-xl shadow-md overflow-hidden border border-gray-200">
         <div className="p-1 bg-gradient-to-r from-indigo-500 to-purple-600"></div>
         <div className="p-4 md:p-6">
           <div className="flex items-start">
@@ -178,9 +198,12 @@ const DataPage = () => {
               </div>
             </div>
             <div className="flex-1">
-              <h2 className="text-lg font-bold text-gray-800 mb-2 md:text-xl">项目介绍</h2>
+              <h2 className="text-lg font-bold text-gray-800 mb-2 md:text-xl">{t('project.title')}</h2>
               <p className="text-gray-600 mb-5 leading-relaxed text-sm md:text-base">
-        这是一个专为工作时间管理而设计的高效工具，旨在帮助用户轻松跟踪和管理工作时间。项目最初是为了给我的老婆大人思语小姐姐创建一个方便计算工时的工具，现已发展成为一个功能完整的工时跟踪系统。如果你有更好的建议或者问题反馈，可以点击联系乐乐。
+        {t('project.introduction.paragraph1')}
+      </p>
+      <p className="text-gray-600 mb-5 leading-relaxed text-sm md:text-base">
+        {t('project.introduction.paragraph2')}
       </p>
               
               <div className="mb-6">
@@ -188,38 +211,38 @@ const DataPage = () => {
                   <svg className="w-5 h-5 mr-2 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
                   </svg>
-                  主要功能
+                  {t('project.features.title')}
                 </h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div className="flex items-start">
                     <svg className="w-5 h-5 text-green-500 mt-0.5 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                     </svg>
-                    <span className="text-gray-600 text-sm md:text-base">直观的排班日历视图</span>
+                    <span className="text-gray-600 text-sm md:text-base">{t('project.features.item1')}</span>
                   </div>
                   <div className="flex items-start">
                     <svg className="w-5 h-5 text-green-500 mt-0.5 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                     </svg>
-                    <span className="text-gray-600 text-sm md:text-base">详细的时间记录功能</span>
+                    <span className="text-gray-600 text-sm md:text-base">{t('project.features.item2')}</span>
                   </div>
                   <div className="flex items-start">
                     <svg className="w-5 h-5 text-green-500 mt-0.5 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                     </svg>
-                    <span className="text-gray-600 text-sm md:text-base">全面的数据导出和导入支持</span>
+                    <span className="text-gray-600 text-sm md:text-base">{t('project.features.item3')}</span>
                   </div>
                   <div className="flex items-start">
                     <svg className="w-5 h-5 text-green-500 mt-0.5 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                     </svg>
-                    <span className="text-gray-600 text-sm md:text-base">可视化报表分析</span>
+                    <span className="text-gray-600 text-sm md:text-base">{t('project.features.item4')}</span>
                   </div>
                 </div>
               </div>
               
               <p className="text-gray-600 mb-6 leading-relaxed text-sm md:text-base">
-                如果您想要感谢一下作者，您可以请思语小姐姐喝杯奶茶，您也可以在GitHub仓库里为作者打赏。也可以直接点击捐款为公益做一点贡献。
+                {t('project.support.text')}
               </p>
               
               <div className="flex flex-wrap gap-3">
@@ -241,7 +264,7 @@ const DataPage = () => {
                       clipRule="evenodd"
                     />
                   </svg>
-                  GitHub仓库
+                  {t('project.support.github')}
                 </a>
                 <button
                   onClick={() => {
@@ -273,7 +296,7 @@ const DataPage = () => {
                       d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
                     />
                   </svg>
-                  联系乐乐
+                  {t('project.support.contact')}
                 </button>
                 <a 
                   href="https://gongyi.qq.com/succor/project_list.htm" 
@@ -295,7 +318,7 @@ const DataPage = () => {
                       d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                     />
                   </svg>
-                  捐赠支持
+                  {t('project.support.donate')}
                 </a>
               </div>
             </div>
@@ -314,9 +337,9 @@ const DataPage = () => {
               </svg>
             </div>
             <div>
-              <h2 className="text-lg font-bold text-gray-800 mb-3 md:text-xl">免责声明</h2>
+              <h2 className="text-lg font-bold text-gray-800 mb-3 md:text-xl">{t('disclaimer.title')}</h2>
               <p className="text-red-700 font-medium text-sm md:text-base">
-                本工具仅供个人学习和参考使用，用户应自行承担使用风险。本工具不收集、存储或传输任何用户数据，所有数据均保存在用户本地浏览器中。用户应定期备份重要数据，作者不对数据丢失承担任何责任。本工具不提供任何商业支持或技术保障，使用前请充分了解相关风险。
+                {t('disclaimer.content')}
               </p>
             </div>
           </div>
@@ -346,15 +369,26 @@ const DataPage = () => {
                 <p className="text-gray-600 mb-4 text-sm md:text-base">
                   {t('data.export.description')}
                 </p>
-                <button
-                  onClick={handleExportAllData}
-                  className="inline-flex items-center px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-lg transition-all duration-200 shadow hover:shadow-md"
-                >
-                  <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
-                  </svg>
-                  {t('data.export.button')}
-                </button>
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <button
+                    onClick={handleExportAllData}
+                    className="inline-flex items-center px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-lg transition-all duration-200 shadow hover:shadow-md"
+                  >
+                    <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                    </svg>
+                    {t('data.export.json_button')}
+                  </button>
+                  <button
+                    onClick={handleExportAllDataToExcel}
+                    className="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-all duration-200 shadow hover:shadow-md"
+                  >
+                    <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                    </svg>
+                    {t('data.export.excel_button')}
+                  </button>
+                </div>
                 {exportStatus && (
                   <div className="mt-4 p-3 bg-emerald-100 text-emerald-700 rounded-lg">
                     {exportStatus}
