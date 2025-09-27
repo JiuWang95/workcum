@@ -19,7 +19,7 @@ const AddEntryModal = ({ isOpen, onClose, onAddEntry, customShifts, onCustomShif
     <Modal 
       isOpen={isOpen} 
       onClose={onClose} 
-      size="sm"
+      size="md"
       title={t('time_entry.add_entry')}
       footer={
         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">

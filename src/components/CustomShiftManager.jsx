@@ -212,6 +212,7 @@ const CustomShiftManager = ({ scrollToEditSection }) => {
           setShiftType('day');
           setCustomHue(120); // 重置为默认值
         }}
+        size="md"
         title={editingShift ? t('time_entry.custom_shift.edit_shift') : t('time_entry.custom_shift.add_shift')}
       >
         <form onSubmit={handleSubmit} className="space-y-2.5 sm:space-y-4">
