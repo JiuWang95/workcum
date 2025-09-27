@@ -3,7 +3,7 @@ import { format, parse } from 'date-fns';
 import { useTranslation } from 'react-i18next';
 import DurationPicker from './DurationPicker';
 
-const TimeEntryForm = ({ onAddEntry, onCancel }) => {
+const TimeEntryForm = ({ onAddEntry, onCancel, onSubmit }) => {
   const { t } = useTranslation();
   const [date, setDate] = useState(format(new Date(), 'yyyy-MM-dd'));
   const [startTime, setStartTime] = useState('09:00');
@@ -59,7 +59,12 @@ const TimeEntryForm = ({ onAddEntry, onCancel }) => {
       notes
     };
     
-    onAddEntry(newEntry);
+    // 调用onAddEntry或onSubmit，确保至少有一个被调用
+    if (onAddEntry) {
+      onAddEntry(newEntry);
+    } else if (onSubmit) {
+      onSubmit(newEntry);
+    }
     
     // Reset form
     setNotes('');

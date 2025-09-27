@@ -48,22 +48,9 @@ const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
         const savedEntries = JSON.parse(e.newValue || '[]');
         setTimeEntries(savedEntries);
       }
-    };
-
-    window.addEventListener('storage', handleStorageChange);
-    
-    // Cleanup event listener on component unmount
-    return () => {
-      window.removeEventListener('storage', handleStorageChange);
-    };
-  }, []);
-
-  // 添加一个useEffect来监听localStorage的变化
-  useEffect(() => {
-    const handleStorageChange = (e) => {
-      if (e.key === 'timeEntries') {
-        const savedEntries = JSON.parse(e.newValue || '[]');
-        setTimeEntries(savedEntries);
+      if (e.key === 'schedules') {
+        const savedSchedules = JSON.parse(e.newValue || '[]');
+        setSchedules(savedSchedules);
       }
     };
 
