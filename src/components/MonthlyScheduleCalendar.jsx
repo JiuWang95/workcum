@@ -208,9 +208,9 @@ const CalendarDay = ({ day, isCurrentMonth, isToday: isTodayProp, daySchedules, 
   };
 
   return (
-    <div className={`border rounded-lg p-0.5 sm:p-1 flex flex-col transition-all duration-200 hover:shadow-md active:scale-95 min-h-16 sm:min-h-20 md:min-h-24 lg:min-h-28 ${
+    <div className={`rounded-lg p-0.5 sm:p-1 flex flex-col transition-all duration-200 hover:shadow-md active:scale-95 min-h-16 sm:min-h-20 md:min-h-24 lg:min-h-28 ${
       isCurrentMonth ? 'bg-white' : 'bg-gray-50 text-gray-400'
-    } ${isTodayProp ? 'border-blue-500 border-2 shadow-sm' : 'border-gray-200'}`}
+    } ${isTodayProp ? 'bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-300 shadow-sm' : ''}`}
       style={daySchedules.length > 0 || dayTimeEntries.length > 0 ? { backgroundColor: dayBackgroundColor } : {}}
     >
       <div className={`text-right ${isTodayProp ? 'bg-blue-500 text-white rounded-full w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center ml-auto text-[10px] sm:text-xs' : ''}`}>
@@ -304,12 +304,12 @@ const MonthlyScheduleCalendar = ({ currentDate, onDateChange }) => {
   };
 
   return (
-    <div className="bg-white rounded-xl shadow-lg p-1 sm:p-2 md:p-3 hide-scrollbar mt-1">
+    <div className="hide-scrollbar mt-1">
       {/* Calendar grid */}
       <div className="grid grid-cols-7 gap-0.5 sm:gap-1">
         {/* Weekday headers */}
         {[t('common.weekdays.sunday'), t('common.weekdays.monday'), t('common.weekdays.tuesday'), t('common.weekdays.wednesday'), t('common.weekdays.thursday'), t('common.weekdays.friday'), t('common.weekdays.saturday')].map((day, index) => (
-          <div key={index} className="text-center text-xs sm:text-sm md:text-base font-bold text-gray-600 py-1 sm:py-2 bg-gradient-to-b from-gray-50 to-white rounded-lg shadow-sm">
+          <div key={index} className="text-center text-xs sm:text-sm md:text-base font-bold text-gray-600 py-1 sm:py-2">
             {day}
           </div>
         ))}
