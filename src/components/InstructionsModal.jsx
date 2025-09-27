@@ -44,7 +44,7 @@ const InstructionsModal = ({ isOpen, onClose }) => {
               <h3 className="text-base sm:text-lg font-semibold text-blue-700 mb-1">排班</h3>
               <div className="flex items-start">
                 <div className="flex-shrink-0 h-5 w-5 text-blue-500 mt-1">•</div>
-                <p className="ml-2 text-gray-700 text-sm md:text-base">使用周历添加和管理排班，点击任意日期添加新的排班任务。</p>
+                <p className="ml-2 text-gray-700 text-sm md:text-base">使用周历添加和管理排班，点击任意日期添加新的排班任务。每个日期只能添加一个排班任务。</p>
               </div>
               <div className="flex items-start mt-1">
                 <div className="flex-shrink-0 h-5 w-5 text-blue-500 mt-1">•</div>
