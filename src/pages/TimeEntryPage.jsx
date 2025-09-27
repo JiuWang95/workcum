@@ -111,7 +111,7 @@ const TimeEntryPage = () => {
           {/* 桌面端和移动端横屏添加记录按钮 */}
           <button
             onClick={() => setIsAddEntryModalOpen(true)}
-            className="hidden md:flex px-4 py-2 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-md hover:from-green-600 hover:to-emerald-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 text-sm font-medium items-center shadow-md transition-all duration-200"
+            className="hidden md:flex px-4 py-2 bg-gradient-to-r from-teal-500 to-cyan-600 text-white rounded-md hover:from-teal-600 hover:to-cyan-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 text-sm font-medium items-center shadow-md transition-all duration-200"
           >
             <svg 
               className="w-4 h-4 mr-1" 
@@ -151,20 +151,14 @@ const TimeEntryPage = () => {
         </div>
       </div>
       
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <div className="lg:col-span-3">
-          <CustomShiftManager scrollToEditSection={scrollToEditSection} />
-        </div>
-      </div>
-      
-      {/* 移动端的添加差异记录按钮仍然保留在下方并居中显示 */}
-      <div className="mt-20 flex justify-center md:hidden">
+      {/* 移动端的添加差异记录按钮放在自定义班次上面，计划标题的下面 */}
+      <div className="mb-6 md:hidden">
         <button
           onClick={() => setIsAddEntryModalOpen(true)}
-          className="flex items-center px-8 py-4 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-2xl hover:from-green-600 hover:to-emerald-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 text-lg font-bold shadow-lg transition-all duration-200 transform hover:scale-105 active:scale-95"
+          className="flex items-center px-6 py-3 bg-gradient-to-r from-teal-500 to-cyan-600 text-white rounded-xl hover:from-teal-600 hover:to-cyan-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 text-base font-bold shadow-lg transition-all duration-200 transform hover:scale-105 active:scale-95"
         >
           <svg 
-            className="w-7 h-7 mr-3" 
+            className="w-6 h-6 mr-2" 
             fill="none" 
             stroke="currentColor" 
             viewBox="0 0 24 24" 
@@ -179,6 +173,12 @@ const TimeEntryPage = () => {
           </svg>
           <span className="whitespace-nowrap">{t('time_entry.add_entry')}</span>
         </button>
+      </div>
+      
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="lg:col-span-3">
+          <CustomShiftManager scrollToEditSection={scrollToEditSection} />
+        </div>
       </div>
       
       {/* 在页面底部添加一个占位元素，防止内容被固定按钮遮挡 */}
