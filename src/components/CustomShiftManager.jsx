@@ -1,7 +1,8 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import DurationPicker from './DurationPicker';
-import { getShiftColor, getShiftBackgroundColor } from '../utils/shiftColor'; // 导入颜色工具函数
+import { getShiftColor, getShiftBackgroundColor } from '../utils/shiftColor';
+import Modal from './Modal';
 
 const CustomShiftManager = ({ scrollToEditSection }) => {
   const { t } = useTranslation();
@@ -185,17 +186,54 @@ const CustomShiftManager = ({ scrollToEditSection }) => {
       <div className="flex justify-between items-center mb-4">
         <h2 className="section-heading">{t('time_entry.custom_shift.title')}</h2>
         <button
-          onClick={() => setShowForm(!showForm)}
+          onClick={() => {
+            // 重置表单状态
+            setEditingShift(null);
+            setShiftName('');
+            setStartTime('09:00');
+            setEndTime('17:00');
+            setCustomDuration('');
+            setShiftType('day');
+            setShowForm(true);
+          }}
           className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-1 px-3 rounded text-sm focus:outline-none focus:shadow-outline"
         >
-          {showForm ? t('time_entry.custom_shift.cancel') : t('time_entry.custom_shift.add_shift')}
+          {t('time_entry.custom_shift.add_shift')}
         </button>
       </div>
       
-      {showForm && (
-        // 减少表单的内边距以适应移动端
-        <form onSubmit={handleSubmit} className="mb-4 p-3 border border-gray-200 rounded">
-          <div className="mb-3">
+      {/* 使用Modal组件替换原来的条件渲染表单 */}
+      <Modal
+        isOpen={showForm}
+        onClose={() => {
+          handleCancel();
+        }}
+        title={editingShift ? t('time_entry.custom_shift.update_shift') : t('time_entry.custom_shift.add_shift')}
+        size="sm"
+        footer={
+          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
+            <button
+              type="button"
+              onClick={handleCancel}
+              className="w-full sm:w-auto inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:text-sm"
+            >
+              {t('time_entry.custom_shift.cancel')}
+            </button>
+            <button
+              type="button"
+              onClick={handleSubmit}
+              className="w-full sm:w-auto inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:text-sm"
+            >
+              {editingShift ? t('time_entry.custom_shift.update_shift') : t('common.save')}
+            </button>
+          </div>
+        }
+      >
+        <form onSubmit={(e) => {
+          e.preventDefault();
+          handleSubmit(e);
+        }} className="space-y-4">
+          <div>
             <label className="block text-gray-700 text-sm font-bold mb-1" htmlFor="shiftName">
               {t('time_entry.custom_shift.shift_name')}
             </label>
@@ -292,23 +330,8 @@ const CustomShiftManager = ({ scrollToEditSection }) => {
             </div>
           </div>
           
-          <div className="flex items-center justify-between">
-            <button
-              type="button"
-              onClick={handleCancel}
-              className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-3 rounded text-sm focus:outline-none focus:shadow-outline"
-            >
-              {t('time_entry.custom_shift.cancel')}
-            </button>
-            <button
-              type="submit"
-              className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-3 rounded text-sm focus:outline-none focus:shadow-outline"
-            >
-              {editingShift ? t('time_entry.custom_shift.update_shift') : t('time_entry.custom_shift.save_shift')}
-            </button>
-          </div>
-        </form>
-      )}
+          </form>
+      </Modal>
       
       {shifts.length > 0 ? (
         // 进一步优化班次项的显示，只显示核心信息以减小高度
