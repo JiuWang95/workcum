@@ -35,7 +35,7 @@ const InstructionsModal = ({ isOpen, onClose }) => {
               </div>
               <div className="flex items-start mt-1">
                 <div className="flex-shrink-0 h-5 w-5 text-blue-500 mt-1">•</div>
-                <p className="ml-2 text-gray-700 text-sm md:text-base">或者手动添加您的工作时间记录（排班表里没有的）。</p>
+                <p className="ml-2 text-gray-700 text-sm md:text-base">或者手动添加您的工作时间记录，如果排班表是休息，实际上却上了班，可以添加记录来保证差异性。</p>
               </div>
             </div>
 
