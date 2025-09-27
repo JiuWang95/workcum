@@ -399,13 +399,13 @@ const CustomShiftManager = ({ scrollToEditSection }) => {
               <div className="flex items-center">
                 {/* 工时时长 */}
                 <div className="text-right mr-2">
-                  {shift.customDuration !== undefined && shift.customDuration !== null ? (
+                  {shift.customDuration !== undefined && shift.customDuration !== null && shift.customDuration !== "" ? (
                     <p className="text-gray-600 text-xs md:text-sm font-medium">
                       {convertDurationToHours(shift.customDuration).toFixed(1)}h
                     </p>
                   ) : (
-                    <p className="text-gray-400 text-xs md:text-sm italic">
-                      {t('time_entry.custom_shift.custom_duration')}
+                    <p className="text-gray-600 text-xs md:text-sm font-medium">
+                      0.0h
                     </p>
                   )}
                 </div>

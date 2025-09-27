@@ -228,16 +228,16 @@ const ReportPage = () => {
         ) : (
           <>
             {/* Desktop Table View */}
-            <div className="hidden md:block overflow-x-auto rounded-xl shadow">
-              <table className="min-w-full bg-white rounded-xl">
+            <div className="hidden md:block overflow-x-auto rounded-lg border">
+              <table className="min-w-full bg-white">
                 <thead>
-                  <tr className="bg-gradient-to-r from-indigo-500 to-purple-600 text-white">
-                    <th className="py-3 px-4 text-left font-medium rounded-tl-xl">{t('reports.table.notes')}</th>
-                    <th className="py-3 px-4 text-left font-medium">{t('reports.table.start_time')}</th>
-                    <th className="py-3 px-4 text-left font-medium">{t('reports.table.end_time')}</th>
-                    <th className="py-3 px-4 text-left font-medium">{t('reports.table.duration')}</th>
-                    <th className="py-3 px-4 text-left font-medium">{t('reports.table.date')}</th>
-                    <th className="py-3 px-4 text-left font-medium rounded-tr-xl">{t('reports.table.type')}</th>
+                  <tr className="bg-gray-100 text-gray-700">
+                    <th className="py-2 px-3 text-left text-sm font-medium">{t('reports.table.notes')}</th>
+                    <th className="py-2 px-3 text-left text-sm font-medium">{t('reports.table.start_time')}</th>
+                    <th className="py-2 px-3 text-left text-sm font-medium">{t('reports.table.end_time')}</th>
+                    <th className="py-2 px-3 text-left text-sm font-medium">{t('reports.table.duration')}</th>
+                    <th className="py-2 px-3 text-left text-sm font-medium">{t('reports.table.date')}</th>
+                    <th className="py-2 px-3 text-left text-sm font-medium">{t('reports.table.type')}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -264,14 +264,14 @@ const ReportPage = () => {
                       if (record.type === 'entry') {
                         // 时间记录
                         return (
-                          <tr key={`entry-${record.id}`} className={`border-b border-gray-100 hover:bg-indigo-50 transition-colors duration-150 ${index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}`}>
-                            <td className="py-3 px-4">{record.notes || t('time_entry.entry')}</td>
-                            <td className="py-3 px-4 font-medium">{record.startTime}</td>
-                            <td className="py-3 px-4 font-medium">{record.endTime}</td>
-                            <td className="py-3 px-4 font-medium text-indigo-600">{(record.duration / 60).toFixed(1)}h</td>
-                            <td className="py-3 px-4">{record.date}</td>
-                            <td className="py-3 px-4">
-                              <span className="bg-gradient-to-r from-orange-100 to-orange-200 text-orange-800 text-xs px-3 py-1 rounded-full font-medium">{t('reports.table.time_entry')}</span>
+                          <tr key={`entry-${record.id}`} className={`border-b border-gray-100 ${index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}`}>
+                            <td className="py-2 px-3 text-sm">{record.notes || t('time_entry.entry')}</td>
+                            <td className="py-2 px-3 text-sm">{record.startTime}</td>
+                            <td className="py-2 px-3 text-sm">{record.endTime}</td>
+                            <td className="py-2 px-3 text-sm font-medium text-indigo-600">{(record.duration / 60).toFixed(1)}h</td>
+                            <td className="py-2 px-3 text-sm">{record.date}</td>
+                            <td className="py-2 px-3">
+                              <span className="bg-orange-100 text-orange-800 text-xs px-2 py-1 rounded">{t('reports.table.time_entry')}</span>
                             </td>
                           </tr>
                         );
@@ -294,14 +294,14 @@ const ReportPage = () => {
                         }
                         
                         return (
-                          <tr key={`schedule-${record.id}`} className={`border-b border-gray-100 hover:bg-indigo-50 transition-colors duration-150 ${index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}`}>
-                            <td className="py-3 px-4">{record.notes || record.title || '-'}</td>
-                            <td className="py-3 px-4 font-medium">{record.startTime}</td>
-                            <td className="py-3 px-4 font-medium">{record.endTime}</td>
-                            <td className="py-3 px-4 font-medium text-indigo-600">{(duration / 60).toFixed(1)}h</td>
-                            <td className="py-3 px-4">{record.date}</td>
-                            <td className="py-3 px-4">
-                              <span className="bg-gradient-to-r from-indigo-100 to-indigo-200 text-indigo-800 text-xs px-3 py-1 rounded-full font-medium">{t('reports.table.schedule')}</span>
+                          <tr key={`schedule-${record.id}`} className={`border-b border-gray-100 ${index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}`}>
+                            <td className="py-2 px-3 text-sm">{record.notes || record.title || '-'}</td>
+                            <td className="py-2 px-3 text-sm">{record.startTime}</td>
+                            <td className="py-2 px-3 text-sm">{record.endTime}</td>
+                            <td className="py-2 px-3 text-sm font-medium text-indigo-600">{(duration / 60).toFixed(1)}h</td>
+                            <td className="py-2 px-3 text-sm">{record.date}</td>
+                            <td className="py-2 px-3">
+                              <span className="bg-indigo-100 text-indigo-800 text-xs px-2 py-1 rounded">{t('reports.table.schedule')}</span>
                             </td>
                           </tr>
                         );
@@ -313,7 +313,7 @@ const ReportPage = () => {
             </div>
             
             {/* Mobile Card View */}
-            <div className="md:hidden space-y-4">
+            <div className="md:hidden space-y-3">
               {/* 合并时间记录和排班记录，并按时间顺序排序 */}
               {(() => {
                 // 创建包含所有记录的数组，并添加类型标识
@@ -337,30 +337,28 @@ const ReportPage = () => {
                   if (record.type === 'entry') {
                     // 时间记录
                     return (
-                      <div key={`entry-${record.id}`} className="bg-white p-5 rounded-xl shadow-lg border-l-4 border-l-orange-500 hover:shadow-xl transition-shadow duration-300">
-                        <div className="flex justify-between items-start">
+                      <div key={`entry-${record.id}`} className="bg-white p-3 rounded-lg border border-gray-200">
+                        <div className="flex justify-between items-start mb-2">
+                          <h3 className="font-medium text-sm">{record.notes || t('time_entry.entry')}</h3>
+                          <span className="bg-orange-100 text-orange-800 text-xs px-2 py-1 rounded">{t('reports.table.time_entry')}</span>
+                        </div>
+                        <div className="grid grid-cols-2 gap-2">
                           <div>
-                            <h3 className="font-semibold text-lg mb-2">{record.notes || t('time_entry.entry')}</h3>
-                            <div className="grid grid-cols-2 gap-3">
-                              <div className="bg-orange-50 p-3 rounded-lg">
-                                <p className="text-sm text-gray-500">{t('reports.table.start_time')}</p>
-                                <p className="font-medium">{record.startTime}</p>
-                              </div>
-                              <div className="bg-orange-50 p-3 rounded-lg">
-                                <p className="text-sm text-gray-500">{t('reports.table.end_time')}</p>
-                                <p className="font-medium">{record.endTime}</p>
-                              </div>
-                              <div className="bg-orange-50 p-3 rounded-lg">
-                                <p className="text-sm text-gray-500">{t('reports.table.duration')}</p>
-                                <p className="font-medium text-orange-600">{(record.duration / 60).toFixed(1)}h</p>
-                              </div>
-                              <div className="bg-orange-50 p-3 rounded-lg">
-                                <p className="text-sm text-gray-500">{t('reports.table.date')}</p>
-                                <p className="font-medium">{record.date}</p>
-                              </div>
-                            </div>
+                            <p className="text-xs text-gray-500">{t('reports.table.start_time')}</p>
+                            <p className="text-sm">{record.startTime}</p>
                           </div>
-                          <span className="bg-gradient-to-r from-orange-100 to-orange-200 text-orange-800 text-xs px-3 py-1 rounded-full font-medium self-start">{t('reports.table.time_entry')}</span>
+                          <div>
+                            <p className="text-xs text-gray-500">{t('reports.table.end_time')}</p>
+                            <p className="text-sm">{record.endTime}</p>
+                          </div>
+                          <div>
+                            <p className="text-xs text-gray-500">{t('reports.table.duration')}</p>
+                            <p className="text-sm font-medium text-orange-600">{(record.duration / 60).toFixed(1)}h</p>
+                          </div>
+                          <div>
+                            <p className="text-xs text-gray-500">{t('reports.table.date')}</p>
+                            <p className="text-sm">{record.date}</p>
+                          </div>
                         </div>
                       </div>
                     );
@@ -383,30 +381,28 @@ const ReportPage = () => {
                     }
                     
                     return (
-                      <div key={`schedule-${record.id}`} className="bg-white p-5 rounded-xl shadow-lg border-l-4 border-l-indigo-500 hover:shadow-xl transition-shadow duration-300">
-                        <div className="flex justify-between items-start">
+                      <div key={`schedule-${record.id}`} className="bg-white p-3 rounded-lg border border-gray-200">
+                        <div className="flex justify-between items-start mb-2">
+                          <h3 className="font-medium text-sm">{record.notes || record.title || '-'}</h3>
+                          <span className="bg-indigo-100 text-indigo-800 text-xs px-2 py-1 rounded">{t('reports.table.schedule')}</span>
+                        </div>
+                        <div className="grid grid-cols-2 gap-2">
                           <div>
-                            <h3 className="font-semibold text-lg mb-2">{record.notes || record.title || '-'}</h3>
-                            <div className="grid grid-cols-2 gap-3">
-                              <div className="bg-indigo-50 p-3 rounded-lg">
-                                <p className="text-sm text-gray-500">{t('reports.table.start_time')}</p>
-                                <p className="font-medium">{record.startTime}</p>
-                              </div>
-                              <div className="bg-indigo-50 p-3 rounded-lg">
-                                <p className="text-sm text-gray-500">{t('reports.table.end_time')}</p>
-                                <p className="font-medium">{record.endTime}</p>
-                              </div>
-                              <div className="bg-indigo-50 p-3 rounded-lg">
-                                <p className="text-sm text-gray-500">{t('reports.table.duration')}</p>
-                                <p className="font-medium text-indigo-600">{(duration / 60).toFixed(1)}h</p>
-                              </div>
-                              <div className="bg-indigo-50 p-3 rounded-lg">
-                                <p className="text-sm text-gray-500">{t('reports.table.date')}</p>
-                                <p className="font-medium">{record.date}</p>
-                              </div>
-                            </div>
+                            <p className="text-xs text-gray-500">{t('reports.table.start_time')}</p>
+                            <p className="text-sm">{record.startTime}</p>
                           </div>
-                          <span className="bg-gradient-to-r from-indigo-100 to-indigo-200 text-indigo-800 text-xs px-3 py-1 rounded-full font-medium self-start">{t('reports.table.schedule')}</span>
+                          <div>
+                            <p className="text-xs text-gray-500">{t('reports.table.end_time')}</p>
+                            <p className="text-sm">{record.endTime}</p>
+                          </div>
+                          <div>
+                            <p className="text-xs text-gray-500">{t('reports.table.duration')}</p>
+                            <p className="text-sm font-medium text-indigo-600">{(duration / 60).toFixed(1)}h</p>
+                          </div>
+                          <div>
+                            <p className="text-xs text-gray-500">{t('reports.table.date')}</p>
+                            <p className="text-sm">{record.date}</p>
+                          </div>
                         </div>
                       </div>
                     );
