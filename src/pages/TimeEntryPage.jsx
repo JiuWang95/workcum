@@ -49,7 +49,7 @@ const TimeEntryPage = () => {
       <div className="flex justify-between items-center mb-6">
         <h1 className="page-heading">{t('navigation.time_entry')}</h1>
         <div className="flex space-x-2">
-          {/* 桌面端添加记录按钮 */}
+          {/* 桌面端和移动端横屏添加记录按钮 */}
           <button
             onClick={() => setIsAddEntryModalOpen(true)}
             className="hidden md:flex px-4 py-2 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-md hover:from-green-600 hover:to-emerald-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 text-sm font-medium items-center shadow-md transition-all duration-200"
@@ -99,8 +99,9 @@ const TimeEntryPage = () => {
         </div>
       </div>
       
-      {/* 移动端添加记录按钮放在页面底部，靠近移动端导航栏 */}
-      <div className="fixed md:hidden bottom-28 left-1/2 transform -translate-x-1/2 z-10">
+      {/* 移动端竖屏添加记录按钮放在页面底部，靠近移动端导航栏 */}
+      {/* 移动端横屏时隐藏底部按钮，使用顶部按钮 */}
+      <div className="fixed md:hidden bottom-28 left-1/2 transform -translate-x-1/2 z-10 landscape:hidden">
         <button
           onClick={() => setIsAddEntryModalOpen(true)}
           className="px-3 py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-full hover:from-green-600 hover:to-emerald-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 text-sm font-medium flex items-center shadow-lg transition-all duration-200 transform hover:scale-105"
