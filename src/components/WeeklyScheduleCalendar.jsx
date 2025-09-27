@@ -26,6 +26,8 @@ const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
     date: '',
     selectedShift: '' // 只保留班次选择
   });
+  const [showReplaceModal, setShowReplaceModal] = useState(false);
+  const [selectedDateForReplace, setSelectedDateForReplace] = useState(null);
 
   // Load schedules from localStorage
   useEffect(() => {
@@ -108,12 +110,14 @@ const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
   const weekDays = getWeekDays(currentDate);
 
   const handleDateClick = (date) => {
-    // 检查该日期是否已有排班
+    // 检查该日期是否已有排班或时间记录
     const existingSchedules = getScheduleForDate(date);
+    const existingTimeEntries = getTimeEntriesForDate(date);
     
-    if (existingSchedules.length > 0) {
-      // 如果已有排班，提示用户
-      alert(t('schedule.unique_schedule_warning') || '该日期已有排班任务，每个日期只能添加一个排班任务。');
+    if (existingSchedules.length > 0 || existingTimeEntries.length > 0) {
+      // 如果已有排班或时间记录，提示用户是否替换
+      setShowReplaceModal(true);
+      setSelectedDateForReplace(date);
       return;
     }
     
@@ -486,6 +490,53 @@ const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
           </div>
         </div>
       )}
+    {showReplaceModal && (
+            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+              <div className="bg-white rounded-lg p-6 w-full max-w-md">
+                <h2 className="section-heading text-center mb-6">
+                  {t('schedule.replace_confirmation')}
+                </h2>
+                
+                <div className="mb-6">
+                  <p className="text-gray-700 text-center">
+                    {t('schedule.replace_warning') || '该日期已有排班或记录，继续操作将替换现有内容。确定要继续吗？'}
+                  </p>
+                </div>
+                
+                <div className="flex justify-between">
+                  <button
+                    type="button"
+                    onClick={() => setShowReplaceModal(false)}
+                    className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded"
+                  >
+                    {t('schedule.form.cancel')}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      // 删除该日期的所有排班和时间记录
+                      const dateStr = format(selectedDateForReplace, 'yyyy-MM-dd');
+                      setSchedules(schedules.filter(schedule => schedule.date !== dateStr));
+                      setTimeEntries(timeEntries.filter(entry => entry.date !== dateStr));
+                      
+                      // 打开添加排班模态框
+                      setSelectedDate(selectedDateForReplace);
+                      setFormData({
+                        id: null,
+                        date: dateStr,
+                        selectedShift: ''
+                      });
+                      setShowReplaceModal(false);
+                      setShowModal(true);
+                    }}
+                    className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded"
+                  >
+                    {t('schedule.replace')}
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
     </div>
   );
 };

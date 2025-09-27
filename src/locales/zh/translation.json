@@ -113,7 +113,10 @@
     },
     "no_events": "暂无事件",
     "unique_schedule_warning": "该日期已有排班任务，每个日期只能添加一个排班任务。",
-    "switch_to_week_view": "请切换到周视图添加排班任务"
+    "switch_to_week_view": "请切换到周视图添加排班任务",
+    "replace_confirmation": "替换确认",
+    "replace_warning": "该日期已有排班或记录，继续操作将替换现有内容。确定要继续吗？",
+    "replace": "替换"
   },
   "data": {
     "title": "关于我们",
