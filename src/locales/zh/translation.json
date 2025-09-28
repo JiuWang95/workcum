@@ -157,11 +157,14 @@
         "blue": "蓝色",
         "purple": "紫色",
         "indigo": "靛蓝色",
+        "red": "红色",
+        "pink": "粉色",
         "coral": "珊瑚色",
         "magenta": "洋红色",
         "teal": "青色",
         "yellow": "黄色",
-        "orange": "橙色"
+        "orange": "橙色",
+        "aqua": "水绿色"
       }
     }
   },

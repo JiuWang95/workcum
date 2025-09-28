@@ -143,11 +143,14 @@
         "blue": "Blue",
         "purple": "Purple",
         "indigo": "Indigo",
+        "red": "Red",
+        "pink": "Pink",
         "coral": "Coral",
         "magenta": "Magenta",
         "teal": "Teal",
         "yellow": "Yellow",
-        "orange": "Orange"
+        "orange": "Orange",
+        "aqua": "Aqua"
       }
     },
     "duration": "Hours",

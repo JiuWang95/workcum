@@ -22,11 +22,11 @@ const AddEntryModal = ({ isOpen, onClose, onAddEntry, customShifts, onCustomShif
       size="md"
       title={t('time_entry.add_entry')}
       footer={
-        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 pt-2">
+        <div className="flex flex-row justify-between items-center gap-2 pt-2">
           <button
             type="button"
             onClick={handleCancel}
-            className="w-full sm:w-auto px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-lg transition-colors duration-200 text-base sm:text-sm"
+            className="w-auto px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-lg transition-colors duration-200 text-base sm:text-sm"
           >
             {t('common.cancel')}
           </button>
@@ -39,7 +39,7 @@ const AddEntryModal = ({ isOpen, onClose, onAddEntry, customShifts, onCustomShif
                 form.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
               }
             }}
-            className="w-full sm:w-auto px-4 py-2 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white rounded-lg shadow transition-all duration-200 text-base sm:text-sm"
+            className="w-auto px-4 py-2 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white rounded-lg shadow transition-all duration-200 text-base sm:text-sm"
           >
             {t('common.add')}
           </button>

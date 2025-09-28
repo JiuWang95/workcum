@@ -46,8 +46,8 @@ const ColorPicker = ({ selectedColor, onColorChange, colorOptions }) => {
               className="w-4 h-4 sm:w-5 sm:h-5 rounded-full mb-0.5 border border-gray-300"
               style={{ backgroundColor: getColorValue(color.hue) }}
             ></div>
-            {/* 在移动端隐藏颜色名称以节省空间 */}
-            <span className="text-[9px] sm:text-[10px] text-gray-700 hidden sm:block">{color.name}</span>
+            {/* 在所有设备上显示颜色名称 */}
+            <span className="text-[9px] sm:text-[10px] text-gray-700">{color.name}</span>
           </button>
         ))}
       </div>

@@ -337,7 +337,7 @@ const CustomShiftManager = ({ scrollToEditSection }) => {
             onColorChange={setCustomHue} 
           />
           
-          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 pt-2">
+          <div className="flex flex-row justify-between items-center gap-2 pt-2">
             <button
               type="button"
               onClick={() => {
@@ -350,13 +350,13 @@ const CustomShiftManager = ({ scrollToEditSection }) => {
                 setShiftType('day');
                 setCustomHue(180); // 重置为默认值（青色）
               }}
-              className="w-full sm:w-auto px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-lg transition-colors duration-200 text-base sm:text-sm"
+              className="w-auto px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-lg transition-colors duration-200 text-base sm:text-sm"
             >
               {t('common.cancel')}
             </button>
             <button
               type="submit"
-              className="w-full sm:w-auto px-4 py-2 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white rounded-lg shadow transition-all duration-200 text-base sm:text-sm"
+              className="w-auto px-4 py-2 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white rounded-lg shadow transition-all duration-200 text-base sm:text-sm"
             >
               {editingShift ? t('common.save') : t('common.add')}
             </button>
