@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import FileNameModal from '../components/FileNameModal';
 import ConfirmOverrideModal from '../components/ConfirmOverrideModal';
 
 const DataPage = () => {
@@ -12,17 +11,13 @@ const DataPage = () => {
   };
   const [importStatus, setImportStatus] = useState('');
   const [exportStatus, setExportStatus] = useState('');
-  const [isFileNameModalOpen, setIsFileNameModalOpen] = useState(false);
+  // 删除FileNameModal相关状态
   const [isOverrideModalOpen, setIsOverrideModalOpen] = useState(false);
   const [pendingImportFile, setPendingImportFile] = useState(null);
 
   // Export all data to JSON
   const handleExportAllData = () => {
-    setIsFileNameModalOpen(true);
-  };
-
-  const handleFileNameConfirm = (fileName) => {
-    setIsFileNameModalOpen(false);
+    // 直接使用默认文件名导出，不再弹出FileNameModal
     try {
       // Get all data from localStorage
       const timeEntries = JSON.parse(localStorage.getItem('timeEntries') || '[]');
@@ -41,7 +36,8 @@ const DataPage = () => {
       const dataStr = JSON.stringify(data, null, 2);
       const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
       
-      const exportFileDefaultName = `${fileName}.json`;
+      // 使用默认文件名
+      const exportFileDefaultName = `time-tracker-backup-${new Date().toISOString().split('T')[0]}.json`;
       
       const linkElement = document.createElement('a');
       linkElement.setAttribute('href', dataUri);
@@ -126,15 +122,7 @@ const DataPage = () => {
 
   return (
     <div className="max-w-4xl mx-auto w-full px-4">
-      <FileNameModal
-        isOpen={isFileNameModalOpen}
-        onClose={() => setIsFileNameModalOpen(false)}
-        onConfirm={handleFileNameConfirm}
-        defaultFileName={`time-tracker-backup-${new Date().toISOString().split('T')[0]}`}
-        title="设置JSON文件名"
-        fileType="JSON"
-        fileExtension=".json"
-      />
+      {/* 删除FileNameModal组件引用，不再需要 */}
       
       <ConfirmOverrideModal
         isOpen={isOverrideModalOpen}

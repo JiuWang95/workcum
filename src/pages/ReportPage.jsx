@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { format, subDays, startOfWeek, endOfWeek, startOfMonth, endOfMonth } from 'date-fns';
 import { exportToExcelReport } from '../utils/export';
 import { useTranslation } from 'react-i18next';
-import FileNameModal from '../components/FileNameModal';
 import { getEntryColor } from '../utils/entryColor'; // 导入时间记录颜色工具函数
 
 const ReportPage = () => {
@@ -111,27 +110,18 @@ const ReportPage = () => {
 
   // Export to Excel
   const handleExport = () => {
-    setIsExcelFileNameModalOpen(true);
+    // 直接使用默认文件名导出，不再弹出FileNameModal
+    const defaultFileName = `time-report-${startDate}-to-${endDate}`;
+    exportToExcelReport(filteredEntries, filteredSchedules, shifts, defaultFileName, t);
   };
 
-  const handleExcelFileNameConfirm = (fileName) => {
-    setIsExcelFileNameModalOpen(false);
-    exportToExcelReport(filteredEntries, filteredSchedules, shifts, fileName, t);
-  };
+  // 删除handleExcelFileNameConfirm函数，不再需要
 
   return (
     <div className="max-w-6xl mx-auto">
       <h1 className="page-heading">{t('reports.title')}</h1>
       
-      <FileNameModal
-        isOpen={isExcelFileNameModalOpen}
-        onClose={() => setIsExcelFileNameModalOpen(false)}
-        onConfirm={handleExcelFileNameConfirm}
-        defaultFileName={`time-report-${startDate}-to-${endDate}`}
-        title={t('reports.export_modal.title')}
-        fileType="Excel"
-        fileExtension=".xlsx"
-      />
+      {/* 删除FileNameModal组件引用，不再需要 */}
       
       <div className="bg-white rounded-xl shadow-lg p-6 mb-8">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
