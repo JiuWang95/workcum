@@ -108,7 +108,7 @@ const TimeEntryForm = ({ onAddEntry, onCancel, onSubmit }) => {
           id="date"
           value={date}
           onChange={(e) => setDate(e.target.value)}
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline text-sm"
+          className="shadow appearance-none border rounded-xl w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline text-sm"
           required
         />
       </div>
@@ -123,7 +123,7 @@ const TimeEntryForm = ({ onAddEntry, onCancel, onSubmit }) => {
             id="shiftTemplate"
             value={selectedShift}
             onChange={handleShiftChange}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline text-sm"
+            className="shadow appearance-none border rounded-xl w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline text-sm"
           >
             <option value="">{t('time_entry.custom_shift.select_placeholder')}</option>
             {shifts.map((shift) => (
@@ -145,7 +145,7 @@ const TimeEntryForm = ({ onAddEntry, onCancel, onSubmit }) => {
           id="notes"
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline text-sm"
+          className="shadow appearance-none border rounded-xl w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline text-sm"
           placeholder={t('time_entry.shift_name_placeholder')}
         />
       </div>
@@ -160,7 +160,7 @@ const TimeEntryForm = ({ onAddEntry, onCancel, onSubmit }) => {
             id="startTime"
             value={startTime}
             onChange={(e) => setStartTime(e.target.value)}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className="shadow appearance-none border rounded-xl w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             required={!customDuration}
             disabled={!!customDuration}
           />
@@ -175,7 +175,7 @@ const TimeEntryForm = ({ onAddEntry, onCancel, onSubmit }) => {
             id="endTime"
             value={endTime}
             onChange={(e) => setEndTime(e.target.value)}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className="shadow appearance-none border rounded-xl w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             required={!customDuration}
             disabled={!!customDuration}
           />

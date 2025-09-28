@@ -7,9 +7,19 @@ body {
   @apply bg-gray-50 text-gray-900;
 }
 
+/* 
+ * 圆角样式规范:
+ * rounded-sm: 2px - 用于微小元素如徽章
+ * rounded: 4px - 用于表格、卡片等标准元素
+ * rounded-lg: 8px - 用于表单控件、按钮等交互元素
+ * rounded-xl: 12px - 用于模态框、大卡片等容器元素
+ * rounded-2xl: 16px - 用于特殊容器如全屏模态框
+ * rounded-full: 50% - 用于圆形元素如头像、状态指示器
+ */
+
 /* Navigation styles */
 .nav-desktop-link {
-  @apply px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ease-in-out transform;
+  @apply px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 ease-in-out transform;
 }
 
 .nav-desktop-link-active {
@@ -73,12 +83,16 @@ body {
 
 /* Card styles */
 .card {
-  @apply bg-white rounded-lg shadow overflow-hidden;
+  @apply bg-white rounded-lg shadow-md transition-all duration-300 ease-in-out transform;
+}
+
+.card-hover {
+  @apply hover:shadow-lg hover:-translate-y-1;
 }
 
 /* Button styles */
 .btn {
-  @apply inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none;
+  @apply inline-flex items-center justify-center rounded-lg text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none;
 }
 
 .btn-primary {
@@ -97,19 +111,18 @@ body {
   @apply bg-red-600 text-white hover:bg-red-700;
 }
 
-/* Form styles */
-.form-input {
-  @apply block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm;
+/* Form elements */
+.form-input, .form-select, .form-textarea {
+  @apply w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200 ease-in-out;
 }
 
 .form-label {
-  @apply block text-sm font-medium text-gray-700 mb-1;
+  @apply block mb-2 text-sm font-medium text-gray-700;
 }
 
 /* Table styles */
 .table-container {
-  @apply overflow-hidden shadow rounded-lg;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  @apply overflow-hidden rounded-lg shadow;
 }
 
 .table {

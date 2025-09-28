@@ -52,7 +52,7 @@ return `${month}月 ${t('schedule.week_prefix')}${weekOfMonth}${t('schedule.week
         <div className="flex items-center space-x-1 bg-gray-100 p-1 rounded-lg">
           <button
             onClick={() => setViewMode('week')}
-            className={`px-3 py-1.5 sm:px-4 sm:py-2 rounded-md text-sm font-medium transition-all duration-200 ${
+            className={`px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
               viewMode === 'week' 
                 ? 'bg-gradient-to-r from-indigo-100 to-indigo-200 text-indigo-800 shadow-sm' 
                 : 'text-gray-600 hover:text-gray-900 hover:bg-gray-200'
@@ -62,7 +62,7 @@ return `${month}月 ${t('schedule.week_prefix')}${weekOfMonth}${t('schedule.week
           </button>
           <button
             onClick={() => setViewMode('month')}
-            className={`px-3 py-1.5 sm:px-4 sm:py-2 rounded-md text-sm font-medium transition-all duration-200 ${
+            className={`px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
               viewMode === 'month' 
                 ? 'bg-gradient-to-r from-indigo-100 to-indigo-200 text-indigo-800 shadow-sm' 
                 : 'text-gray-600 hover:text-gray-900 hover:bg-gray-200'

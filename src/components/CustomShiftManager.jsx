@@ -227,7 +227,7 @@ const CustomShiftManager = ({ scrollToEditSection }) => {
               id="shiftName"
               value={shiftName}
               onChange={(e) => setShiftName(e.target.value)}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline text-xs sm:text-sm"
+              className="shadow appearance-none border rounded-xl w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline text-xs sm:text-sm"
               placeholder={t('time_entry.custom_shift.shift_name_placeholder')}
               required
             />
@@ -243,7 +243,7 @@ const CustomShiftManager = ({ scrollToEditSection }) => {
                 id="shiftStartTime"
                 value={startTime}
                 onChange={(e) => setStartTime(e.target.value)}
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline text-xs sm:text-sm"
+                className="shadow appearance-none border rounded-xl w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline text-xs sm:text-sm"
                 required
               />
             </div>
@@ -257,7 +257,7 @@ const CustomShiftManager = ({ scrollToEditSection }) => {
                 id="shiftEndTime"
                 value={endTime}
                 onChange={(e) => setEndTime(e.target.value)}
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline text-xs sm:text-sm"
+                className="shadow appearance-none border rounded-xl w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline text-xs sm:text-sm"
                 required
               />
             </div>

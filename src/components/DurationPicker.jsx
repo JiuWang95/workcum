@@ -65,7 +65,7 @@ const DurationPicker = ({ value, onChange, id, label, className = "" }) => {
             id={`${id}-hours`}
             value={hours}
             onChange={(e) => setHours(parseInt(e.target.value) || 0)}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline pr-8"
+            className="shadow appearance-none border rounded-xl w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline pr-8"
           >
             {hourOptions}
           </select>
@@ -78,7 +78,7 @@ const DurationPicker = ({ value, onChange, id, label, className = "" }) => {
             id={`${id}-minutes`}
             value={minutes}
             onChange={(e) => setMinutes(parseInt(e.target.value) || 0)}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline pr-8"
+            className="shadow appearance-none border rounded-xl w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline pr-8"
           >
             {minuteOptions}
           </select>

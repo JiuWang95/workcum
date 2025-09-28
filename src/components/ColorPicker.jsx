@@ -35,7 +35,7 @@ const ColorPicker = ({ selectedColor, onColorChange, colorOptions }) => {
             key={index}
             type="button"
             onClick={() => onColorChange(color.hue)}
-            className={`flex flex-col items-center p-1 sm:p-1.5 rounded-md sm:rounded-lg border-2 transition-all duration-200 ${
+            className={`flex flex-col items-center p-1 sm:p-1.5 rounded-lg sm:rounded-lg border-2 transition-all duration-200 ${
               selectedColor === color.hue 
                 ? 'ring-2 ring-offset-1 sm:ring-offset-2 ring-indigo-500 border-indigo-500' 
                 : 'border-gray-200 hover:border-gray-300'

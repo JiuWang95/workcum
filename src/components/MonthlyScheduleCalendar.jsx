@@ -42,7 +42,7 @@ const CalendarDay = ({ day, isCurrentMonth, isToday: isTodayProp, daySchedules, 
       
       return (
         <div 
-          className="text-[0.6rem] sm:text-xs md:text-sm p-0.5 sm:p-1 rounded-md sm:rounded-lg h-full flex items-center justify-center leading-tight"
+          className="text-[0.6rem] sm:text-xs md:text-sm p-0.5 sm:p-1 rounded-lg sm:rounded-lg h-full flex items-center justify-center leading-tight"
           style={{ background: `linear-gradient(135deg, ${bgColor}, ${getShiftColor(shiftType)}20)` }}
         >
           <div className="font-bold text-center truncate w-full px-0.5">
@@ -59,7 +59,7 @@ const CalendarDay = ({ day, isCurrentMonth, isToday: isTodayProp, daySchedules, 
       
       return (
         <div 
-          className="text-[0.6rem] sm:text-xs md:text-sm p-0.5 sm:p-1 rounded-md sm:rounded-lg h-full flex items-center justify-center leading-tight"
+          className="text-[0.6rem] sm:text-xs md:text-sm p-0.5 sm:p-1 rounded-lg sm:rounded-lg h-full flex items-center justify-center leading-tight"
           style={{ background: 'linear-gradient(135deg, #fed7aa, #f9731620)' }}
         >
           <div className="font-bold text-center text-orange-800 truncate w-full px-0.5">
@@ -91,7 +91,7 @@ const CalendarDay = ({ day, isCurrentMonth, isToday: isTodayProp, daySchedules, 
         
         return (
           <div 
-            className="text-[0.5rem] sm:text-[0.6rem] md:text-xs p-0.5 sm:p-1 rounded-md sm:rounded-lg absolute inset-0 shadow-sm flex items-center justify-center leading-tight"
+            className="text-[0.5rem] sm:text-[0.6rem] md:text-xs p-0.5 sm:p-1 rounded-lg sm:rounded-lg absolute inset-0 shadow-sm flex items-center justify-center leading-tight"
             style={{
               background: `linear-gradient(135deg, ${firstBgColor}, ${getShiftColor(firstShiftType)}20)`
             }}
@@ -111,7 +111,7 @@ const CalendarDay = ({ day, isCurrentMonth, isToday: isTodayProp, daySchedules, 
         
         return (
           <div 
-            className="text-[0.5rem] sm:text-[0.6rem] md:text-xs p-0.5 sm:p-1 rounded-md sm:rounded-lg absolute inset-0 shadow-sm flex items-center justify-center leading-tight"
+            className="text-[0.5rem] sm:text-[0.6rem] md:text-xs p-0.5 sm:p-1 rounded-lg sm:rounded-lg absolute inset-0 shadow-sm flex items-center justify-center leading-tight"
             style={{ background: 'linear-gradient(135deg, #fed7aa, #f9731620)' }}
           >
             <div className="font-bold text-center text-orange-800 truncate w-full px-0.5">
@@ -140,7 +140,7 @@ const CalendarDay = ({ day, isCurrentMonth, isToday: isTodayProp, daySchedules, 
         
         return (
           <div 
-            className="text-[0.4rem] sm:text-[0.5rem] md:text-[0.6rem] p-0.5 sm:p-1 rounded-md sm:rounded-lg absolute bottom-0 right-0 shadow-sm flex items-center justify-center leading-tight"
+            className="text-[0.4rem] sm:text-[0.5rem] md:text-[0.6rem] p-0.5 sm:p-1 rounded-lg sm:rounded-lg absolute bottom-0 right-0 shadow-sm flex items-center justify-center leading-tight"
             style={{
               background: `linear-gradient(135deg, ${secondBgColor}, ${getShiftColor(secondShiftType)}20)`,
               width: '50%',
@@ -162,7 +162,7 @@ const CalendarDay = ({ day, isCurrentMonth, isToday: isTodayProp, daySchedules, 
         
         return (
           <div 
-            className="text-[0.4rem] sm:text-[0.5rem] md:text-[0.6rem] p-0.5 sm:p-1 rounded-md sm:rounded-lg absolute bottom-0 right-0 shadow-sm flex items-center justify-center leading-tight"
+            className="text-[0.4rem] sm:text-[0.5rem] md:text-[0.6rem] p-0.5 sm:p-1 rounded-lg sm:rounded-lg absolute bottom-0 right-0 shadow-sm flex items-center justify-center leading-tight"
             style={{ 
               background: 'linear-gradient(135deg, #fed7aa, #f9731620)',
               width: '50%',
@@ -184,7 +184,7 @@ const CalendarDay = ({ day, isCurrentMonth, isToday: isTodayProp, daySchedules, 
         
         return (
           <div 
-            className="text-[0.4rem] sm:text-[0.5rem] md:text-[0.6rem] p-0.5 sm:p-1 rounded-md sm:rounded-lg absolute bottom-0 right-0 shadow-sm flex items-center justify-center leading-tight"
+            className="text-[0.4rem] sm:text-[0.5rem] md:text-[0.6rem] p-0.5 sm:p-1 rounded-lg sm:rounded-lg absolute bottom-0 right-0 shadow-sm flex items-center justify-center leading-tight"
             style={{ 
               background: 'linear-gradient(135deg, #fed7aa, #f9731620)',
               width: '50%',
