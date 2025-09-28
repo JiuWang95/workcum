@@ -288,26 +288,6 @@ const DataPage = () => {
         </div>
       </div>
       
-      {/* Disclaimer Section -独立模块框 */}
-      <div className="mt-6 bg-red-50 rounded-lg shadow-sm overflow-hidden">
-        <div className="p-1 bg-red-500"></div>
-        <div className="p-4 md:p-6">
-          <div className="flex items-start">
-            <div className="flex-shrink-0 mr-3">
-              <svg className="h-6 w-6 text-red-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-              </svg>
-            </div>
-            <div>
-              <h2 className="text-lg font-bold text-gray-800 mb-3 md:text-xl">{t('disclaimer.title')}</h2>
-              <p className="text-red-700 font-medium text-sm md:text-base">
-                {t('disclaimer.content')}
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-      
       {/* Data Management Section */}
       <div className="mt-6">
         <h2 className="text-lg font-bold text-gray-800 mb-3 md:text-xl md:mb-4">{t('data.management')}</h2>
@@ -424,6 +404,26 @@ const DataPage = () => {
                 </svg>
                 {t('data.danger_zone.button')}
               </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      {/* Disclaimer Section -独立模块框 */}
+      <div className="mt-6 bg-red-50 rounded-lg shadow-sm overflow-hidden">
+        <div className="p-1 bg-red-500"></div>
+        <div className="p-4 md:p-6">
+          <div className="flex items-start">
+            <div className="flex-shrink-0 mr-3">
+              <svg className="h-6 w-6 text-red-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+              </svg>
+            </div>
+            <div>
+              <h2 className="text-lg font-bold text-gray-800 mb-3 md:text-xl">{t('disclaimer.title')}</h2>
+              <p className="text-red-700 font-medium text-sm md:text-base">
+                {t('disclaimer.content')}
+              </p>
             </div>
           </div>
         </div>
