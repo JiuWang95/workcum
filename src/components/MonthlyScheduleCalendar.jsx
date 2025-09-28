@@ -386,8 +386,9 @@ const MonthlyScheduleCalendar = ({ currentDate, onDateChange }) => {
             const firstSchedule = daySchedules[0];
             const shiftInfo = shifts.find(shift => shift.id === firstSchedule.selectedShift);
             const shiftType = shiftInfo ? shiftInfo.shiftType : 'day';
-            dayBackgroundColor = getShiftBackgroundColor(shiftType);
-            dayBorderColor = getShiftColor(shiftType);
+            const customHue = shiftInfo ? shiftInfo.customHue : undefined;
+            dayBackgroundColor = getShiftBackgroundColor(shiftType, customHue);
+            dayBorderColor = getShiftColor(shiftType, customHue);
           } else if (dayTimeEntries.length > 0) {
             // If there are only time entries, use orange color
             dayBackgroundColor = '#fed7aa'; // orange-200 equivalent
