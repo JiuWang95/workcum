@@ -235,9 +235,8 @@
     "management": "Data Management",
     "export": {
       "title": "Export Data",
-      "description": "Export all data to a JSON or Excel file for backup or migration",
-      "json_button": "Export as JSON",
-      "excel_button": "Export as Excel",
+      "description": "Export all data to a JSON file for backup",
+      "json_button": "Export Backup",
       "success": "Data exported successfully!",
       "error": "Error exporting data: "
     },
@@ -272,7 +271,7 @@
     "summary": "Summary",
     "details": "Details",
     "total_duration": "Total Duration",
-    "export_excel": "Export to Excel",
+    "export_excel": "Export Report",
     "last_week": "Last Week",
     "this_week": "This Week",
     "next_week": "Next Week",

@@ -4,27 +4,20 @@ import ConfirmOverrideModal from '../components/ConfirmOverrideModal';
 
 const DataPage = () => {
   const { t, i18n } = useTranslation();
-
-  const toggleLanguage = () => {
-    const newLang = i18n.language === 'zh' ? 'en' : 'zh';
-    i18n.changeLanguage(newLang);
-  };
-  const [importStatus, setImportStatus] = useState('');
   const [exportStatus, setExportStatus] = useState('');
-  // 删除FileNameModal相关状态
+  const [importStatus, setImportStatus] = useState('');
   const [isOverrideModalOpen, setIsOverrideModalOpen] = useState(false);
   const [pendingImportFile, setPendingImportFile] = useState(null);
 
-  // Export all data to JSON
+  // Export all data to JSON - 只导出本地存储数据为JSON格式
   const handleExportAllData = () => {
-    // 直接使用默认文件名导出，不再弹出FileNameModal
     try {
       // Get all data from localStorage
       const timeEntries = JSON.parse(localStorage.getItem('timeEntries') || '[]');
       const schedules = JSON.parse(localStorage.getItem('schedules') || '[]');
       const customShifts = JSON.parse(localStorage.getItem('customShifts') || '[]');
       
-      // Create data object
+      // Create data object - 只包含本地存储的数据
       const data = {
         timeEntries,
         schedules,
@@ -120,10 +113,13 @@ const DataPage = () => {
     }
   };
 
+  const toggleLanguage = () => {
+    const newLang = i18n.language === 'zh' ? 'en' : 'zh';
+    i18n.changeLanguage(newLang);
+  };
+
   return (
     <div className="max-w-4xl mx-auto w-full px-4">
-      {/* 删除FileNameModal组件引用，不再需要 */}
-      
       <ConfirmOverrideModal
         isOpen={isOverrideModalOpen}
         onClose={() => {
@@ -150,8 +146,6 @@ const DataPage = () => {
           {i18n.language === 'zh' ? 'EN' : '中文'}
         </button>
       </div>
-      
-      
       
       {/* Project Information Section */}
       <div className="mt-6 bg-white rounded-xl shadow-md overflow-hidden border border-gray-200">
@@ -320,7 +314,7 @@ const DataPage = () => {
       </div>
       
       <div className="grid grid-cols-1 gap-6 mt-8">
-        {/* Export Data Card */}
+        {/* Export Data Card - 只保留JSON导出功能 */}
         <div className="bg-gradient-to-r from-emerald-50 to-teal-50 rounded-xl shadow-md overflow-hidden">
           <div className="p-1 bg-gradient-to-r from-emerald-500 to-teal-600"></div>
           <div className="p-4 md:p-6">
@@ -337,17 +331,17 @@ const DataPage = () => {
                 <p className="text-gray-600 mb-4 text-sm md:text-base">
                   {t('data.export.description')}
                 </p>
-                <div className="flex flex-col sm:flex-row gap-3">
-                <button
-                  onClick={handleExportAllData}
-                  className="inline-flex items-center px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-lg transition-all duration-200 shadow hover:shadow-md"
-                >
-                  <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
-                  </svg>
-                  {t('data.export.json_button')}
-                </button>
-              </div>
+                <div className="relative">
+                  <button
+                    onClick={handleExportAllData}
+                    className="inline-flex items-center px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-lg transition-all duration-200 shadow hover:shadow-md cursor-pointer"
+                  >
+                    <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                    </svg>
+                    {t('data.export.json_button')}
+                  </button>
+                </div>
                 {exportStatus && (
                   <div className="mt-4 p-3 bg-emerald-100 text-emerald-700 rounded-lg">
                     {exportStatus}

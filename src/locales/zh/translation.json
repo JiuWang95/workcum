@@ -168,7 +168,7 @@
   "reports": {
     "title": "统计",
     "generate_report": "生成统计",
-    "export_excel": "导出到Excel",
+    "export_excel": "导出报告",
     "from_date": "开始日期",
     "to_date": "结束日期",
     "last_week": "上周",
@@ -257,9 +257,8 @@
     "management": "数据管理",
     "export": {
       "title": "导出数据",
-      "description": "将所有数据导出为JSON文件或Excel文件，以便备份或迁移。",
-      "json_button": "导出为JSON",
-      "excel_button": "导出为Excel",
+      "description": "将所有数据导出为JSON文件，以便备份。",
+      "json_button": "导出备份",
       "success": "数据导出成功！",
       "error": "数据导出失败: "
     },
