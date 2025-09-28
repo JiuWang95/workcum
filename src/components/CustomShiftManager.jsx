@@ -184,7 +184,7 @@ const CustomShiftManager = ({ scrollToEditSection }) => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-2 sm:p-4 md:p-6">
+    <div className="max-w-4xl mx-auto p-2 sm:p-4 md:p-6 w-full">
       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-6 sm:mb-8">
         <div className="flex items-center justify-between w-full">
           <div className="flex items-center">
@@ -283,8 +283,8 @@ const CustomShiftManager = ({ scrollToEditSection }) => {
             <label className="block text-gray-700 text-xs sm:text-sm font-bold mb-1">
               {t('time_entry.custom_shift.shift_type')}
             </label>
-            <div className="flex space-x-3 sm:space-x-4">
-              <label className="flex items-center">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3">
+              <label className="flex items-center p-2 rounded-lg border border-gray-200 hover:border-indigo-300 cursor-pointer transition-colors duration-200">
                 <input
                   type="radio"
                   name="shiftType"
@@ -295,7 +295,7 @@ const CustomShiftManager = ({ scrollToEditSection }) => {
                 />
                 <span className="ml-1.5 sm:ml-2 text-gray-700 text-xs sm:text-sm">{t('time_entry.custom_shift.day_shift')}</span>
               </label>
-              <label className="flex items-center">
+              <label className="flex items-center p-2 rounded-lg border border-gray-200 hover:border-indigo-300 cursor-pointer transition-colors duration-200">
                 <input
                   type="radio"
                   name="shiftType"
@@ -306,7 +306,7 @@ const CustomShiftManager = ({ scrollToEditSection }) => {
                 />
                 <span className="ml-1.5 sm:ml-2 text-gray-700 text-xs sm:text-sm">{t('time_entry.custom_shift.rest_day')}</span>
               </label>
-              <label className="flex items-center">
+              <label className="flex items-center p-2 rounded-lg border border-gray-200 hover:border-indigo-300 cursor-pointer transition-colors duration-200">
                 <input
                   type="radio"
                   name="shiftType"
@@ -317,7 +317,7 @@ const CustomShiftManager = ({ scrollToEditSection }) => {
                 />
                 <span className="ml-1.5 sm:ml-2 text-gray-700 text-xs sm:text-sm">{t('time_entry.custom_shift.overnight_shift')}</span>
               </label>
-              <label className="flex items-center">
+              <label className="flex items-center p-2 rounded-lg border border-gray-200 hover:border-indigo-300 cursor-pointer transition-colors duration-200">
                 <input
                   type="radio"
                   name="shiftType"
@@ -365,17 +365,18 @@ const CustomShiftManager = ({ scrollToEditSection }) => {
       </Modal>
       
       {shifts.length > 0 ? (
-        // 进一步优化班次项的显示，只显示核心信息以减小高度
-        <div className="space-y-2">
+        // 优化班次项的显示，改进布局和视觉效果
+        <div className="space-y-3">
           {shifts.map((shift) => (
             <div 
               key={shift.id} 
-              className={`border border-gray-200 rounded-lg p-2 relative overflow-hidden flex justify-between items-center transition-all duration-200 ${
-                draggedOver === shift.id ? 'bg-blue-50 ring-2 ring-blue-200' : ''
+              className={`rounded-xl shadow-sm transition-all duration-200 ease-in-out transform hover:shadow-md md:p-4 p-1.5 max-w-xs mx-auto md:max-w-none ${
+                draggedOver === shift.id ? 'ring-2 ring-blue-400 ring-opacity-50' : ''
               }`}
               style={{ 
-                borderLeft: `3px solid ${getShiftColor(shift.shiftType, shift.customHue)}`,
-                backgroundColor: getShiftBackgroundColor(shift.shiftType, shift.customHue)
+                borderLeft: `4px solid ${getShiftColor(shift.shiftType, shift.customHue)}`,
+                backgroundColor: getShiftBackgroundColor(shift.shiftType, shift.customHue),
+                boxShadow: 'inset 0 0 10px rgba(0, 0, 0, 0.05)'
               }}
               draggable
               onDragStart={(e) => handleDragStart(e, shift)}
@@ -385,82 +386,88 @@ const CustomShiftManager = ({ scrollToEditSection }) => {
               onDragLeave={handleDragLeave}
               onDrop={(e) => handleDrop(e, shift)}
             >
-              {/* 左侧：班次名称和类型标识 */}
-              <div className="flex items-center min-w-0">
-                <div 
-                  className="w-3 h-3 rounded-full border border-gray-300 mr-2 flex-shrink-0"
-                  style={{ backgroundColor: getShiftColor(shift.shiftType, shift.customHue) }}
-                ></div>
-                <div className="min-w-0">
-                  <h3 
-                    className="font-semibold text-gray-800 text-sm md:text-base truncate"
-                    style={{ color: getShiftColor(shift.shiftType, shift.customHue) }}
-                  >
-                    {shift.name}
-                  </h3>
-                  {/* 类型标识：显示班次类型 */}
-                  <span className="text-xs md:text-sm text-gray-500 truncate">
-                    {getShiftTypeText(shift.shiftType || 'day')}
-                  </span>
-                </div>
-              </div>
-              
-              {/* 中间：时间范围信息，居中显示 */}
-              <div className="text-center">
-                <p className="text-gray-500 text-xs md:text-sm font-medium">
-                  {shift.startTime}-{shift.endTime}
-                </p>
-              </div>
-              
-              {/* 右侧：时长信息和操作按钮 */}
-              <div className="flex items-center">
-                {/* 工时时长 */}
-                <div className="text-right mr-2">
-                  {shift.customDuration !== undefined && shift.customDuration !== null && shift.customDuration !== "" ? (
-                    <p className="text-gray-600 text-xs md:text-sm font-medium">
-                      {convertDurationToHours(shift.customDuration).toFixed(1)}h
-                    </p>
-                  ) : (
-                    <p className="text-gray-600 text-xs md:text-sm font-medium">
-                      0.0h
-                    </p>
-                  )}
+              <div className="md:p-4 p-1.5">
+                <div className="flex justify-between items-start">
+                  {/* 左侧：班次名称和类型标识 */}
+                  <div className="flex items-start min-w-0">
+                    <div 
+                      className="w-3.5 h-3.5 rounded-full border-2 border-white shadow mr-2.5 mt-1 flex-shrink-0"
+                      style={{ backgroundColor: getShiftColor(shift.shiftType, shift.customHue) }}
+                    ></div>
+                    <div className="min-w-0 flex-1 flex items-center">
+                      <h3 
+                        className="font-bold text-gray-800 md:text-base text-sm truncate leading-tight mr-2"
+                        style={{ color: getShiftColor(shift.shiftType, shift.customHue) }}
+                      >
+                        {shift.name}
+                      </h3>
+                      {/* 类型标识：显示班次类型 */}
+                      <span className="inline-flex items-center px-0.5 py-0 md:px-2 md:py-0.5 rounded-full text-[10px] md:text-xs font-medium bg-gray-100 text-gray-800 whitespace-nowrap">
+                        {getShiftTypeText(shift.shiftType || 'day')}
+                      </span>
+                    </div>
+                  </div>
+                  
+                  {/* 右侧：操作按钮 */}
+                  <div className="flex space-x-0.5 md:space-x-1 ml-1 md:ml-2">
+                    <button
+                      onClick={() => handleEdit(shift)}
+                      className="p-0.5 md:p-2 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-600 hover:text-gray-800 transition-colors duration-200 flex items-center justify-center min-w-[24px] md:min-w-[40px] min-h-[24px] md:min-h-[40px]"
+                      aria-label={t('common.edit')}
+                    >
+                      <svg className="w-3 md:w-4 h-3 md:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                      </svg>
+                    </button>
+                    <button
+                      onClick={() => handleDelete(shift.id)}
+                      className="p-0.5 md:p-2 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-600 hover:text-red-600 transition-colors duration-200 flex items-center justify-center min-w-[24px] md:min-w-[40px] min-h-[24px] md:min-h-[40px]"
+                      aria-label={t('common.delete')}
+                    >
+                      <svg className="w-3 md:w-4 h-3 md:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                      </svg>
+                    </button>
+                  </div>
                 </div>
                 
-                {/* 操作按钮 */}
-                <div className="flex flex-col space-y-1">
-                  <button
-                    onClick={() => handleEdit(shift)}
-                    className="text-indigo-600 hover:text-indigo-800 transition-colors duration-200 p-1"
-                    aria-label={t('common.edit')}
-                  >
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                {/* 底部：时间范围和工时时长 */}
+                <div className="flex justify-between items-center md:mt-3 mt-2 md:pt-3 pt-2 border-t border-gray-100">
+                  <div className="flex items-center">
+                    <svg className="w-3 md:w-4 h-3 md:h-4 text-gray-400 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                     </svg>
-                  </button>
-                  <button
-                    onClick={() => handleDelete(shift.id)}
-                    className="text-red-600 hover:text-red-800 transition-colors duration-200 p-1"
-                    aria-label={t('common.delete')}
-                  >
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                    <span className="text-gray-600 md:text-sm text-xs font-medium">
+                      {shift.startTime} - {shift.endTime}
+                    </span>
+                  </div>
+                  
+                  <div className="flex items-center">
+                    <svg className="w-3 md:w-4 h-3 md:h-4 text-gray-400 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                     </svg>
-                  </button>
+                    <span className="text-gray-700 md:text-sm text-xs font-bold">
+                      {shift.customDuration !== undefined && shift.customDuration !== null && shift.customDuration !== "" ? (
+                        `${convertDurationToHours(shift.customDuration).toFixed(1)}h`
+                      ) : (
+                        '0.0h'
+                      )}
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
           ))}
         </div>
       ) : (
-        <div className="text-center py-8">
-          <div className="bg-gray-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-            <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+        <div className="text-center py-12">
+          <div className="bg-gradient-to-r from-indigo-100 to-purple-100 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-5 shadow-sm">
+            <svg className="w-10 h-10 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
             </svg>
           </div>
-          <h3 className="text-lg font-medium text-gray-900 mb-1">{t('time_entry.custom_shift.no_shifts')}</h3>
-          <p className="text-gray-500 hidden">{t('time_entry.custom_shift.no_shifts_description')}</p>
+          <h3 className="text-xl font-semibold text-gray-800 mb-2">{t('time_entry.custom_shift.no_shifts')}</h3>
+          <p className="text-gray-500 max-w-md mx-auto">{t('time_entry.custom_shift.no_shifts_description')}</p>
         </div>
       )}
     </div>
