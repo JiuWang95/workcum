@@ -119,20 +119,39 @@ const TimeEntryForm = ({ onAddEntry, onCancel, onSubmit }) => {
           <label className="block text-gray-700 text-sm font-bold mb-1" htmlFor="shiftTemplate">
             {t('time_entry.custom_shift.select_shift')}
           </label>
-          <select
-            id="shiftTemplate"
-            value={selectedShift}
-            onChange={handleShiftChange}
-            className="shadow appearance-none border rounded-xl w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline text-sm"
-          >
-            <option value="">{t('time_entry.custom_shift.select_placeholder')}</option>
-            {shifts.map((shift) => (
-              <option key={shift.id} value={shift.id}>
-                {shift.name} ({shift.startTime} - {shift.endTime})
-                {shift.customDuration && ` [${shift.customDuration}]`}
-              </option>
-            ))}
-          </select>
+          <div className="relative">
+            <select
+              id="shiftTemplate"
+              value={selectedShift}
+              onChange={handleShiftChange}
+              className="shadow appearance-none border rounded-xl w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline text-sm pr-8"
+            >
+              <option value="">{t('time_entry.custom_shift.select_placeholder')}</option>
+              {shifts.map((shift) => {
+                // 获取班次类型文本
+                const shiftTypeText = shift.shiftType ? 
+                  (shift.shiftType === 'day' ? t('time_entry.custom_shift.day_shift') :
+                   shift.shiftType === 'rest' ? t('time_entry.custom_shift.rest_day') :
+                   shift.shiftType === 'overnight' ? t('time_entry.custom_shift.overnight_shift') :
+                   shift.shiftType === 'special' ? t('time_entry.custom_shift.special_shift') :
+                   t('time_entry.custom_shift.day_shift')) : 
+                  t('time_entry.custom_shift.day_shift');
+                
+                return (
+                  <option key={shift.id} value={shift.id}>
+                    {shift.name} ({shift.startTime} - {shift.endTime})
+                    {shift.customDuration && ` [${shift.customDuration}]`}
+                    ({shiftTypeText})
+                  </option>
+                );
+              })}
+            </select>
+            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
+              </svg>
+            </div>
+          </div>
         </div>
       )}
       

@@ -435,12 +435,19 @@ const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
                     required
                   >
                     <option value="">{t('time_entry.custom_shift.select_placeholder')}</option>
-                    {shifts.map((shift) => (
-                      <option key={shift.id} value={shift.id}>
-                        {shift.name} ({shift.startTime} - {shift.endTime})
-                        {shift.customDuration && ` [${convertDurationToHours(shift.customDuration).toFixed(1)}h]`}
-                      </option>
-                    ))}
+                    {shifts.map((shift) => {
+                      // 获取班次类型对应的颜色和图标
+                      const shiftColor = getShiftColor(shift.shiftType, shift.customHue);
+                      const shiftTypeText = getShiftTypeText(shift.shiftType || 'day');
+                      
+                      return (
+                        <option key={shift.id} value={shift.id} className="flex items-center">
+                          {shift.name} ({shift.startTime} - {shift.endTime})
+                          {shift.customDuration && ` [${convertDurationToHours(shift.customDuration).toFixed(1)}h]`}
+                          ({shiftTypeText})
+                        </option>
+                      );
+                    })}
                   </select>
                   <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 sm:px-3 text-gray-700">
                     <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
