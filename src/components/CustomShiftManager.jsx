@@ -370,7 +370,7 @@ const CustomShiftManager = ({ scrollToEditSection }) => {
           {shifts.map((shift) => (
             <div 
               key={shift.id} 
-              className={`rounded-xl shadow-sm transition-all duration-200 ease-in-out transform hover:shadow-md md:p-4 p-1.5 max-w-xs mx-auto md:max-w-none ${
+              className={`rounded-xl shadow-sm transition-all duration-200 ease-in-out transform hover:shadow-md md:p-3 p-1.5 max-w-xs mx-auto md:max-w-2xl ${
                 draggedOver === shift.id ? 'ring-2 ring-blue-400 ring-opacity-50' : ''
               }`}
               style={{ 
@@ -386,7 +386,7 @@ const CustomShiftManager = ({ scrollToEditSection }) => {
               onDragLeave={handleDragLeave}
               onDrop={(e) => handleDrop(e, shift)}
             >
-              <div className="md:p-4 p-1.5">
+              <div className="md:p-3 p-1.5">
                 <div className="flex justify-between items-start">
                   {/* 左侧：班次名称和类型标识 */}
                   <div className="flex items-start min-w-0">
@@ -409,10 +409,10 @@ const CustomShiftManager = ({ scrollToEditSection }) => {
                   </div>
                   
                   {/* 右侧：操作按钮 */}
-                  <div className="flex space-x-0.5 md:space-x-1 ml-1 md:ml-2">
+                  <div className="flex space-x-0.5 md:space-x-2 ml-1 md:ml-3">
                     <button
                       onClick={() => handleEdit(shift)}
-                      className="p-0.5 md:p-2 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-600 hover:text-gray-800 transition-colors duration-200 flex items-center justify-center min-w-[24px] md:min-w-[40px] min-h-[24px] md:min-h-[40px]"
+                      className="p-0.5 md:p-1.5 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-600 hover:text-gray-800 transition-colors duration-200 flex items-center justify-center min-w-[24px] md:min-w-[36px] min-h-[24px] md:min-h-[36px]"
                       aria-label={t('common.edit')}
                     >
                       <svg className="w-3 md:w-4 h-3 md:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -421,7 +421,7 @@ const CustomShiftManager = ({ scrollToEditSection }) => {
                     </button>
                     <button
                       onClick={() => handleDelete(shift.id)}
-                      className="p-0.5 md:p-2 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-600 hover:text-red-600 transition-colors duration-200 flex items-center justify-center min-w-[24px] md:min-w-[40px] min-h-[24px] md:min-h-[40px]"
+                      className="p-0.5 md:p-1.5 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-600 hover:text-red-600 transition-colors duration-200 flex items-center justify-center min-w-[24px] md:min-w-[36px] min-h-[24px] md:min-h-[36px]"
                       aria-label={t('common.delete')}
                     >
                       <svg className="w-3 md:w-4 h-3 md:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -432,9 +432,9 @@ const CustomShiftManager = ({ scrollToEditSection }) => {
                 </div>
                 
                 {/* 底部：时间范围和工时时长 */}
-                <div className="flex justify-between items-center md:mt-3 mt-2 md:pt-3 pt-2 border-t border-gray-100">
+                <div className="flex justify-between items-center md:mt-2 mt-2 md:pt-2 pt-2 border-t border-gray-100">
                   <div className="flex items-center">
-                    <svg className="w-3 md:w-4 h-3 md:h-4 text-gray-400 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <svg className="w-3 md:w-4 h-3 md:h-4 text-gray-400 mr-1 md:mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                     </svg>
                     <span className="text-gray-600 md:text-sm text-xs font-medium">
@@ -443,7 +443,7 @@ const CustomShiftManager = ({ scrollToEditSection }) => {
                   </div>
                   
                   <div className="flex items-center">
-                    <svg className="w-3 md:w-4 h-3 md:h-4 text-gray-400 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <svg className="w-3 md:w-4 h-3 md:h-4 text-gray-400 mr-1 md:mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                     </svg>
                     <span className="text-gray-700 md:text-sm text-xs font-bold">
