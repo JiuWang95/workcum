@@ -134,7 +134,19 @@
       "shift_type": "Shift Type",
       "day_shift": "Day Shift",
       "rest_day": "Rest Day",
-      "overnight_shift": "Overnight Shift"
+      "overnight_shift": "Overnight Shift",
+      "color_picker": "Select Color",
+      "selected_color": "Selected Color",
+      "colors": {
+        "green": "Green",
+        "blue": "Blue",
+        "purple": "Purple",
+        "indigo": "Indigo",
+        "red": "Red",
+        "pink": "Pink",
+        "teal": "Teal",
+        "yellow": "Yellow"
+      }
     },
     "duration": "Hours",
     "notes": "Notes",

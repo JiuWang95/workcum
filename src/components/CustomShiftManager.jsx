@@ -36,13 +36,13 @@ const CustomShiftManager = ({ scrollToEditSection }) => {
   useEffect(() => {
     // 定义班次类型到默认颜色的映射
     const typeToColorMap = {
-      day: 120,      // 绿色
-      rest: 270,     // 紫色
+      day: 180,      // 青色（与颜色选择器中的青色一致）
+      rest: 280,     // 紫色（与颜色选择器中的紫色一致）
       overnight: 240 // 蓝色
     };
     
     // 设置对应的颜色
-    setCustomHue(typeToColorMap[shiftType] || 120);
+    setCustomHue(typeToColorMap[shiftType] || 180);
   }, [shiftType]);
 
   const handleSubmit = (e) => {
@@ -78,7 +78,7 @@ const CustomShiftManager = ({ scrollToEditSection }) => {
     setEndTime('17:00');
     setCustomDuration('');
     setShiftType('day');
-    setCustomHue(120); // 重置为默认值
+    setCustomHue(180); // 重置为默认值（青色）
     setShowForm(false);
   };
 
@@ -219,7 +219,7 @@ const CustomShiftManager = ({ scrollToEditSection }) => {
       >
         <form onSubmit={handleSubmit} className="space-y-2.5 sm:space-y-4">
           <div className="mb-2 sm:mb-3">
-            <label className="block text-gray-700 text-xs sm:text-sm font-bold mb-1" htmlFor="shiftName">
+            <label className="block text-gray-700 text-sm font-bold mb-1" htmlFor="shiftName">
               {t('time_entry.custom_shift.shift_name')}
             </label>
             <input
@@ -235,7 +235,7 @@ const CustomShiftManager = ({ scrollToEditSection }) => {
           
           <div className="grid grid-cols-2 gap-2 mb-2 sm:gap-3 sm:mb-3">
             <div>
-              <label className="block text-gray-700 text-xs sm:text-sm font-bold mb-1" htmlFor="shiftStartTime">
+              <label className="block text-gray-700 text-sm font-bold mb-1" htmlFor="shiftStartTime">
                 {t('time_entry.custom_shift.start_time')}
               </label>
               <input
@@ -243,14 +243,14 @@ const CustomShiftManager = ({ scrollToEditSection }) => {
                 id="shiftStartTime"
                 value={startTime}
                 onChange={(e) => setStartTime(e.target.value)}
-                className="shadow appearance-none border rounded-xl w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline text-xs sm:text-sm"
+                className="shadow appearance-none border rounded-xl w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline text-sm"
                 required
                 inputMode="none" // 在移动设备上更好地调用原生选择器
               />
             </div>
             
             <div>
-              <label className="block text-gray-700 text-xs sm:text-sm font-bold mb-1" htmlFor="shiftEndTime">
+              <label className="block text-gray-700 text-sm font-bold mb-1" htmlFor="shiftEndTime">
                 {t('time_entry.custom_shift.end_time')}
               </label>
               <input
@@ -258,7 +258,7 @@ const CustomShiftManager = ({ scrollToEditSection }) => {
                 id="shiftEndTime"
                 value={endTime}
                 onChange={(e) => setEndTime(e.target.value)}
-                className="shadow appearance-none border rounded-xl w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline text-xs sm:text-sm"
+                className="shadow appearance-none border rounded-xl w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline text-sm"
                 required
                 inputMode="none" // 在移动设备上更好地调用原生选择器
               />
@@ -323,7 +323,7 @@ const CustomShiftManager = ({ scrollToEditSection }) => {
             onColorChange={setCustomHue} 
           />
           
-          <div className="flex justify-end space-x-2 pt-2">
+          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 pt-2">
             <button
               type="button"
               onClick={() => {
@@ -336,13 +336,13 @@ const CustomShiftManager = ({ scrollToEditSection }) => {
                 setShiftType('day');
                 setCustomHue(120); // 重置为默认值
               }}
-              className="px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-lg transition-colors duration-200 text-sm sm:text-base"
+              className="w-full sm:w-auto px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-lg transition-colors duration-200 text-base sm:text-sm"
             >
               {t('common.cancel')}
             </button>
             <button
               type="submit"
-              className="px-4 py-2 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white rounded-lg shadow transition-all duration-200 text-sm sm:text-base"
+              className="w-full sm:w-auto px-4 py-2 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white rounded-lg shadow transition-all duration-200 text-base sm:text-sm"
             >
               {editingShift ? t('common.save') : t('common.add')}
             </button>

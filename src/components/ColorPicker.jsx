@@ -9,7 +9,7 @@ const ColorPicker = ({ selectedColor, onColorChange, colorOptions }) => {
     { name: t('time_entry.custom_shift.colors.green'), hue: 120 },
     { name: t('time_entry.custom_shift.colors.blue'), hue: 220 },
     { name: t('time_entry.custom_shift.colors.purple'), hue: 280 },
-    { name: t('time_entry.custom_shift.colors.orange'), hue: 30 },
+    { name: t('time_entry.custom_shift.colors.indigo'), hue: 240 },
     { name: t('time_entry.custom_shift.colors.red'), hue: 0 },
     { name: t('time_entry.custom_shift.colors.pink'), hue: 330 },
     { name: t('time_entry.custom_shift.colors.teal'), hue: 180 },
