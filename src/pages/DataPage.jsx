@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import ConfirmOverrideModal from '../components/ConfirmOverrideModal';
+import Modal from '../components/Modal';
 
 const DataPage = () => {
   const { t, i18n } = useTranslation();
@@ -8,9 +9,19 @@ const DataPage = () => {
   const [importStatus, setImportStatus] = useState('');
   const [isOverrideModalOpen, setIsOverrideModalOpen] = useState(false);
   const [pendingImportFile, setPendingImportFile] = useState(null);
+  const [isExportFileNameModalOpen, setIsExportFileNameModalOpen] = useState(false);
+  const [exportFileName, setExportFileName] = useState('');
 
   // Export all data to JSON - 只导出本地存储数据为JSON格式
   const handleExportAllData = () => {
+    // 设置默认文件名
+    const defaultFileName = `time-tracker-backup-${new Date().toISOString().split('T')[0]}`;
+    setExportFileName(defaultFileName);
+    setIsExportFileNameModalOpen(true);
+  };
+
+  // Handle export with custom file name
+  const handleExportWithFileName = () => {
     try {
       // Get all data from localStorage
       const timeEntries = JSON.parse(localStorage.getItem('timeEntries') || '[]');
@@ -29,14 +40,15 @@ const DataPage = () => {
       const dataStr = JSON.stringify(data, null, 2);
       const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
       
-      // 使用默认文件名
-      const exportFileDefaultName = `time-tracker-backup-${new Date().toISOString().split('T')[0]}.json`;
+      // 使用自定义文件名
+      const exportFileDefaultName = `${exportFileName || `time-tracker-backup-${new Date().toISOString().split('T')[0]}`}.json`;
       
       const linkElement = document.createElement('a');
       linkElement.setAttribute('href', dataUri);
       linkElement.setAttribute('download', exportFileDefaultName);
       linkElement.click();
       
+      setIsExportFileNameModalOpen(false);
       setExportStatus(t('data.export.success'));
       setTimeout(() => setExportStatus(''), 3000);
     } catch (error) {
@@ -136,6 +148,60 @@ const DataPage = () => {
         title={t('data.import_override.title')}
         message={t('data.import_override.message')}
       />
+      
+      {/* 自定义文件名弹窗 */}
+      <Modal
+        isOpen={isExportFileNameModalOpen}
+        onClose={() => setIsExportFileNameModalOpen(false)}
+        title={t('data.export_modal.title')}
+        size="sm"
+      >
+        <Modal.Body>
+          <div className="mb-4">
+            <label htmlFor="exportFileName" className="block text-gray-700 text-sm font-medium mb-2">
+              {t('data.export_modal.filename')}
+            </label>
+            <div className="relative">
+              <input
+                type="text"
+                id="exportFileName"
+                value={exportFileName}
+                onChange={(e) => setExportFileName(e.target.value)}
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 pr-10"
+                placeholder={t('data.export_modal.placeholder')}
+                autoFocus
+              />
+              <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                <svg className="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+              </div>
+            </div>
+            <p className="mt-2 text-sm text-gray-500">
+              {t('data.export_modal.extension')}
+            </p>
+          </div>
+        </Modal.Body>
+        <Modal.Footer>
+          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 pt-2 w-full">
+            <button
+              onClick={() => setIsExportFileNameModalOpen(false)}
+              className="w-full sm:w-auto px-4 py-2.5 bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium rounded-lg transition-colors duration-200 text-base"
+            >
+              {t('common.cancel')}
+            </button>
+            <button
+              onClick={handleExportWithFileName}
+              className="w-full sm:w-auto px-4 py-2.5 bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white font-medium rounded-lg shadow transition-all duration-200 text-base flex items-center justify-center"
+            >
+              <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+              </svg>
+              {t('common.export')}
+            </button>
+          </div>
+        </Modal.Footer>
+      </Modal>
       
       <div className="flex justify-between items-center">
         <h1 className="page-heading my-0 text-xl md:text-2xl">{t('data.title')}</h1>
