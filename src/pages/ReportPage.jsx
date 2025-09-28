@@ -15,6 +15,7 @@ const ReportPage = () => {
   const [filteredEntries, setFilteredEntries] = useState([]);
   const [filteredSchedules, setFilteredSchedules] = useState([]);
   const [isExcelFileNameModalOpen, setIsExcelFileNameModalOpen] = useState(false);
+  const [selectedButton, setSelectedButton] = useState('thisWeek'); // 添加选中状态跟踪
 
   // Load entries and schedules from localStorage on component mount
   useEffect(() => {
@@ -82,6 +83,7 @@ const ReportPage = () => {
     const now = new Date();
     setStartDate(format(startOfWeek(now, { weekStartsOn: 1 }), 'yyyy-MM-dd'));
     setEndDate(format(endOfWeek(now, { weekStartsOn: 1 }), 'yyyy-MM-dd'));
+    setSelectedButton('thisWeek'); // 设置选中状态
   };
 
   const setLastWeek = () => {
@@ -89,6 +91,7 @@ const ReportPage = () => {
     const lastWeek = subDays(now, 7);
     setStartDate(format(startOfWeek(lastWeek, { weekStartsOn: 1 }), 'yyyy-MM-dd'));
     setEndDate(format(endOfWeek(lastWeek, { weekStartsOn: 1 }), 'yyyy-MM-dd'));
+    setSelectedButton('lastWeek'); // 设置选中状态
   };
 
   const setNextWeek = () => {
@@ -96,12 +99,14 @@ const ReportPage = () => {
     const nextWeek = subDays(now, -7);
     setStartDate(format(startOfWeek(nextWeek, { weekStartsOn: 1 }), 'yyyy-MM-dd'));
     setEndDate(format(endOfWeek(nextWeek, { weekStartsOn: 1 }), 'yyyy-MM-dd'));
+    setSelectedButton('nextWeek'); // 设置选中状态
   };
 
   const setThisMonth = () => {
     const now = new Date();
     setStartDate(format(startOfMonth(now), 'yyyy-MM-dd'));
     setEndDate(format(endOfMonth(now), 'yyyy-MM-dd'));
+    setSelectedButton('thisMonth'); // 设置选中状态
   };
 
   // Export to Excel
@@ -162,32 +167,49 @@ const ReportPage = () => {
             <div className="flex flex-wrap gap-2">
               <button
                 onClick={setLastWeek}
-                className="bg-gradient-to-r from-gray-100 to-gray-200 hover:from-gray-200 hover:to-gray-300 text-gray-800 font-medium py-2 px-4 rounded-lg whitespace-nowrap shadow transition-all duration-200 transform hover:scale-105"
+                className={`font-medium py-2 px-4 rounded-lg whitespace-nowrap shadow transition-all duration-200 transform hover:scale-105 ${
+                  selectedButton === 'lastWeek'
+                    ? 'bg-gradient-to-r from-indigo-100 to-indigo-200 text-indigo-800 shadow-md'
+                    : 'bg-gradient-to-r from-gray-100 to-gray-200 hover:from-gray-200 hover:to-gray-300 text-gray-800'
+                }`}
               >
                 {t('reports.last_week')}
               </button>
               <button
                 onClick={setThisWeek}
-                className="bg-gradient-to-r from-indigo-100 to-indigo-200 hover:from-indigo-200 hover:to-indigo-300 text-indigo-800 font-medium py-2 px-4 rounded-lg whitespace-nowrap shadow transition-all duration-200 transform hover:scale-105"
+                className={`font-medium py-2 px-4 rounded-lg whitespace-nowrap shadow transition-all duration-200 transform hover:scale-105 ${
+                  selectedButton === 'thisWeek'
+                    ? 'bg-gradient-to-r from-indigo-100 to-indigo-200 text-indigo-800 shadow-md'
+                    : 'bg-gradient-to-r from-gray-100 to-gray-200 hover:from-gray-200 hover:to-gray-300 text-gray-800'
+                }`}
               >
                 {t('reports.this_week')}
               </button>
               <button
                 onClick={setNextWeek}
-                className="bg-gradient-to-r from-gray-100 to-gray-200 hover:from-gray-200 hover:to-gray-300 text-gray-800 font-medium py-2 px-4 rounded-lg whitespace-nowrap shadow transition-all duration-200 transform hover:scale-105"
+                className={`font-medium py-2 px-4 rounded-lg whitespace-nowrap shadow transition-all duration-200 transform hover:scale-105 ${
+                  selectedButton === 'nextWeek'
+                    ? 'bg-gradient-to-r from-indigo-100 to-indigo-200 text-indigo-800 shadow-md'
+                    : 'bg-gradient-to-r from-gray-100 to-gray-200 hover:from-gray-200 hover:to-gray-300 text-gray-800'
+                }`}
               >
                 {t('reports.next_week')}
               </button>
               <button
                 onClick={setThisMonth}
-                className="bg-gradient-to-r from-gray-100 to-gray-200 hover:from-gray-200 hover:to-gray-300 text-gray-800 font-medium py-2 px-4 rounded-lg whitespace-nowrap shadow transition-all duration-200 transform hover:scale-105"
+                className={`font-medium py-2 px-4 rounded-lg whitespace-nowrap shadow transition-all duration-200 transform hover:scale-105 ${
+                  selectedButton === 'thisMonth'
+                    ? 'bg-gradient-to-r from-indigo-100 to-indigo-200 text-indigo-800 shadow-md'
+                    : 'bg-gradient-to-r from-gray-100 to-gray-200 hover:from-gray-200 hover:to-gray-300 text-gray-800'
+                }`}
               >
                 {t('reports.this_month')}
               </button>
             </div>
+            {/* 在桌面端保留导出按钮 */}
             <button
               onClick={handleExport}
-              className="bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white font-medium py-2 px-4 rounded-lg whitespace-nowrap shadow-md transition-all duration-200 transform hover:scale-105 flex items-center"
+              className="hidden md:inline-flex bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white font-medium py-2 px-4 rounded-lg whitespace-nowrap shadow-md transition-all duration-200 transform hover:scale-105 items-center"
             >
               <svg 
                 className="w-4 h-4 mr-2" 
@@ -224,6 +246,29 @@ const ReportPage = () => {
           </div>
         </div>
         
+        {/* 在移动端将导出按钮放在汇总板块下方并居中 */}
+        <div className="md:hidden flex justify-center mb-6">
+          <button
+            onClick={handleExport}
+            className="inline-flex bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white font-medium py-2 px-4 rounded-lg whitespace-nowrap shadow-md transition-all duration-200 transform hover:scale-105 items-center"
+          >
+            <svg 
+              className="w-4 h-4 mr-2" 
+              fill="none" 
+              stroke="currentColor" 
+              viewBox="0 0 24 24" 
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path 
+                strokeLinecap="round" 
+                strokeLinejoin="round" 
+                strokeWidth={2} 
+                d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" 
+              />
+            </svg>
+            {t('reports.export_excel')}
+          </button>
+        </div>
         {filteredEntries.length === 0 && filteredSchedules.length === 0 ? (
           <p className="text-gray-500 text-center py-8 text-sm md:text-base">{t('reports.no_entries')}</p>
         ) : (
