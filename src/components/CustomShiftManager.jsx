@@ -38,7 +38,8 @@ const CustomShiftManager = ({ scrollToEditSection }) => {
     const typeToColorMap = {
       day: 180,      // 青色（与颜色选择器中的青色一致）
       rest: 280,     // 紫色（与颜色选择器中的紫色一致）
-      overnight: 240 // 蓝色
+      overnight: 240, // 蓝色
+      special: 150   // 水绿色（新添加的颜色）
     };
     
     // 设置对应的颜色
@@ -89,7 +90,7 @@ const CustomShiftManager = ({ scrollToEditSection }) => {
     setEndTime(shift.endTime);
     setCustomDuration(shift.customDuration || '');
     setShiftType(shift.shiftType || 'day');
-    setCustomHue(shift.customHue !== undefined ? shift.customHue : 120); // 设置自定义色调，如果不存在则默认为绿色
+    setCustomHue(shift.customHue !== undefined ? shift.customHue : 180); // 设置自定义色调，如果不存在则默认为青色
     setShowForm(true);
     
     // 滚动到编辑区域
@@ -129,6 +130,8 @@ const CustomShiftManager = ({ scrollToEditSection }) => {
         return t('time_entry.custom_shift.rest_day');
       case 'overnight':
         return t('time_entry.custom_shift.overnight_shift');
+      case 'special':
+        return t('time_entry.custom_shift.special_shift');
       default:
         return t('time_entry.custom_shift.day_shift');
     }
@@ -212,7 +215,7 @@ const CustomShiftManager = ({ scrollToEditSection }) => {
           setEndTime('17:00');
           setCustomDuration('');
           setShiftType('day');
-          setCustomHue(120); // 重置为默认值
+          setCustomHue(180); // 重置为默认值（青色）
         }}
         size="md"
         title={editingShift ? t('time_entry.custom_shift.edit_shift') : t('time_entry.custom_shift.add_shift')}
@@ -314,6 +317,17 @@ const CustomShiftManager = ({ scrollToEditSection }) => {
                 />
                 <span className="ml-1.5 sm:ml-2 text-gray-700 text-xs sm:text-sm">{t('time_entry.custom_shift.overnight_shift')}</span>
               </label>
+              <label className="flex items-center">
+                <input
+                  type="radio"
+                  name="shiftType"
+                  value="special"
+                  checked={shiftType === 'special'}
+                  onChange={(e) => setShiftType(e.target.value)}
+                  className="form-radio h-4 w-4 text-indigo-600"
+                />
+                <span className="ml-1.5 sm:ml-2 text-gray-700 text-xs sm:text-sm">{t('time_entry.custom_shift.special_shift')}</span>
+              </label>
             </div>
           </div>
           
@@ -334,7 +348,7 @@ const CustomShiftManager = ({ scrollToEditSection }) => {
                 setEndTime('17:00');
                 setCustomDuration('');
                 setShiftType('day');
-                setCustomHue(120); // 重置为默认值
+                setCustomHue(180); // 重置为默认值（青色）
               }}
               className="w-full sm:w-auto px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-lg transition-colors duration-200 text-base sm:text-sm"
             >

@@ -149,6 +149,7 @@
       "day_shift": "白天班",
       "rest_day": "休息日",
       "overnight_shift": "跨夜班",
+      "special_shift": "特殊班次",
       "color_picker": "选择颜色",
       "selected_color": "已选颜色",
       "colors": {
@@ -159,7 +160,8 @@
         "red": "红色",
         "pink": "粉色",
         "teal": "青色",
-        "yellow": "黄色"
+        "yellow": "黄色",
+        "orange": "橙色"
       }
     }
   },

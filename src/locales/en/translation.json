@@ -135,6 +135,7 @@
       "day_shift": "Day Shift",
       "rest_day": "Rest Day",
       "overnight_shift": "Overnight Shift",
+      "special_shift": "Special Shift",
       "color_picker": "Select Color",
       "selected_color": "Selected Color",
       "colors": {
@@ -145,7 +146,8 @@
         "red": "Red",
         "pink": "Pink",
         "teal": "Teal",
-        "yellow": "Yellow"
+        "yellow": "Yellow",
+        "orange": "Orange"
       }
     },
     "duration": "Hours",

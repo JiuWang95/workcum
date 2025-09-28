@@ -9,7 +9,8 @@ const ShiftColorTest = () => {
     { type: 'day', name: t('time_entry.custom_shift.day_shift') },
     { type: 'overnight', name: t('time_entry.custom_shift.overnight_shift') },
     { type: 'rest', name: t('time_entry.custom_shift.rest_day') },
-    { type: 'regular', name: t('time_entry.custom_shift.regular_shift') }
+    { type: 'regular', name: t('time_entry.custom_shift.regular_shift') },
+    { type: 'special', name: t('time_entry.custom_shift.special_shift') }
   ];
 
   return (

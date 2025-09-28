@@ -9,6 +9,7 @@ const getShiftColor = (shiftType) => {
     case 'day': return '#10b981'; // emerald-500
     case 'rest': return '#8b5cf6'; // violet-500
     case 'night': return '#3b82f6'; // blue-500
+    case 'special': return '#06b6d4'; // cyan-500
     default: return '#10b981'; // emerald-500
   }
 };
@@ -19,6 +20,7 @@ const getShiftBackgroundColor = (shiftType) => {
     case 'day': return '#d1fae5'; // emerald-100
     case 'rest': return '#ede9fe'; // violet-100
     case 'night': return '#dbeafe'; // blue-100
+    case 'special': return '#cffafe'; // cyan-100
     default: return '#d1fae5'; // emerald-100
   }
 };

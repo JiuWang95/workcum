@@ -209,6 +209,8 @@ const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
         return t('time_entry.custom_shift.rest_day');
       case 'overnight':
         return t('time_entry.custom_shift.overnight_shift');
+      case 'special':
+        return t('time_entry.custom_shift.special_shift');
       default:
         return t('time_entry.custom_shift.day_shift');
     }

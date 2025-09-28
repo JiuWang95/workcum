@@ -25,6 +25,12 @@ export const shiftTypeToColorMap = {
     saturation: 90,
     lightness: 50,    // 亮度50% (较深的橙色)
     bgLightness: 88  // 背景亮度88% (较浅的橙色)
+  },
+  special: {
+    hue: 150,        // 水绿色
+    saturation: 70,   // 饱和度70%
+    lightness: 40,    // 亮度40% (较深的水绿色)
+    bgLightness: 88  // 背景亮度88% (较浅的水绿色)
   }
 };
 
@@ -38,7 +44,7 @@ export const getDefaultColorConfig = () => {
 
 /**
  * 根据班次类型和自定义色调获取边框颜色
- * @param {string} shiftType - 班次类型 ('day', 'overnight', 'rest', 'regular')
+ * @param {string} shiftType - 班次类型 ('day', 'overnight', 'rest', 'regular', 'special')
  * @param {number} customHue - 可选的自定义色调值 (0-360)
  * @returns {string} HSL颜色字符串
  */
@@ -56,7 +62,7 @@ export const getShiftColor = (shiftType = 'day', customHue = null) => {
 
 /**
  * 根据班次类型和自定义色调获取背景颜色
- * @param {string} shiftType - 班次类型 ('day', 'overnight', 'rest', 'regular')
+ * @param {string} shiftType - 班次类型 ('day', 'overnight', 'rest', 'regular', 'special')
  * @param {number} customHue - 可选的自定义色调值 (0-360)
  * @returns {string} HSL颜色字符串
  */

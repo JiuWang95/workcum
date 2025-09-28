@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>颜色配置测试</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .section {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h2 {
+            color: #555;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+        }
+        .color-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        .color-card {
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .color-preview {
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            text-shadow: 0 0 3px rgba(0,0,0,0.5);
+        }
+        .color-info {
+            padding: 10px;
+            background: white;
+        }
+        .color-info p {
+            margin: 5px 0;
+            font-size: 14px;
+        }
+        .color-name {
+            font-weight: bold;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>颜色配置测试</h1>
+        
+        <!-- 班次颜色 -->
+        <div class="section">
+            <h2>班次颜色 (Shift Colors)</h2>
+            <div class="color-grid" id="shiftColors"></div>
+        </div>
+        
+        <!-- 时间记录颜色 -->
+        <div class="section">
+            <h2>时间记录颜色 (Time Entry Colors)</h2>
+            <div class="color-grid" id="entryColors"></div>
+        </div>
+        
+        <!-- 颜色选择器颜色 -->
+        <div class="section">
+            <h2>颜色选择器颜色 (Color Picker Options)</h2>
+            <div class="color-grid" id="pickerColors"></div>
+        </div>
+    </div>
+
+    <script>
+        // 班次颜色配置
+        const shiftTypeToColorMap = {
+            day: {
+                hue: 180,        // 青色
+                saturation: 70,
+                lightness: 35,
+                bgLightness: 85
+            },
+            overnight: {
+                hue: 240,        // 蓝色
+                saturation: 70,
+                lightness: 40,
+                bgLightness: 90
+            },
+            rest: {
+                hue: 270,        // 紫色
+                saturation: 50,
+                lightness: 45,
+                bgLightness: 92
+            },
+            regular: {
+                hue: 30,         // 橙色
+                saturation: 90,
+                lightness: 50,
+                bgLightness: 88
+            }
+        };
+
+        // 时间记录颜色配置
+        const timeEntryColors = [
+            { name: "橙色 (默认)", hue: 30 },
+            { name: "红色", hue: 0 },
+            { name: "粉色", hue: 330 }
+        ];
+
+        // 颜色选择器选项
+        const colorPickerOptions = [
+            { name: "绿色", hue: 120 },
+            { name: "蓝色", hue: 220 },
+            { name: "紫色", hue: 280 },
+            { name: "靛蓝色", hue: 240 },
+            { name: "红色", hue: 0 },
+            { name: "粉色", hue: 330 },
+            { name: "青色", hue: 180 },
+            { name: "黄色", hue: 60 }
+        ];
+
+        // 根据HSL值生成颜色
+        function hslToRgb(h, s, l) {
+            h /= 360;
+            s /= 100;
+            l /= 100;
+            let r, g, b;
+
+            if (s === 0) {
+                r = g = b = l;
+            } else {
+                const hue2rgb = (p, q, t) => {
+                    if (t < 0) t += 1;
+                    if (t > 1) t -= 1;
+                    if (t < 1/6) return p + (q - p) * 6 * t;
+                    if (t < 1/2) return q;
+                    if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
+                    return p;
+                };
+
+                const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+                const p = 2 * l - q;
+                r = hue2rgb(p, q, h + 1/3);
+                g = hue2rgb(p, q, h);
+                b = hue2rgb(p, q, h - 1/3);
+            }
+
+            const toHex = x => {
+                const hex = Math.round(x * 255).toString(16);
+                return hex.length === 1 ? '0' + hex : hex;
+            };
+
+            return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
+        }
+
+        // 生成颜色卡片
+        function createColorCard(name, hue, saturation = 80, lightness = 50, bgLightness = 90) {
+            const card = document.createElement('div');
+            card.className = 'color-card';
+            
+            const textColor = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+            const bgColor = `hsl(${hue}, ${saturation}%, ${bgLightness}%)`;
+            
+            card.innerHTML = `
+                <div class="color-preview" style="background: ${bgColor}; color: ${textColor}">
+                    ${name}
+                </div>
+                <div class="color-info">
+                    <p class="color-name">${name}</p>
+                    <p>Hue: ${hue}°</p>
+                    <p>Saturation: ${saturation}%</p>
+                    <p>Lightness: ${lightness}%</p>
+                    <p>BG Lightness: ${bgLightness}%</p>
+                </div>
+            `;
+            
+            return card;
+        }
+
+        // 渲染班次颜色
+        function renderShiftColors() {
+            const container = document.getElementById('shiftColors');
+            for (const [type, config] of Object.entries(shiftTypeToColorMap)) {
+                const card = createColorCard(
+                    `${type} (${config.hue}°)`,
+                    config.hue,
+                    config.saturation,
+                    config.lightness,
+                    config.bgLightness
+                );
+                container.appendChild(card);
+            }
+        }
+
+        // 渲染时间记录颜色
+        function renderEntryColors() {
+            const container = document.getElementById('entryColors');
+            timeEntryColors.forEach(color => {
+                const card = createColorCard(
+                    color.name,
+                    color.hue,
+                    80,  // saturation
+                    35,  // lightness
+                    90   // bgLightness
+                );
+                container.appendChild(card);
+            });
+        }
+
+        // 渲染颜色选择器颜色
+        function renderPickerColors() {
+            const container = document.getElementById('pickerColors');
+            colorPickerOptions.forEach(color => {
+                const card = createColorCard(
+                    `${color.name} (${color.hue}°)`,
+                    color.hue,
+                    80,  // saturation
+                    50,  // lightness
+                    90   // bgLightness
+                );
+                container.appendChild(card);
+            });
+        }
+
+        // 初始化
+        renderShiftColors();
+        renderEntryColors();
+        renderPickerColors();
+    </script>
+</body>
+</html>
