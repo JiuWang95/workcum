@@ -111,7 +111,7 @@ const TimeEntryPage = () => {
           {/* 添加记录按钮 - 在所有设备上显示一致的样式 */}
           <button
             onClick={() => setIsAddEntryModalOpen(true)}
-            className="flex items-center justify-center bg-gradient-to-r from-teal-500 to-cyan-600 hover:from-teal-600 hover:to-cyan-700 text-white font-bold py-2 px-4 rounded-lg shadow-md transition-all duration-300 transform hover:scale-105 text-sm whitespace-nowrap md:py-2.5 md:px-5 md:text-sm md:rounded-lg"
+            className="flex items-center justify-center bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white font-bold py-2 px-4 rounded-lg shadow-md transition-all duration-300 transform hover:scale-105 text-sm whitespace-nowrap md:py-2.5 md:px-5 md:text-sm md:rounded-lg"
           >
             <svg 
               className="w-4 h-4 mr-1 md:w-4 md:h-4 md:mr-1.5" 
