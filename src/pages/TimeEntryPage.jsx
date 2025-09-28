@@ -111,10 +111,10 @@ const TimeEntryPage = () => {
           {/* 桌面端和移动端横屏添加记录按钮 */}
           <button
             onClick={() => setIsAddEntryModalOpen(true)}
-            className="hidden md:flex px-4 py-2 bg-gradient-to-r from-teal-500 to-cyan-600 text-white rounded-md hover:from-teal-600 hover:to-cyan-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 text-sm font-medium items-center shadow-md transition-all duration-200"
+            className="hidden md:flex items-center justify-center bg-gradient-to-r from-teal-500 to-cyan-600 hover:from-teal-600 hover:to-cyan-700 text-white font-bold py-2 px-4 rounded-lg shadow-md transition-all duration-300 transform hover:scale-105 text-sm whitespace-nowrap md:py-2.5 md:px-5 md:text-sm md:rounded-lg"
           >
             <svg 
-              className="w-4 h-4 mr-1" 
+              className="w-4 h-4 mr-1 md:w-4 md:h-4 md:mr-1.5" 
               fill="none" 
               stroke="currentColor" 
               viewBox="0 0 24 24" 
@@ -129,6 +129,7 @@ const TimeEntryPage = () => {
             </svg>
             {t('time_entry.add_entry')}
           </button>
+          {/* 使用说明按钮 */}
           <button
             onClick={() => setShowInstructions(true)}
             className="p-2 bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-md hover:from-indigo-600 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 text-sm font-medium flex items-center shadow-md transition-all duration-200 transform hover:scale-105"
@@ -155,10 +156,10 @@ const TimeEntryPage = () => {
       <div className="mb-6 md:hidden">
         <button
           onClick={() => setIsAddEntryModalOpen(true)}
-          className="flex items-center px-6 py-3 bg-gradient-to-r from-teal-500 to-cyan-600 text-white rounded-xl hover:from-teal-600 hover:to-cyan-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 text-base font-bold shadow-lg transition-all duration-200 transform hover:scale-105 active:scale-95"
+          className="flex items-center justify-center bg-gradient-to-r from-teal-500 to-cyan-600 hover:from-teal-600 hover:to-cyan-700 text-white font-bold py-2 px-4 rounded-lg shadow-md transition-all duration-300 transform hover:scale-105 text-sm whitespace-nowrap md:py-2.5 md:px-5 md:text-sm md:rounded-lg"
         >
           <svg 
-            className="w-6 h-6 mr-2" 
+            className="w-4 h-4 mr-1 md:w-4 md:h-4 md:mr-1.5" 
             fill="none" 
             stroke="currentColor" 
             viewBox="0 0 24 24" 

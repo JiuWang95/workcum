@@ -267,126 +267,132 @@ const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
               }`}
               onClick={() => handleDateClick(day)}
             >
-              {/* Date header */}
-              <div className={`text-xs sm:text-sm md:text-base font-bold mb-2 sm:mb-3 flex items-center justify-between ${
-                isToday ? 'text-blue-600' : 'text-gray-700'
-              }`}>
-                <div className="flex items-center">
-                  <span className="mr-1.5 text-gray-500 text-[0.7rem] sm:text-xs">{format(day, 'EEE', { locale: zhCN })}</span>
-                  <span className="text-lg sm:text-xl md:text-2xl font-bold">{format(day, 'd', { locale: zhCN })}</span>
-                </div>
-                <span className="text-[0.6rem] sm:text-xs md:text-sm bg-white bg-opacity-70 px-1.5 py-0.5 sm:px-2 sm:py-1 rounded-full font-medium text-gray-600 shadow-sm">
-                  {format(day, 'M月', { locale: zhCN })}
-                </span>
-              </div>
-              
-              {/* Arrangement of schedules and time entries: vertical on larger screens, horizontal wrap on mobile */}
-              <div className="flex flex-wrap gap-1.5 sm:gap-2 md:gap-3">
-                {/* Display schedules */}
-                {daySchedules.map((schedule) => {
-                  // 获取班次信息
-                  const shiftInfo = shifts.find(shift => shift.id === schedule.selectedShift);
-                  const shiftName = shiftInfo ? shiftInfo.name : schedule.title;
-                  // 获取班次类型
-                  const shiftType = shiftInfo ? shiftInfo.shiftType : 'day';
-                  
-                  return (
-                    <div 
-                      key={schedule.id} 
-                      className="text-[0.6rem] sm:text-xs md:text-sm font-semibold p-2 sm:p-3 rounded-lg flex-shrink-0 w-full transition-all duration-200 hover:scale-[1.02] shadow-sm"
-                      style={{
-                        backgroundColor: getShiftBackgroundColor(shiftType),
-                        border: `1px solid ${getShiftColor(shiftType)}`
-                      }}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleEdit(schedule);
-                      }}
-                    >
-                      <div className="flex items-center">
-                        <span 
-                          className="inline-block w-2 h-2 rounded-full mr-1.5 border border-white shadow"
-                          style={{ backgroundColor: getShiftColor(shiftType) }}
-                        ></span>
-                        <span className="font-bold truncate text-[0.6rem] sm:text-xs md:text-sm">{shiftName}</span>
-                        {shiftType === 'overnight' && (
-                          <span className="ml-1.5 inline-flex items-center px-1 py-0.5 rounded-full text-[0.5rem] sm:text-[0.6rem] font-medium bg-gradient-to-r from-red-100 to-red-200 text-red-800 shadow-sm">
-                            {t('time_entry.custom_shift.overnight_shift')}
-                          </span>
-                        )}
-                        {shiftType === 'rest' && (
-                          <span className="ml-1.5 inline-flex items-center px-1 py-0.5 rounded-full text-[0.5rem] sm:text-[0.6rem] font-medium bg-gradient-to-r from-green-100 to-green-200 text-green-800 shadow-sm">
-                            {t('time_entry.custom_shift.rest_day')}
-                          </span>
-                        )}
-                      </div>
-                      <div 
-                        className="text-[0.5rem] sm:text-[0.6rem] md:text-xs mt-1 font-medium"
-                        style={{ color: getShiftColor(shiftType) }}
-                      >
-                        <span className="bg-white bg-opacity-50 px-1.5 py-0.5 rounded">
-                          {formatTime(schedule.startTime)} - {formatTime(schedule.endTime)}
-                        </span>
-                        {schedule.selectedShift && shifts.find(s => s.id === schedule.selectedShift)?.customDuration !== undefined && (
-                          <span className="ml-1.5 bg-white bg-opacity-70 px-1.5 py-0.5 rounded font-bold">
-                            [{convertDurationToHours(shifts.find(s => s.id === schedule.selectedShift).customDuration).toFixed(1)}h]
-                          </span>
-                        )}
-                      </div>
+              <div className="flex">
+                {/* Left side - Date information */}
+                <div className={`w-1/4 pr-1 border-r border-gray-200 ${
+                  isToday ? 'text-blue-600' : 'text-gray-700'
+                }`}>
+                  <div className="flex flex-col items-center justify-center h-full">
+                    <div className="text-black text-[0.7rem] sm:text-sm font-bold">
+                      {format(day, 'EEE', { locale: zhCN })}
                     </div>
-                  );
-                })}
-                
-                {/* Display time entries */}
-                {dayTimeEntries.map((entry) => {
-                  const entryColor = getEntryColor(entry.customHue);
-                  return (
-                    <div 
-                      key={entry.id} 
-                      className="text-[0.6rem] sm:text-xs md:text-sm font-semibold p-2 sm:p-3 rounded-lg flex-shrink-0 w-full cursor-pointer hover:scale-[1.02] transition-all duration-200 shadow-sm"
-                      style={{
-                        backgroundColor: entryColor.backgroundColor,
-                        border: `1px solid ${entryColor.borderColor}`
-                      }}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setSelectedEntry(entry);
-                        setShowDeleteModal(true);
-                      }}
-                    >
-                      <div 
-                        className="font-bold truncate text-[0.6rem] sm:text-xs"
-                        style={{
-                          color: entryColor.textColor
-                        }}
-                      >
-                        {entry.notes || t('time_entry.entry')}
-                      </div>
-                      <div 
-                        className="text-[0.5rem] sm:text-[0.6rem] mt-1 font-medium"
-                        style={{
-                          color: entryColor.textColor
-                        }}
-                      >
-                        <span className="bg-white bg-opacity-50 px-1.5 py-0.5 rounded">
-                          {formatTime(entry.startTime)} - {formatTime(entry.endTime)}
-                        </span>
-                        {entry.duration && (
-                          <span className="ml-1.5 bg-white bg-opacity-70 px-1.5 py-0.5 rounded font-bold">
-                            [{(entry.duration / 60).toFixed(1)}h]
-                          </span>
-                        )}
-                      </div>
+                    <div className="text-base sm:text-lg md:text-xl">
+                      {format(day, 'd', { locale: zhCN })}
                     </div>
-                  );
-                })}
-                
-                {/* Show placeholder if no items */}
-                {daySchedules.length === 0 && dayTimeEntries.length === 0 && (
-                  <div className="text-gray-400 italic py-3 text-center text-xs sm:text-sm md:text-base bg-gray-50 rounded-lg w-full">
-                    {t('schedule.no_events')}
                   </div>
-                )}
+                </div>
+                
+                {/* Right side - Events information */}
+                <div className="w-3/4 pl-2">
+                  {/* Arrangement of schedules and time entries: vertical on larger screens, horizontal wrap on mobile */}
+                  <div className="flex flex-wrap gap-1">
+                    {/* Display schedules */}
+                    {daySchedules.map((schedule) => {
+                      // 获取班次信息
+                      const shiftInfo = shifts.find(shift => shift.id === schedule.selectedShift);
+                      const shiftName = shiftInfo ? shiftInfo.name : schedule.title;
+                      // 获取班次类型
+                      const shiftType = shiftInfo ? shiftInfo.shiftType : 'day';
+                      
+                      return (
+                        <div 
+                          key={schedule.id} 
+                          className="text-[0.6rem] sm:text-xs md:text-sm font-semibold p-1.5 sm:p-2 rounded-lg flex-shrink-0 w-full transition-all duration-200 hover:scale-[1.02] shadow-sm"
+                          style={{
+                            backgroundColor: getShiftBackgroundColor(shiftType),
+                            border: `1px solid ${getShiftColor(shiftType)}`
+                          }}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleEdit(schedule);
+                          }}
+                        >
+                          <div className="flex items-center">
+                            <span 
+                              className="inline-block w-2 h-2 rounded-full mr-1 border border-white shadow"
+                              style={{ backgroundColor: getShiftColor(shiftType) }}
+                            ></span>
+                            <span className="font-bold truncate text-[0.6rem] sm:text-xs">{shiftName}</span>
+                            {shiftType === 'overnight' && (
+                              <span className="ml-1 inline-flex items-center px-1 py-0.5 rounded-full text-[0.5rem] font-medium bg-gradient-to-r from-red-100 to-red-200 text-red-800 shadow-sm">
+                                {t('time_entry.custom_shift.overnight_shift')}
+                              </span>
+                            )}
+                            {shiftType === 'rest' && (
+                              <span className="ml-1 inline-flex items-center px-1 py-0.5 rounded-full text-[0.5rem] font-medium bg-gradient-to-r from-green-100 to-green-200 text-green-800 shadow-sm">
+                                {t('time_entry.custom_shift.rest_day')}
+                              </span>
+                            )}
+                          </div>
+                          <div 
+                            className="text-[0.5rem] sm:text-[0.6rem] mt-0.5 font-medium"
+                            style={{ color: getShiftColor(shiftType) }}
+                          >
+                            <span className="bg-white bg-opacity-50 px-1 py-0.5 rounded">
+                              {formatTime(schedule.startTime)} - {formatTime(schedule.endTime)}
+                            </span>
+                            {schedule.selectedShift && shifts.find(s => s.id === schedule.selectedShift)?.customDuration !== undefined && (
+                              <span className="ml-1 bg-white bg-opacity-70 px-1 py-0.5 rounded font-bold">
+                                [{convertDurationToHours(shifts.find(s => s.id === schedule.selectedShift).customDuration).toFixed(1)}h]
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                      );
+                    })}
+                    
+                    {/* Display time entries */}
+                    {dayTimeEntries.map((entry) => {
+                      const entryColor = getEntryColor(entry.customHue);
+                      return (
+                        <div 
+                          key={entry.id} 
+                          className="text-[0.6rem] sm:text-xs md:text-sm font-semibold p-1.5 sm:p-2 rounded-lg flex-shrink-0 w-full cursor-pointer hover:scale-[1.02] transition-all duration-200 shadow-sm"
+                          style={{
+                            backgroundColor: entryColor.backgroundColor,
+                            border: `1px solid ${entryColor.borderColor}`
+                          }}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setSelectedEntry(entry);
+                            setShowDeleteModal(true);
+                          }}
+                        >
+                          <div 
+                            className="font-bold truncate text-[0.6rem] sm:text-xs"
+                            style={{
+                              color: entryColor.textColor
+                            }}
+                          >
+                            {entry.notes || t('time_entry.entry')}
+                          </div>
+                          <div 
+                            className="text-[0.5rem] sm:text-[0.6rem] mt-0.5 font-medium"
+                            style={{
+                              color: entryColor.textColor
+                            }}
+                          >
+                            <span className="bg-white bg-opacity-50 px-1 py-0.5 rounded">
+                              {formatTime(entry.startTime)} - {formatTime(entry.endTime)}
+                            </span>
+                            {entry.duration && (
+                              <span className="ml-1 bg-white bg-opacity-70 px-1 py-0.5 rounded font-bold">
+                                [{(entry.duration / 60).toFixed(1)}h]
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                      );
+                    })}
+                    
+                    {/* Show placeholder if no items */}
+                    {daySchedules.length === 0 && dayTimeEntries.length === 0 && (
+                      <div className="text-gray-400 italic py-3 text-center text-xs sm:text-sm md:text-base bg-gray-50 rounded-lg w-full">
+                        {t('schedule.no_events')}
+                      </div>
+                    )}
+                  </div>
+                </div>
               </div>
             </div>
           );
