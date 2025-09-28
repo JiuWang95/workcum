@@ -119,8 +119,7 @@ const InstructionsModal = ({ isOpen, onClose }) => {
           
           <div className="mt-6 p-4 bg-gradient-to-r from-blue-100 to-indigo-100 rounded-xl border border-blue-200">
             <p className="text-base text-blue-800">
-              <span className="font-semibold">{t('instructions.tip').split(':')[0]}:</span>
-              {t('instructions.tip').split(':')[1]}
+              {t('instructions.tip')}
             </p>
           </div>
           

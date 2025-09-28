@@ -69,7 +69,7 @@
       "item1": "Includes project introduction, data management, supports exporting all data to a JSON file for backup, or importing data from a JSON file to restore information.",
       "item2": "This method can also achieve data synchronization between different devices."
     },
-    "tip": "Tip: All data is securely stored locally in your browser and will not be uploaded to any server. It is recommended to regularly export data for backup.",
+    "tip": "Tip All data is securely stored locally in your browser and will not be uploaded to any server. It is recommended to regularly export data for backup.",
     "acknowledge": "I Understand"
   },
   "project": {
