@@ -147,142 +147,160 @@ const DataPage = () => {
         </button>
       </div>
       
-      {/* Project Information Section */}
-      <div className="mt-6 bg-white rounded-xl shadow-md overflow-hidden border border-gray-200">
-        <div className="p-1 bg-gradient-to-r from-indigo-500 to-purple-600"></div>
-        <div className="p-4 md:p-6">
-          <div className="flex items-start">
-            <div className="flex-shrink-0 mr-3">
-              <div className="bg-indigo-100 p-2 rounded-lg">
-                <svg className="w-6 h-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
-                </svg>
-              </div>
+      {/* Project Information Section - Enhanced UI */}
+      <div className="mt-6 bg-white rounded-2xl shadow-lg overflow-hidden transform transition-all duration-300 hover:shadow-xl border border-gray-200">
+        <div className="p-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"></div>
+        <div className="p-6 md:p-8">
+          <div className="flex flex-col items-start">
+            <div className="mb-6 w-full">
+              <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2 bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-purple-600">
+                {t('project.title')}
+              </h2>
+              <div className="w-20 h-1 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full"></div>
             </div>
-            <div className="flex-1">
-              <h2 className="text-lg font-bold text-gray-800 mb-2 md:text-xl">{t('project.title')}</h2>
-              <p className="text-gray-600 mb-5 leading-relaxed text-sm md:text-base">
-        {t('project.introduction.paragraph1')}
-      </p>
-      <p className="text-gray-600 mb-5 leading-relaxed text-sm md:text-base">
-        {t('project.introduction.paragraph2')}
-      </p>
-              
-              <div className="mb-6">
-                <h3 className="text-base font-semibold text-gray-800 mb-3 flex items-center md:text-lg">
-                  <svg className="w-5 h-5 mr-2 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
-                  </svg>
-                  {t('project.features.title')}
-                </h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <div className="flex items-start">
-                    <svg className="w-5 h-5 text-green-500 mt-0.5 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
-                    </svg>
-                    <span className="text-gray-600 text-sm md:text-base">{t('project.features.item1')}</span>
-                  </div>
-                  <div className="flex items-start">
-                    <svg className="w-5 h-5 text-green-500 mt-0.5 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
-                    </svg>
-                    <span className="text-gray-600 text-sm md:text-base">{t('project.features.item2')}</span>
-                  </div>
-                  <div className="flex items-start">
-                    <svg className="w-5 h-5 text-green-500 mt-0.5 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
-                    </svg>
-                    <span className="text-gray-600 text-sm md:text-base">{t('project.features.item3')}</span>
-                  </div>
-                  <div className="flex items-start">
-                    <svg className="w-5 h-5 text-green-500 mt-0.5 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
-                    </svg>
-                    <span className="text-gray-600 text-sm md:text-base">{t('project.features.item4')}</span>
-                  </div>
-                </div>
-              </div>
-              
-              <p className="text-gray-600 mb-6 leading-relaxed text-sm md:text-base">
-                {t('project.support.text')}
+            
+            <div className="space-y-4 mb-8 w-full">
+              <p className="text-gray-600 leading-relaxed text-base md:text-lg">
+                {t('project.introduction.part1')}
               </p>
               
-              <div className="flex flex-wrap gap-3">
-                <a 
-                  href="https://github.com/JiuNian090/workcum" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center px-4 py-2 bg-gray-800 hover:bg-gray-900 text-white font-medium rounded-lg transition-all duration-200 shadow hover:shadow-md"
-                >
-                  <svg 
-                    className="w-5 h-5 mr-2" 
-                    fill="currentColor" 
-                    viewBox="0 0 24 24" 
-                    aria-hidden="true"
-                  >
-                    <path 
-                      fillRule="evenodd" 
-                      d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" 
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                  {t('project.support.github')}
-                </a>
-                <button
-                  onClick={() => {
-                    window.location.href = 'mailto:jiunian929@gmail.com';
-                    // Highlight effect for 5 seconds
-                    const contactButton = document.getElementById('contact-button');
-                    if (contactButton) {
-                      contactButton.classList.add('bg-yellow-300', 'text-yellow-900');
-                      setTimeout(() => {
-                        contactButton.classList.remove('bg-yellow-300', 'text-yellow-900');
-                        contactButton.classList.add('bg-indigo-600');
-                      }, 5000);
-                    }
-                  }}
-                  id="contact-button"
-                  className="inline-flex items-center px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg transition-all duration-200 shadow hover:shadow-md"
-                >
-                  <svg 
-                    className="w-5 h-5 mr-2" 
-                    fill="none" 
-                    stroke="currentColor" 
-                    viewBox="0 0 24 24" 
-                    aria-hidden="true"
-                  >
-                    <path 
-                      strokeLinecap="round" 
-                      strokeLinejoin="round" 
-                      strokeWidth="2" 
-                      d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-                    />
-                  </svg>
-                  {t('project.support.contact')}
-                </button>
-                <a 
-                  href="https://gongyi.qq.com/succor/project_list.htm" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center px-4 py-2 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-all duration-200 shadow hover:shadow-md"
-                >
-                  <svg 
-                    className="w-5 h-5 mr-2" 
-                    fill="none" 
-                    stroke="currentColor" 
-                    viewBox="0 0 24 24" 
-                    aria-hidden="true"
-                  >
-                    <path 
-                      strokeLinecap="round" 
-                      strokeLinejoin="round" 
-                      strokeWidth="2" 
-                      d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                    />
-                  </svg>
-                  {t('project.support.donate')}
-                </a>
+              <p className="text-gray-600 leading-relaxed text-base md:text-lg">
+                {t('project.introduction.part2')}
+              </p>
+            </div>
+            
+            <div className="w-full mb-8">
+              <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center">
+                <svg className="w-5 h-5 mr-2 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                </svg>
+                {t('project.features.title')}
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="flex items-start p-4 bg-indigo-50 rounded-xl transition-all duration-200 hover:bg-indigo-100 hover:scale-[1.02]">
+                  <div className="flex-shrink-0 mt-1">
+                    <div className="bg-indigo-100 p-2 rounded-lg">
+                      <svg className="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+                      </svg>
+                    </div>
+                  </div>
+                  <span className="text-gray-700 ml-3 text-base">{t('project.features.item1')}</span>
+                </div>
+                <div className="flex items-start p-4 bg-purple-50 rounded-xl transition-all duration-200 hover:bg-purple-100 hover:scale-[1.02]">
+                  <div className="flex-shrink-0 mt-1">
+                    <div className="bg-purple-100 p-2 rounded-lg">
+                      <svg className="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+                      </svg>
+                    </div>
+                  </div>
+                  <span className="text-gray-700 ml-3 text-base">{t('project.features.item2')}</span>
+                </div>
+                <div className="flex items-start p-4 bg-blue-50 rounded-xl transition-all duration-200 hover:bg-blue-100 hover:scale-[1.02]">
+                  <div className="flex-shrink-0 mt-1">
+                    <div className="bg-blue-100 p-2 rounded-lg">
+                      <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+                      </svg>
+                    </div>
+                  </div>
+                  <span className="text-gray-700 ml-3 text-base">{t('project.features.item3')}</span>
+                </div>
+                <div className="flex items-start p-4 bg-pink-50 rounded-xl transition-all duration-200 hover:bg-pink-100 hover:scale-[1.02]">
+                  <div className="flex-shrink-0 mt-1">
+                    <div className="bg-pink-100 p-2 rounded-lg">
+                      <svg className="w-5 h-5 text-pink-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+                      </svg>
+                    </div>
+                  </div>
+                  <span className="text-gray-700 ml-3 text-base">{t('project.features.item4')}</span>
+                </div>
               </div>
+            </div>
+            
+            <div className="w-full mb-6">
+              <p className="text-gray-600 leading-relaxed text-base md:text-lg">
+                {t('project.support.text')}
+              </p>
+            </div>
+            
+            <div className="flex flex-wrap gap-4 w-full">
+              <a 
+                href="https://github.com/JiuNian090/workcum" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="group inline-flex items-center px-5 py-3 bg-gray-900 hover:bg-gray-800 text-white font-medium rounded-xl transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
+              >
+                <svg 
+                  className="w-5 h-5 mr-2 group-hover:animate-pulse" 
+                  fill="currentColor" 
+                  viewBox="0 0 24 24" 
+                  aria-hidden="true"
+                >
+                  <path 
+                    fillRule="evenodd" 
+                    d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" 
+                    clipRule="evenodd"
+                  />
+                </svg>
+                {t('project.support.github')}
+              </a>
+              <button
+                onClick={() => {
+                  window.location.href = 'mailto:jiunian929@gmail.com';
+                  // Highlight effect for 5 seconds
+                  const contactButton = document.getElementById('contact-button');
+                  if (contactButton) {
+                    contactButton.classList.add('bg-yellow-300', 'text-yellow-900');
+                    setTimeout(() => {
+                      contactButton.classList.remove('bg-yellow-300', 'text-yellow-900');
+                      contactButton.classList.add('bg-gradient-to-r', 'from-indigo-600', 'to-purple-600');
+                    }, 5000);
+                  }
+                }}
+                id="contact-button"
+                className="group inline-flex items-center px-5 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-medium rounded-xl transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
+              >
+                <svg 
+                  className="w-5 h-5 mr-2 group-hover:animate-bounce" 
+                  fill="none" 
+                  stroke="currentColor" 
+                  viewBox="0 0 24 24" 
+                  aria-hidden="true"
+                >
+                  <path 
+                    strokeLinecap="round" 
+                    strokeLinejoin="round" 
+                    strokeWidth="2" 
+                    d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                  />
+                </svg>
+                {t('project.support.contact')}
+              </button>
+              <a 
+                href="https://gongyi.qq.com/succor/project_list.htm" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="group inline-flex items-center px-5 py-3 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white font-medium rounded-xl transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
+              >
+                <svg 
+                  className="w-5 h-5 mr-2 group-hover:animate-pulse" 
+                  fill="none" 
+                  stroke="currentColor" 
+                  viewBox="0 0 24 24" 
+                  aria-hidden="true"
+                >
+                  <path 
+                    strokeLinecap="round" 
+                    strokeLinejoin="round" 
+                    strokeWidth="2" 
+                    d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+                {t('project.support.donate')}
+              </a>
             </div>
           </div>
         </div>
