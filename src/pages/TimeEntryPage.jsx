@@ -108,10 +108,10 @@ const TimeEntryPage = () => {
       <div className="flex justify-between items-center mb-6">
         <h1 className="page-heading">{t('navigation.time_entry')}</h1>
         <div className="flex space-x-2">
-          {/* 桌面端和移动端横屏添加记录按钮 */}
+          {/* 添加记录按钮 - 在所有设备上显示一致的样式 */}
           <button
             onClick={() => setIsAddEntryModalOpen(true)}
-            className="hidden md:flex items-center justify-center bg-gradient-to-r from-teal-500 to-cyan-600 hover:from-teal-600 hover:to-cyan-700 text-white font-bold py-2 px-4 rounded-lg shadow-md transition-all duration-300 transform hover:scale-105 text-sm whitespace-nowrap md:py-2.5 md:px-5 md:text-sm md:rounded-lg"
+            className="flex items-center justify-center bg-gradient-to-r from-teal-500 to-cyan-600 hover:from-teal-600 hover:to-cyan-700 text-white font-bold py-2 px-4 rounded-lg shadow-md transition-all duration-300 transform hover:scale-105 text-sm whitespace-nowrap md:py-2.5 md:px-5 md:text-sm md:rounded-lg"
           >
             <svg 
               className="w-4 h-4 mr-1 md:w-4 md:h-4 md:mr-1.5" 
@@ -152,38 +152,11 @@ const TimeEntryPage = () => {
         </div>
       </div>
       
-      {/* 移动端的添加差异记录按钮放在自定义班次上面，计划标题的下面 */}
-      <div className="mb-6 md:hidden">
-        <button
-          onClick={() => setIsAddEntryModalOpen(true)}
-          className="flex items-center justify-center bg-gradient-to-r from-teal-500 to-cyan-600 hover:from-teal-600 hover:to-cyan-700 text-white font-bold py-2 px-4 rounded-lg shadow-md transition-all duration-300 transform hover:scale-105 text-sm whitespace-nowrap md:py-2.5 md:px-5 md:text-sm md:rounded-lg"
-        >
-          <svg 
-            className="w-4 h-4 mr-1 md:w-4 md:h-4 md:mr-1.5" 
-            fill="none" 
-            stroke="currentColor" 
-            viewBox="0 0 24 24" 
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path 
-              strokeLinecap="round" 
-              strokeLinejoin="round" 
-              strokeWidth={2} 
-              d="M12 6v6m0 0v6m0-6h6m-6 0H6" 
-            />
-          </svg>
-          <span className="whitespace-nowrap">{t('time_entry.add_entry')}</span>
-        </button>
-      </div>
-      
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="lg:col-span-3 mt-8">
           <CustomShiftManager scrollToEditSection={scrollToEditSection} />
         </div>
       </div>
-      
-      {/* 在页面底部添加一个占位元素，防止内容被固定按钮遮挡 */}
-      <div className="md:hidden h-24"></div>
       
       <InstructionsModal isOpen={showInstructions} onClose={() => setShowInstructions(false)} />
       <AddEntryModal 
