@@ -247,6 +247,19 @@ const MonthlyScheduleCalendar = ({ currentDate, onDateChange }) => {
     };
   }, []);
 
+  // 在每次打开月历时同步周历数据
+  useEffect(() => {
+    // 从localStorage获取最新的数据
+    const latestSchedules = JSON.parse(localStorage.getItem('schedules') || '[]');
+    const latestTimeEntries = JSON.parse(localStorage.getItem('timeEntries') || '[]');
+    const latestShifts = JSON.parse(localStorage.getItem('customShifts') || '[]');
+    
+    // 更新状态
+    setSchedules(latestSchedules);
+    setTimeEntries(latestTimeEntries);
+    setShifts(latestShifts);
+  }, [currentDate]);
+
   // Load time entries from localStorage
   useEffect(() => {
     const savedEntries = JSON.parse(localStorage.getItem('timeEntries') || '[]');
