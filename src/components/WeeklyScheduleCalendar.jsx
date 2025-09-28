@@ -293,16 +293,17 @@ const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
                       // 获取班次信息
                       const shiftInfo = shifts.find(shift => shift.id === schedule.selectedShift);
                       const shiftName = shiftInfo ? shiftInfo.name : schedule.title;
-                      // 获取班次类型
+                      // 获取班次类型和自定义色调
                       const shiftType = shiftInfo ? shiftInfo.shiftType : 'day';
+                      const customHue = shiftInfo ? shiftInfo.customHue : undefined;
                       
                       return (
                         <div 
                           key={schedule.id} 
                           className="text-[0.6rem] sm:text-xs md:text-sm font-semibold p-1.5 sm:p-2 rounded-lg flex-shrink-0 w-full transition-all duration-200 hover:scale-[1.02] shadow-sm"
                           style={{
-                            backgroundColor: getShiftBackgroundColor(shiftType),
-                            border: `1px solid ${getShiftColor(shiftType)}`
+                            backgroundColor: getShiftBackgroundColor(shiftType, customHue),
+                            border: `1px solid ${getShiftColor(shiftType, customHue)}`
                           }}
                           onClick={(e) => {
                             e.stopPropagation();
@@ -312,7 +313,7 @@ const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
                           <div className="flex items-center">
                             <span 
                               className="inline-block w-2 h-2 rounded-full mr-1 border border-white shadow"
-                              style={{ backgroundColor: getShiftColor(shiftType) }}
+                              style={{ backgroundColor: getShiftColor(shiftType, customHue) }}
                             ></span>
                             <span className="font-bold truncate text-[0.6rem] sm:text-xs">{shiftName}</span>
                             {shiftType === 'overnight' && (
@@ -328,7 +329,7 @@ const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
                           </div>
                           <div 
                             className="text-[0.5rem] sm:text-[0.6rem] mt-0.5 font-medium"
-                            style={{ color: getShiftColor(shiftType) }}
+                            style={{ color: getShiftColor(shiftType, customHue) }}
                           >
                             <span className="bg-white bg-opacity-50 px-1 py-0.5 rounded">
                               {formatTime(schedule.startTime)} - {formatTime(schedule.endTime)}
