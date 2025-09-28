@@ -27,10 +27,10 @@ export const shiftTypeToColorMap = {
     bgLightness: 88  // 背景亮度88% (较浅的橙色)
   },
   special: {
-    hue: 150,        // 水绿色
+    hue: 330,        // 粉色
     saturation: 70,   // 饱和度70%
-    lightness: 40,    // 亮度40% (较深的水绿色)
-    bgLightness: 88  // 背景亮度88% (较浅的水绿色)
+    lightness: 40,    // 亮度40% (较深的粉色)
+    bgLightness: 88  // 背景亮度88% (较浅的粉色)
   }
 };
 

@@ -39,7 +39,7 @@ const CustomShiftManager = ({ scrollToEditSection }) => {
       day: 180,      // 青色（与颜色选择器中的青色一致）
       rest: 280,     // 紫色（与颜色选择器中的紫色一致）
       overnight: 240, // 蓝色
-      special: 150   // 水绿色（新添加的颜色）
+      special: 330   // 粉色（与颜色选择器中的粉色一致）
     };
     
     // 设置对应的颜色
