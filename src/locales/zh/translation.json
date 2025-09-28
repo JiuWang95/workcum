@@ -197,7 +197,9 @@
     "total_minutes": "总工时(分钟)",
     "export_modal": {
       "title": "设置Excel文件名"
-    }
+    },
+    "file_name": "文件名",
+    "enter_file_name": "请输入文件名"
   },
   "schedule": {
     "title": "排班",

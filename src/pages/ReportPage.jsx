@@ -3,6 +3,7 @@ import { format, subDays, startOfWeek, endOfWeek, startOfMonth, endOfMonth } fro
 import { exportToExcelReport } from '../utils/export';
 import { useTranslation } from 'react-i18next';
 import { getEntryColor } from '../utils/entryColor'; // 导入时间记录颜色工具函数
+import Modal from '../components/Modal'; // 导入Modal组件
 
 const ReportPage = () => {
   const { t } = useTranslation();
@@ -14,6 +15,7 @@ const ReportPage = () => {
   const [filteredEntries, setFilteredEntries] = useState([]);
   const [filteredSchedules, setFilteredSchedules] = useState([]);
   const [isExcelFileNameModalOpen, setIsExcelFileNameModalOpen] = useState(false);
+  const [excelFileName, setExcelFileName] = useState(''); // 添加自定义文件名状态
   const [selectedButton, setSelectedButton] = useState('thisWeek'); // 添加选中状态跟踪
 
   // Load entries and schedules from localStorage on component mount
@@ -110,9 +112,18 @@ const ReportPage = () => {
 
   // Export to Excel
   const handleExport = () => {
-    // 直接使用默认文件名导出，不再弹出FileNameModal
+    // 打开文件名弹窗
     const defaultFileName = `time-report-${startDate}-to-${endDate}`;
-    exportToExcelReport(filteredEntries, filteredSchedules, shifts, defaultFileName, t);
+    setExcelFileName(defaultFileName);
+    setIsExcelFileNameModalOpen(true);
+  };
+
+  // Handle Excel file name confirmation
+  const handleExcelFileNameConfirm = () => {
+    if (excelFileName.trim() !== '') {
+      exportToExcelReport(filteredEntries, filteredSchedules, shifts, excelFileName, t);
+      setIsExcelFileNameModalOpen(false);
+    }
   };
 
   // 删除handleExcelFileNameConfirm函数，不再需要
@@ -121,7 +132,59 @@ const ReportPage = () => {
     <div className="max-w-6xl mx-auto">
       <h1 className="page-heading">{t('reports.title')}</h1>
       
-      {/* 删除FileNameModal组件引用，不再需要 */}
+      {/* 文件名弹窗 */}
+      <Modal
+        isOpen={isExcelFileNameModalOpen}
+        onClose={() => setIsExcelFileNameModalOpen(false)}
+        title={t('reports.export_modal.title')}
+        size="sm"
+      >
+        <Modal.Body>
+          <div className="mb-4">
+            <label htmlFor="excelFileName" className="block text-gray-700 text-sm font-medium mb-2">
+              {t('reports.file_name')}
+            </label>
+            <div className="relative">
+              <input
+                type="text"
+                id="excelFileName"
+                value={excelFileName}
+                onChange={(e) => setExcelFileName(e.target.value)}
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 pr-10"
+                placeholder={t('reports.enter_file_name')}
+                autoFocus
+              />
+              <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                <svg className="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+              </div>
+            </div>
+            <p className="mt-2 text-sm text-gray-500">
+              {t('data.export_modal.extension')}
+            </p>
+          </div>
+        </Modal.Body>
+        <Modal.Footer>
+          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 pt-2 w-full">
+            <button
+              onClick={() => setIsExcelFileNameModalOpen(false)}
+              className="w-full sm:w-auto px-4 py-2.5 bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium rounded-lg transition-colors duration-200 text-base"
+            >
+              {t('common.cancel')}
+            </button>
+            <button
+              onClick={handleExcelFileNameConfirm}
+              className="w-full sm:w-auto px-4 py-2.5 bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white font-medium rounded-lg shadow transition-all duration-200 text-base flex items-center justify-center"
+            >
+              <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+              </svg>
+              {t('common.export')}
+            </button>
+          </div>
+        </Modal.Footer>
+      </Modal>
       
       <div className="bg-white rounded-xl shadow-lg p-6 mb-8">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">

@@ -93,4 +93,13 @@ Modal.Body = ({ children, className = '' }) => {
   );
 };
 
+// Modal Footer component
+Modal.Footer = ({ children, className = '' }) => {
+  return (
+    <div className={`bg-gray-50 px-3 py-2.5 sm:px-6 sm:py-4 sm:flex sm:flex-row-reverse border-t border-gray-100 rounded-b-2xl ${className}`}>
+      {children}
+    </div>
+  );
+};
+
 export default Modal;

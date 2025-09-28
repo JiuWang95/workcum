@@ -299,6 +299,8 @@
     "export": "Export to Excel",
     "export_modal": {
       "title": "Set Excel File Name"
-    }
+    },
+    "file_name": "File Name",
+    "enter_file_name": "Please enter file name"
   }
 }
