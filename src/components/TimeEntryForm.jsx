@@ -200,8 +200,8 @@ const TimeEntryForm = ({ onAddEntry, onCancel, onSubmit }) => {
         onColorChange={setCustomHue} 
         colorOptions={[
           { name: t('time_entry.custom_shift.colors.orange'), hue: 30 },
-          { name: t('time_entry.custom_shift.colors.red'), hue: 0 },
-          { name: t('time_entry.custom_shift.colors.pink'), hue: 330 },
+          { name: t('time_entry.custom_shift.colors.coral'), hue: 10 },
+          { name: t('time_entry.custom_shift.colors.magenta'), hue: 300 },
           { name: t('time_entry.custom_shift.colors.aqua'), hue: 150 }
         ]}
       />

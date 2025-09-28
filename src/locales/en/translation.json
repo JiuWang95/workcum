@@ -143,8 +143,8 @@
         "blue": "Blue",
         "purple": "Purple",
         "indigo": "Indigo",
-        "red": "Red",
-        "pink": "Pink",
+        "coral": "Coral",
+        "magenta": "Magenta",
         "teal": "Teal",
         "yellow": "Yellow",
         "orange": "Orange"
@@ -179,6 +179,7 @@
     "week_suffix": "",
     "week_view": "Week",
     "month_view": "Month",
+    "no_events": "No schedules",
     "no_schedules": "No schedules for this week",
     "add_schedule": "Add Schedule",
     "edit_schedule": "Edit Schedule",

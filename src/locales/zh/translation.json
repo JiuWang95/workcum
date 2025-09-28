@@ -157,8 +157,8 @@
         "blue": "蓝色",
         "purple": "紫色",
         "indigo": "靛蓝色",
-        "red": "红色",
-        "pink": "粉色",
+        "coral": "珊瑚色",
+        "magenta": "洋红色",
         "teal": "青色",
         "yellow": "黄色",
         "orange": "橙色"
@@ -232,7 +232,7 @@
       "cancel": "取消",
       "save": "保存"
     },
-    "no_events": "暂无事件",
+    "no_events": "暂无排班",
     "unique_schedule_warning": "该日期已有排班任务，每个日期只能添加一个排班任务。",
     "switch_to_week_view": "请切换到周视图添加排班任务",
     "replace_confirmation": "替换确认",
