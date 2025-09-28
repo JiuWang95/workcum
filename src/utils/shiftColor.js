@@ -77,3 +77,25 @@ export const getShiftBackgroundColor = (shiftType = 'day', customHue = null) => 
   const config = shiftTypeToColorMap[shiftType] || getDefaultColorConfig();
   return `hsl(${config.hue}, ${config.saturation}%, ${config.bgLightness}%)`;
 };
+
+/**
+ * 根据班次类型和自定义色调获取更深的背景颜色，用于类型标识
+ * @param {string} shiftType - 班次类型 ('day', 'overnight', 'rest', 'regular', 'special')
+ * @param {number} customHue - 可选的自定义色调值 (0-360)
+ * @returns {string} HSL颜色字符串
+ */
+export const getShiftTypeBackgroundColor = (shiftType = 'day', customHue = null) => {
+  // 如果提供了自定义色调，则使用它，但降低亮度值使颜色更深
+  if (customHue !== null && customHue !== undefined) {
+    const config = shiftTypeToColorMap[shiftType] || getDefaultColorConfig();
+    // 将亮度值降低15%以获得更深的颜色
+    const darkerBgLightness = Math.max(0, config.bgLightness - 15);
+    return `hsl(${customHue}, ${config.saturation}%, ${darkerBgLightness}%)`;
+  }
+  
+  // 否则使用默认配置，但降低亮度值使颜色更深
+  const config = shiftTypeToColorMap[shiftType] || getDefaultColorConfig();
+  // 将亮度值降低15%以获得更深的颜色
+  const darkerBgLightness = Math.max(0, config.bgLightness - 15);
+  return `hsl(${config.hue}, ${config.saturation}%, ${darkerBgLightness}%)`;
+};

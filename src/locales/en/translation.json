@@ -113,7 +113,7 @@
       "custom_duration_help": "Enter custom duration, e.g., 8h for 8 hours, 480m for 480 minutes",
       "hours": "hours",
       "minutes": "minutes",
-      "add_shift": "Add Shift",
+      "add_shift": "Add Template",
       "save_shift": "Save Shift",
       "update_shift": "Update Shift",
       "cancel": "Cancel",

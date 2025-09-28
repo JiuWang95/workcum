@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import DurationPicker from './DurationPicker';
-import { getShiftColor, getShiftBackgroundColor } from '../utils/shiftColor';
+import { getShiftColor, getShiftBackgroundColor, getShiftTypeBackgroundColor } from '../utils/shiftColor';
 import Modal from './Modal';
 import ColorPicker from './ColorPicker'; // 导入颜色选择器组件
 
@@ -218,7 +218,7 @@ const CustomShiftManager = ({ scrollToEditSection }) => {
           setCustomHue(180); // 重置为默认值（青色）
         }}
         size="md"
-        title={editingShift ? t('time_entry.custom_shift.edit_shift') : t('time_entry.custom_shift.add_shift')}
+        title={editingShift ? `${t('time_entry.custom_shift.edit_shift')} - ${editingShift.name}` : t('time_entry.custom_shift.add_shift')}
       >
         <form onSubmit={handleSubmit} className="space-y-2.5 sm:space-y-4">
           <div className="mb-2 sm:mb-3">
@@ -401,8 +401,14 @@ const CustomShiftManager = ({ scrollToEditSection }) => {
                       >
                         {shift.name}
                       </h3>
-                      {/* 类型标识：显示班次类型 */}
-                      <span className="inline-flex items-center px-0.5 py-0 md:px-2 md:py-0.5 rounded-full text-[10px] md:text-xs font-medium bg-gray-100 text-gray-800 whitespace-nowrap">
+                      {/* 类型标识：显示班次类型，带颜色填充 */}
+                      <span 
+                        className="inline-flex items-center px-0.5 py-0 md:px-2 md:py-0.5 rounded-full text-[10px] md:text-xs font-medium whitespace-nowrap"
+                        style={{
+                          backgroundColor: getShiftTypeBackgroundColor(shift.shiftType, shift.customHue),
+                          color: getShiftColor(shift.shiftType, shift.customHue)
+                        }}
+                      >
                         {getShiftTypeText(shift.shiftType || 'day')}
                       </span>
                     </div>
