@@ -53,6 +53,10 @@ const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
         const savedSchedules = JSON.parse(e.newValue || '[]');
         setSchedules(savedSchedules);
       }
+      if (e.key === 'customShifts') {
+        const savedShifts = JSON.parse(e.newValue || '[]');
+        setShifts(savedShifts);
+      }
     };
 
     window.addEventListener('storage', handleStorageChange);
