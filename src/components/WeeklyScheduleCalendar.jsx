@@ -269,25 +269,26 @@ const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
               }`}
               onClick={() => handleDateClick(day)}
             >
-              <div className="flex">
+              <div className="flex h-full">
                 {/* Left side - Date information */}
-                <div className={`w-1/4 pr-1 border-r border-gray-200 ${
+                <div className={`w-1/4 sm:w-1/5 pr-1 sm:pr-2 border-r border-gray-200 flex flex-col items-center justify-center ${
                   isToday ? 'text-blue-600' : 'text-gray-700'
                 }`}>
-                  <div className="flex flex-col items-center justify-center h-full">
-                    <div className="text-black text-[0.7rem] sm:text-sm font-bold">
-                      {format(day, 'EEE', { locale: zhCN })}
-                    </div>
-                    <div className="text-base sm:text-lg md:text-xl">
-                      {format(day, 'd', { locale: zhCN })}
-                    </div>
+                  <div className="text-black text-[0.7rem] sm:text-sm font-bold">
+                    {format(day, 'EEE', { locale: zhCN })}
+                  </div>
+                  <div className="text-base sm:text-lg md:text-xl font-bold">
+                    {format(day, 'd', { locale: zhCN })}
+                  </div>
+                  <div className="text-[0.6rem] sm:text-xs text-gray-500 mt-0.5">
+                    {format(day, 'MM/dd', { locale: zhCN })}
                   </div>
                 </div>
                 
                 {/* Right side - Events information */}
-                <div className="w-3/4 pl-2">
-                  {/* Arrangement of schedules and time entries: vertical on larger screens, horizontal wrap on mobile */}
-                  <div className="flex flex-wrap gap-1">
+                <div className="w-3/4 sm:w-4/5 pl-2 sm:pl-3 flex flex-col">
+                  {/* Arrangement of schedules and time entries: improved layout with full height and minimal margin */}
+                  <div className="flex flex-col gap-1.5 sm:gap-2 flex-grow -mt-px -mb-px sm:-mt-px sm:-mb-px">
                     {/* Display schedules */}
                     {daySchedules.map((schedule) => {
                       // 获取班次信息
@@ -300,7 +301,7 @@ const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
                       return (
                         <div 
                           key={schedule.id} 
-                          className="text-[0.6rem] sm:text-xs md:text-sm font-semibold p-1.5 sm:p-2 rounded-lg flex-shrink-0 w-full transition-all duration-200 hover:scale-[1.02] shadow-sm"
+                          className="text-xs sm:text-sm font-semibold p-2 sm:p-2.5 rounded-lg flex items-center justify-between transition-all duration-200 hover:scale-[1.01] shadow-sm min-h-[2.5rem]"
                           style={{
                             backgroundColor: getShiftBackgroundColor(shiftType, customHue),
                             border: `1px solid ${getShiftColor(shiftType, customHue)}`
@@ -310,35 +311,35 @@ const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
                             handleEdit(schedule);
                           }}
                         >
-                          <div className="flex items-center">
+                          <div className="flex items-center flex-1 min-w-0">
                             <span 
-                              className="inline-block w-2 h-2 rounded-full mr-1 border border-white shadow"
+                              className="inline-block w-2.5 h-2.5 rounded-full mr-2 border border-white shadow flex-shrink-0"
                               style={{ backgroundColor: getShiftColor(shiftType, customHue) }}
                             ></span>
-                            <span className="font-bold truncate text-[0.6rem] sm:text-xs">{shiftName}</span>
+                            <span className="font-bold truncate text-xs sm:text-sm">{shiftName}</span>
                             {shiftType === 'overnight' && (
-                              <span className="ml-1 inline-flex items-center px-1 py-0.5 rounded-full text-[0.5rem] font-medium bg-gradient-to-r from-red-100 to-red-200 text-red-800 shadow-sm">
+                              <span className="ml-2 inline-flex items-center px-1.5 py-0.5 rounded-full text-[0.6rem] sm:text-xs font-medium bg-gradient-to-r from-red-100 to-red-200 text-red-800 shadow-sm whitespace-nowrap">
                                 {t('time_entry.custom_shift.overnight_shift')}
                               </span>
                             )}
                             {shiftType === 'rest' && (
-                              <span className="ml-1 inline-flex items-center px-1 py-0.5 rounded-full text-[0.5rem] font-medium bg-gradient-to-r from-green-100 to-green-200 text-green-800 shadow-sm">
+                              <span className="ml-2 inline-flex items-center px-1.5 py-0.5 rounded-full text-[0.6rem] sm:text-xs font-medium bg-gradient-to-r from-green-100 to-green-200 text-green-800 shadow-sm whitespace-nowrap">
                                 {t('time_entry.custom_shift.rest_day')}
                               </span>
                             )}
                           </div>
                           <div 
-                            className="text-[0.5rem] sm:text-[0.6rem] mt-0.5 font-medium"
+                            className="text-[0.65rem] sm:text-xs font-medium flex flex-col items-end ml-2 flex-shrink-0"
                             style={{ color: getShiftColor(shiftType, customHue) }}
                           >
-                            <span className="bg-white bg-opacity-50 px-1 py-0.5 rounded">
-                              {formatTime(schedule.startTime)} - {formatTime(schedule.endTime)}
-                            </span>
                             {schedule.selectedShift && shifts.find(s => s.id === schedule.selectedShift)?.customDuration !== undefined && (
-                              <span className="ml-1 bg-white bg-opacity-70 px-1 py-0.5 rounded font-bold">
+                              <div className="bg-white bg-opacity-70 px-1.5 py-0.5 rounded font-bold whitespace-nowrap">
                                 [{convertDurationToHours(shifts.find(s => s.id === schedule.selectedShift).customDuration).toFixed(1)}h]
-                              </span>
+                              </div>
                             )}
+                            <div className="mt-0.5 bg-white bg-opacity-50 px-1.5 py-0.5 rounded whitespace-nowrap">
+                              {formatTime(schedule.startTime)} - {formatTime(schedule.endTime)}
+                            </div>
                           </div>
                         </div>
                       );
@@ -350,7 +351,7 @@ const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
                       return (
                         <div 
                           key={entry.id} 
-                          className="text-[0.6rem] sm:text-xs md:text-sm font-semibold p-1.5 sm:p-2 rounded-lg flex-shrink-0 w-full cursor-pointer hover:scale-[1.02] transition-all duration-200 shadow-sm"
+                          className="text-xs sm:text-sm font-semibold p-2 sm:p-2.5 rounded-lg flex items-center justify-between cursor-pointer hover:scale-[1.01] transition-all duration-200 shadow-sm min-h-[2.5rem]"
                           style={{
                             backgroundColor: entryColor.backgroundColor,
                             border: `1px solid ${entryColor.borderColor}`
@@ -362,7 +363,7 @@ const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
                           }}
                         >
                           <div 
-                            className="font-bold truncate text-[0.6rem] sm:text-xs"
+                            className="font-bold truncate text-xs sm:text-sm min-w-0 flex-1"
                             style={{
                               color: entryColor.textColor
                             }}
@@ -370,19 +371,19 @@ const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
                             {entry.notes || t('time_entry.entry')}
                           </div>
                           <div 
-                            className="text-[0.5rem] sm:text-[0.6rem] mt-0.5 font-medium"
+                            className="text-[0.65rem] sm:text-xs font-medium flex flex-col items-end ml-2 flex-shrink-0"
                             style={{
                               color: entryColor.textColor
                             }}
                           >
-                            <span className="bg-white bg-opacity-50 px-1 py-0.5 rounded">
-                              {formatTime(entry.startTime)} - {formatTime(entry.endTime)}
-                            </span>
                             {entry.duration && (
-                              <span className="ml-1 bg-white bg-opacity-70 px-1 py-0.5 rounded font-bold">
+                              <div className="bg-white bg-opacity-70 px-1.5 py-0.5 rounded font-bold whitespace-nowrap">
                                 [{(entry.duration / 60).toFixed(1)}h]
-                              </span>
+                              </div>
                             )}
+                            <div className="mt-0.5 bg-white bg-opacity-50 px-1.5 py-0.5 rounded whitespace-nowrap">
+                              {formatTime(entry.startTime)} - {formatTime(entry.endTime)}
+                            </div>
                           </div>
                         </div>
                       );
@@ -390,7 +391,7 @@ const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
                     
                     {/* Show placeholder if no items */}
                     {daySchedules.length === 0 && dayTimeEntries.length === 0 && (
-                      <div className="text-gray-400 italic py-3 text-center text-xs sm:text-sm md:text-base bg-gray-50 rounded-lg w-full">
+                      <div className="text-gray-400 italic py-4 text-center text-xs sm:text-sm bg-gray-50 rounded-lg flex items-center justify-center flex-grow -mt-px -mb-px sm:-mt-px sm:-mb-px">
                         {t('schedule.no_events')}
                       </div>
                     )}
