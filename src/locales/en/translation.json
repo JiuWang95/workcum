@@ -230,7 +230,7 @@
     "import_error": "Error importing data. Please check the file format."
   },
   "data": {
-    "title": "About Project",
+    "title": "My",
     "export_data": "Export Data",
     "import_data": "Import Data",
     "export_success": "Data exported successfully!",
