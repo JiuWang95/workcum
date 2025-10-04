@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import DurationPicker from '../pickers/DurationPicker';
-import { getShiftColor, getShiftBackgroundColor, getShiftTypeBackgroundColor } from '../utils/shiftColor';
+import { getShiftColor, getShiftBackgroundColor, getShiftTypeBackgroundColor } from '@/utils/shiftColor.js';
 import Modal from '../modals/Modal';
 import ColorPicker from '../pickers/ColorPicker'; // 导入颜色选择器组件
 

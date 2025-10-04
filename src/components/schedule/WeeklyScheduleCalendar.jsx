@@ -10,8 +10,8 @@ import {
 } from 'date-fns';
 import { zhCN } from 'date-fns/locale';
 import { useTranslation } from 'react-i18next';
-import { getShiftColor, getShiftBackgroundColor } from '../utils/shiftColor'; // 导入颜色工具函数
-import { getEntryColor } from '../utils/entryColor'; // 导入时间记录颜色工具函数
+import { getShiftColor, getShiftBackgroundColor } from '@/utils/shiftColor.js'; // 导入颜色工具函数
+import { getEntryColor } from '@/utils/entryColor.js'; // 导入时间记录颜色工具函数
 
 const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
   const { t } = useTranslation();

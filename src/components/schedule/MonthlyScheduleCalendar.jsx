@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { format, isSameDay, isSameMonth, startOfMonth, endOfMonth, startOfWeek, endOfWeek, addDays } from 'date-fns';
 import { zhCN } from 'date-fns/locale';
 import { useTranslation } from 'react-i18next';
-import { getShiftColor, getShiftBackgroundColor } from '../utils/shiftColor'; // 导入颜色工具函数
+import { getShiftColor, getShiftBackgroundColor } from '@/utils/shiftColor.js'; // 导入颜色工具函数
 
 const CalendarDay = ({ day, isCurrentMonth, isToday: isTodayProp, daySchedules, dayTimeEntries, shifts, dayBackgroundColor, t, getShiftBackgroundColor }) => {
   // Render single schedule or time entry
