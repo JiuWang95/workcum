@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { format, parse } from 'date-fns';
 import { useTranslation } from 'react-i18next';
-import DurationPicker from './DurationPicker';
-import ColorPicker from './ColorPicker'; // 导入颜色选择器组件
+import DurationPicker from '../pickers/DurationPicker';
+import ColorPicker from '../pickers/ColorPicker'; // 导入颜色选择器组件
 
 const TimeEntryForm = ({ onAddEntry, onCancel, onSubmit }) => {
   const { t } = useTranslation();

@@ -1,9 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
-import TimeEntryForm from '../components/TimeEntryForm';
-import CustomShiftManager from '../components/CustomShiftManager';
-import InstructionsModal from '../components/InstructionsModal';
-import AddEntryModal from '../components/AddEntryModal';
-import ReplaceConfirmationModal from '../components/ReplaceConfirmationModal';
+import TimeEntryForm from '../components/forms/TimeEntryForm';
+import CustomShiftManager from '../components/manager/CustomShiftManager';
+import InstructionsModal from '../components/modals/InstructionsModal';
+import AddEntryModal from '../components/modals/AddEntryModal';
+import ReplaceConfirmationModal from '../components/modals/ReplaceConfirmationModal';
 import { useTranslation } from 'react-i18next';
 import { isSameDay } from 'date-fns';
 

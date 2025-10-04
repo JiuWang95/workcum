@@ -1,6 +1,6 @@
 import React from 'react';
 import Modal from './Modal';
-import TimeEntryForm from './TimeEntryForm';
+import TimeEntryForm from '../forms/TimeEntryForm';
 import { useTranslation } from 'react-i18next';
 
 const AddEntryModal = ({ isOpen, onClose, onAddEntry, customShifts, onCustomShiftsChange }) => {

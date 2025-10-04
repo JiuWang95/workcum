@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import ConfirmOverrideModal from '../components/ConfirmOverrideModal';
-import Modal from '../components/Modal';
+import ConfirmOverrideModal from '../components/modals/ConfirmOverrideModal';
+import Modal from '../components/modals/Modal';
 
 const DataPage = () => {
   const { t, i18n } = useTranslation();

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { format, addWeeks, subWeeks, startOfWeek, endOfWeek, getWeekOfMonth, addMonths, subMonths } from 'date-fns';
 import { zhCN } from 'date-fns/locale';
-import WeeklyScheduleCalendar from '../components/WeeklyScheduleCalendar';
-import MonthlyScheduleCalendar from '../components/MonthlyScheduleCalendar';
+import WeeklyScheduleCalendar from '../components/schedule/WeeklyScheduleCalendar';
+import MonthlyScheduleCalendar from '../components/schedule/MonthlyScheduleCalendar';
 import { useTranslation } from 'react-i18next';
 
 const SchedulePage = () => {

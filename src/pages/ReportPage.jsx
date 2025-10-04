@@ -3,7 +3,7 @@ import { format, subDays, startOfWeek, endOfWeek, startOfMonth, endOfMonth } fro
 import { exportToExcelReport } from '../utils/export';
 import { useTranslation } from 'react-i18next';
 import { getEntryColor } from '../utils/entryColor'; // 导入时间记录颜色工具函数
-import Modal from '../components/Modal'; // 导入Modal组件
+import Modal from '../components/modals/Modal'; // 导入Modal组件
 
 const ReportPage = () => {
   const { t } = useTranslation();

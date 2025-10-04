@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import DurationPicker from './DurationPicker';
+import DurationPicker from '../pickers/DurationPicker';
 import { getShiftColor, getShiftBackgroundColor, getShiftTypeBackgroundColor } from '../utils/shiftColor';
-import Modal from './Modal';
-import ColorPicker from './ColorPicker'; // 导入颜色选择器组件
+import Modal from '../modals/Modal';
+import ColorPicker from '../pickers/ColorPicker'; // 导入颜色选择器组件
 
 const CustomShiftManager = ({ scrollToEditSection }) => {
   const { t } = useTranslation();
