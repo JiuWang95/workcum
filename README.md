@@ -17,12 +17,10 @@
 ## 快速开始
 
 ### 前置要求
-
 - Node.js (版本 14 或更高)
 - npm 或 yarn
 
 ### 安装步骤
-
 1. 克隆仓库:
    ```bash
    git clone <repository-url>
@@ -35,64 +33,36 @@
    ```bash
    npm install
    ```
+
 ### 开发环境
-
 启动开发服务器:
-
 ```bash
 npm run dev
 ```
 应用程序将在 `http://localhost:4000` 上可用。
 
 ### 生产构建
-
 创建生产构建版本:
-
 ```bash
 npm run build
 ```
-
 构建文件将位于 `dist` 目录中。
 
 ### 部署
-
-此应用程序可以部署到任何静态托管服务，包括:
-
-- GitHub Pages
-- Netlify
-- Vercel
-- Cloudflare Pages
+此应用程序可以部署到任何静态托管服务，包括：GitHub Pages、Netlify、Vercel、Cloudflare Pages
 
 #### Cloudflare Pages 部署指南
-
 要将此应用程序部署到 Cloudflare Pages，请按照以下步骤操作：
-
-1. **推送代码到 GitHub**：
-   将您的代码推送到 GitHub 仓库（如果您还没有的话）。
-
-2. **登录 Cloudflare Dashboard**：
-   访问 [Cloudflare Dashboard](https://dash.cloudflare.com/) 并登录您的账户。
-
-3. **创建 Pages 项目**：
-   - 在左侧菜单中选择 "Workers & Pages"
-   - 点击 "Create application" > "Pages" > "Connect to Git"
-
-4. **连接到 Git 仓库**：
-   - 选择您的 GitHub 账户和对应的仓库
-   - 选择您要部署的分支（通常是 main 或 master）
-
-5. **配置构建设置**：
-   - **构建命令**: `npm run build`
-   - **构建输出目录**: `dist`
-   - **根目录**: 保持为空（默认为仓库根目录）
-
-6. **部署**：
-   点击 "Save and Deploy" 开始部署过程。
+1. **推送代码到 GitHub**：将您的代码推送到 GitHub 仓库（如果您还没有的话）
+2. **登录 Cloudflare Dashboard**：访问 [Cloudflare Dashboard](https://dash.cloudflare.com/) 并登录您的账户
+3. **创建 Pages 项目**：在左侧菜单中选择 "Workers & Pages"，点击 "Create application" > "Pages" > "Connect to Git"
+4. **连接到 Git 仓库**：选择您的 GitHub 账户和对应的仓库，选择您要部署的分支（通常是 main 或 master）
+5. **配置构建设置**：构建命令: `npm run build`，构建输出目录: `dist`，根目录: 保持为空（默认为仓库根目录）
+6. **部署**：点击 "Save and Deploy" 开始部署过程
 
 部署完成后，Cloudflare 会为您提供一个 `.pages.dev` 的临时 URL 来访问您的应用程序。您也可以配置自定义域名。
 
 ## 项目结构
-
 ```
 src/
 ├── assets/           # 静态资源文件
@@ -105,6 +75,7 @@ src/
 ├── i18n.js           # 国际化配置
 └── main.jsx          # 应用入口文件
 ```
+
 ## 免责声明
 
 本软件按"现状"提供，不提供任何形式的明示或暗示担保，包括但不限于适销性、特定用途适用性和非侵权性的担保。在任何情况下，作者或版权持有人均不对因使用本软件而产生的任何索赔、损害或其他责任承担责任，无论是在合同诉讼、侵权行为或其他方面。
@@ -117,11 +88,9 @@ src/
 6. 作者保留随时更新或修改本免责声明的权利，恕不另行通知。
 
 ## 开源协议
-
 本项目采用 MIT 许可证 - 查看 [LICENSE](LICENSE) 文件了解详情
 
 ## 支持项目
-
 如果这个项目对您有帮助，欢迎赞赏支持作者，这将鼓励我继续改进和更新这个工具。
 
 <img src="public/reword.png" alt="赞赏码" width="200" />
