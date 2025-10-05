@@ -10,7 +10,7 @@ import {
 } from 'date-fns';
 import { zhCN } from 'date-fns/locale';
 import { useTranslation } from 'react-i18next';
-import { getShiftColor, getShiftBackgroundColor } from '@/utils/shiftColor.js'; // 导入颜色工具函数
+import { getShiftColor, getShiftBackgroundColor, getShiftTypeBackgroundColor } from '@/utils/shiftColor.js'; // 导入颜色工具函数
 import { getEntryColor } from '@/utils/entryColor.js'; // 导入时间记录颜色工具函数
 import Modal from '../modals/Modal.jsx'; // 导入统一的Modal组件
 
@@ -306,44 +306,67 @@ const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
                       return (
                         <div 
                           key={schedule.id} 
-                          className="text-xs sm:text-sm font-semibold p-2 sm:p-2.5 rounded-lg flex items-center justify-between transition-all duration-200 hover:scale-[1.01] shadow-sm min-h-[2.5rem]"
-                          style={{
+                          className="rounded-xl shadow-sm transition-all duration-200 ease-in-out transform hover:shadow-md p-3 min-h-[3.5rem]"
+                          style={{ 
+                            borderLeft: `4px solid ${getShiftColor(shiftType, customHue)}`,
                             backgroundColor: getShiftBackgroundColor(shiftType, customHue),
-                            border: `1px solid ${getShiftColor(shiftType, customHue)}`
+                            boxShadow: 'inset 0 0 10px rgba(0, 0, 0, 0.05)'
                           }}
                           onClick={(e) => {
                             e.stopPropagation();
                             handleEdit(schedule);
                           }}
                         >
-                          <div className="flex items-center flex-1 min-w-0">
-                            <span 
-                              className="inline-block w-2.5 h-2.5 rounded-full mr-2 border border-white shadow flex-shrink-0"
-                              style={{ backgroundColor: getShiftColor(shiftType, customHue) }}
-                            ></span>
-                            <span className="font-bold truncate text-xs sm:text-sm">{shiftName}</span>
-                            {shiftType === 'overnight' && (
-                              <span className="ml-2 inline-flex items-center px-1.5 py-0.5 rounded-full text-[0.6rem] sm:text-xs font-medium bg-gradient-to-r from-red-100 to-red-200 text-red-800 shadow-sm whitespace-nowrap">
-                                {t('time_entry.custom_shift.overnight_shift')}
-                              </span>
-                            )}
-                            {shiftType === 'rest' && (
-                              <span className="ml-2 inline-flex items-center px-1.5 py-0.5 rounded-full text-[0.6rem] sm:text-xs font-medium bg-gradient-to-r from-green-100 to-green-200 text-green-800 shadow-sm whitespace-nowrap">
-                                {t('time_entry.custom_shift.rest_day')}
-                              </span>
-                            )}
-                          </div>
-                          <div 
-                            className="text-[0.65rem] sm:text-xs font-medium flex flex-col items-end ml-2 flex-shrink-0"
-                            style={{ color: getShiftColor(shiftType, customHue) }}
-                          >
-                            {schedule.selectedShift && shifts.find(s => s.id === schedule.selectedShift)?.customDuration !== undefined && (
-                              <div className="bg-white bg-opacity-70 px-1.5 py-0.5 rounded font-bold whitespace-nowrap">
-                                [{convertDurationToHours(shifts.find(s => s.id === schedule.selectedShift).customDuration).toFixed(1)}h]
+                          <div className="flex justify-between items-start">
+                            {/* 左侧：班次名称和类型标识 */}
+                            <div className="flex items-start min-w-0">
+                              <div 
+                                className="w-3.5 h-3.5 rounded-full border-2 border-white shadow mr-2.5 mt-1 flex-shrink-0"
+                                style={{ backgroundColor: getShiftColor(shiftType, customHue) }}
+                              ></div>
+                              <div className="min-w-0 flex-1 flex items-center">
+                                <h3 
+                                  className="font-bold text-gray-800 text-sm truncate leading-tight mr-2"
+                                  style={{ color: getShiftColor(shiftType, customHue) }}
+                                >
+                                  {shiftName}
+                                </h3>
+                                {/* 类型标识：显示班次类型，带颜色填充 */}
+                                <span 
+                                  className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium whitespace-nowrap"
+                                  style={{
+                                    backgroundColor: getShiftTypeBackgroundColor(shiftType, customHue),
+                                    color: getShiftColor(shiftType, customHue)
+                                  }}
+                                >
+                                  {shiftType === 'overnight' && t('time_entry.custom_shift.overnight_shift')}
+                                  {shiftType === 'rest' && t('time_entry.custom_shift.rest_day')}
+                                  {shiftType === 'day' && t('time_entry.custom_shift.day_shift')}
+                                  {shiftType === 'special' && t('time_entry.custom_shift.special_shift')}
+                                </span>
                               </div>
-                            )}
-                            <div className="mt-0.5 bg-white bg-opacity-50 px-1.5 py-0.5 rounded whitespace-nowrap">
-                              {formatTime(schedule.startTime)} - {formatTime(schedule.endTime)}
+                            </div>
+                            
+                            {/* 右侧：时间范围和工时时长 */}
+                            <div className="flex flex-col items-end ml-3 flex-shrink-0">
+                              {schedule.selectedShift && shifts.find(s => s.id === schedule.selectedShift)?.customDuration !== undefined && (
+                                <div className="flex items-center mb-1">
+                                  <svg className="w-3 h-3 text-gray-400 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                  </svg>
+                                  <span className="text-gray-700 text-xs font-bold">
+                                    {convertDurationToHours(shifts.find(s => s.id === schedule.selectedShift).customDuration).toFixed(1)}h
+                                  </span>
+                                </div>
+                              )}
+                              <div className="flex items-center">
+                                <svg className="w-3 h-3 text-gray-400 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                <span className="text-gray-600 text-xs font-medium whitespace-nowrap">
+                                  {formatTime(schedule.startTime)} - {formatTime(schedule.endTime)}
+                                </span>
+                              </div>
                             </div>
                           </div>
                         </div>
