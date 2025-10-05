@@ -326,14 +326,14 @@ const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
                               ></div>
                               <div className="min-w-0 flex-1 flex items-center">
                                 <h3 
-                                  className="font-bold text-gray-800 text-xs sm:text-sm truncate leading-tight mr-1.5"
+                                  className="font-bold text-gray-800 text-xs sm:text-sm truncate leading-tight mr-1"
                                   style={{ color: getShiftColor(shiftType, customHue) }}
                                 >
                                   {shiftName}
                                 </h3>
                                 {/* 类型标识：显示班次类型，带颜色填充 */}
                                 <span 
-                                  className="inline-flex items-center px-1.5 py-0.5 rounded-full text-[0.65rem] sm:text-xs font-medium whitespace-nowrap"
+                                  className="inline-flex items-center px-1 py-0.5 rounded-full text-[0.55rem] sm:text-[0.65rem] font-medium whitespace-nowrap"
                                   style={{
                                     backgroundColor: getShiftTypeBackgroundColor(shiftType, customHue),
                                     color: getShiftColor(shiftType, customHue)

@@ -10,6 +10,8 @@
     "preview:pwa": "vite preview --host"
   },
   "dependencies": {
+    "@tailwindcss/forms": "^0.5.10",
+    "@tailwindcss/typography": "^0.5.19",
     "date-fns": "^4.1.0",
     "i18next": "^25.5.2",
     "i18next-browser-languagedetector": "^8.2.0",
@@ -19,6 +21,7 @@
     "react-dom": "^18.2.0",
     "react-i18next": "^15.7.3",
     "react-router-dom": "^6.8.0",
+    "tailwindcss-animate": "^1.0.7",
     "xlsx": "^0.18.5",
     "xlsx-js-style": "^1.2.0"
   },
