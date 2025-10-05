@@ -168,11 +168,10 @@ export const exportAllDataToExcel = (timeEntries, schedules, customShifts, filen
   }
 
   // 4. Create summary data
-  // Calculate total minutes from filtered data
-  const totalMinutesFromEntries = formattedEntries.reduce((sum, entry) => sum + entry.Minutes, 0);
-  const totalMinutesFromSchedules = formattedSchedules.reduce((sum, schedule) => sum + schedule.Minutes, 0);
-  const totalMinutes = totalMinutesFromEntries + totalMinutesFromSchedules;
-  const totalHours = (totalMinutes / 60).toFixed(1);
+  // Calculate total hours from filtered data using custom duration (decimal hours)
+  const totalHoursFromEntries = formattedEntries.reduce((sum, entry) => sum + (entry.Minutes / 60), 0);
+  const totalHoursFromSchedules = formattedSchedules.reduce((sum, schedule) => sum + (schedule.Minutes / 60), 0);
+  const totalHours = (totalHoursFromEntries + totalHoursFromSchedules).toFixed(1);
 
   // Summary data
     const summaryData = [

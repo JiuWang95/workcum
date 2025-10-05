@@ -56,28 +56,30 @@ const ReportPage = () => {
   };
 
   // Calculate total hours from both entries and schedules
-  const totalMinutesFromEntries = filteredEntries.reduce((sum, entry) => sum + entry.duration, 0);
+  // 直接使用自定义工时（带小数的小时数）而不单独计算分钟
+  const totalHoursFromEntries = filteredEntries.reduce((sum, entry) => sum + (entry.duration / 60), 0);
   
-  const totalMinutesFromSchedules = filteredSchedules.reduce((sum, schedule) => {
-    if (schedule.selectedShift) {
+  const totalHoursFromSchedules = filteredSchedules.reduce((sum, schedule) => {
+    let hours = 0;
+    // 优先使用排班记录中保存的自定义工时（带小数的小时数）
+    if (schedule.customDuration !== undefined && schedule.customDuration !== null && schedule.customDuration !== "") {
+      hours = convertDurationToHours(schedule.customDuration);
+    } else if (schedule.selectedShift) {
       const shift = shifts.find(s => s.id === schedule.selectedShift);
-      // 修改逻辑：如果自定义工时存在（即使是0），也使用自定义工时
       if (shift && shift.customDuration !== undefined && shift.customDuration !== null && shift.customDuration !== "") {
-        return sum + (convertDurationToHours(shift.customDuration) * 60);
+        hours = convertDurationToHours(shift.customDuration);
+      } else {
+        // Calculate duration from start and end time and convert to hours
+        const start = new Date(`1970-01-01T${schedule.startTime}:00`);
+        const end = new Date(`1970-01-01T${schedule.endTime}:00`);
+        const durationInMinutes = (end - start) / (1000 * 60); // Convert to minutes
+        hours = durationInMinutes / 60; // Convert to hours
       }
-      
-      // Calculate duration from start and end time if no custom duration
-      const start = new Date(`1970-01-01T${schedule.startTime}:00`);
-      const end = new Date(`1970-01-01T${schedule.endTime}:00`);
-      const duration = (end - start) / (1000 * 60); // Convert to minutes
-      return sum + duration;
     }
-    return sum;
+    return sum + hours;
   }, 0);
   
-  const totalMinutes = totalMinutesFromEntries + totalMinutesFromSchedules;
-  const totalHours = Math.floor(totalMinutes / 60);
-  const remainingMinutes = totalMinutes % 60;
+  const totalHours = totalHoursFromEntries + totalHoursFromSchedules;
 
   // Quick date range selectors
   const setThisWeek = () => {
@@ -293,7 +295,7 @@ const ReportPage = () => {
             </div>
             <div className="text-right">
               <p className="text-3xl font-bold text-indigo-600 md:text-4xl">
-                {(totalMinutes / 60).toFixed(1)}<span className="text-xl">h</span>
+                {totalHours.toFixed(1)}<span className="text-xl">h</span>
               </p>
             </div>
           </div>
@@ -394,21 +396,23 @@ const ReportPage = () => {
                         );
                       } else {
                         // 排班记录
-                        let duration = 0;
-                        // 优先使用排班记录中保存的自定义工时
+                        let hours = 0;
+                        // 优先使用排班记录中保存的自定义工时（带小数的小时数）
                         if (record.customDuration !== undefined && record.customDuration !== null && record.customDuration !== "") {
-                          duration = convertDurationToHours(record.customDuration) * 60;
+                          hours = convertDurationToHours(record.customDuration);
                         } else if (record.selectedShift) {
                           const shift = shifts.find(s => s.id === record.selectedShift);
                           if (shift && shift.customDuration !== undefined && shift.customDuration !== null && shift.customDuration !== "") {
-                            duration = convertDurationToHours(shift.customDuration) * 60;
+                            hours = convertDurationToHours(shift.customDuration);
                           } else {
-                            // Calculate duration from start and end time
+                            // Calculate duration from start and end time and convert to hours
                             const start = new Date(`1970-01-01T${record.startTime}:00`);
                             const end = new Date(`1970-01-01T${record.endTime}:00`);
-                            duration = (end - start) / (1000 * 60); // Convert to minutes
+                            const durationInMinutes = (end - start) / (1000 * 60); // Convert to minutes
+                            hours = durationInMinutes / 60; // Convert to hours
                           }
                         }
+                        const duration = hours * 60; // Convert to minutes for display
                         
                         return (
                           <tr key={`schedule-${record.id}`} className={`border-b border-gray-100 ${index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}`}>
@@ -511,21 +515,23 @@ const ReportPage = () => {
                     );
                   } else {
                     // 排班记录
-                    let duration = 0;
-                    // 优先使用排班记录中保存的自定义工时
+                    let hours = 0;
+                    // 优先使用排班记录中保存的自定义工时（带小数的小时数）
                     if (record.customDuration !== undefined && record.customDuration !== null && record.customDuration !== "") {
-                      duration = convertDurationToHours(record.customDuration) * 60;
+                      hours = convertDurationToHours(record.customDuration);
                     } else if (record.selectedShift) {
                       const shift = shifts.find(s => s.id === record.selectedShift);
                       if (shift && shift.customDuration !== undefined && shift.customDuration !== null && shift.customDuration !== "") {
-                        duration = convertDurationToHours(shift.customDuration) * 60;
+                        hours = convertDurationToHours(shift.customDuration);
                       } else {
-                        // Calculate duration from start and end time
+                        // Calculate duration from start and end time and convert to hours
                         const start = new Date(`1970-01-01T${record.startTime}:00`);
                         const end = new Date(`1970-01-01T${record.endTime}:00`);
-                        duration = (end - start) / (1000 * 60); // Convert to minutes
+                        const durationInMinutes = (end - start) / (1000 * 60); // Convert to minutes
+                        hours = durationInMinutes / 60; // Convert to hours
                       }
                     }
+                    const duration = hours * 60; // Convert to minutes for display
                     
                     return (
                       <div key={`schedule-${record.id}`} className="bg-white p-3 rounded-lg border border-gray-200">
