@@ -148,16 +148,15 @@ export const exportToExcelReport = (entries, schedules, shifts, fileName, t) => 
     return dailyHours.reduce((sum, hours) => sum + hours, 0);
   })();
 
-  // Add a total row at the end
-  data.push([
-    '', 
-    t('reports.total'), 
-    totalHours.toFixed(1) + 'h', 
-    '', 
-    '', 
-    '',
-    ''
-  ]);
+  // 根据用户需求修改总计行格式
+  // 1. 在数据和总计行之间添加一个空行
+  data.push(['']);
+  
+  // 2. 修改总计行格式：总计文本放在日期列，总工时放在自定义工时列（第3列）
+  const totalRow = Array(7).fill(''); // 创建一个7列的空数组
+  totalRow[0] = t('reports.total'); // 总计文本放在日期列（第1列）
+  totalRow[2] = totalHours.toFixed(1) + 'h'; // 总工时放在自定义工时列（第3列）
+  data.push(totalRow);
 
   // Create a new workbook and worksheet
   const ws = utils.aoa_to_sheet(data);
@@ -165,14 +164,14 @@ export const exportToExcelReport = (entries, schedules, shifts, fileName, t) => 
   // Apply styling to the worksheet
   const range = utils.decode_range(ws['!ref']);
   
-  // Style the header row
+  // Style the header row - 加大字体并加粗
   for (let C = range.s.C; C <= range.e.C; ++C) {
     const address = utils.encode_cell({ r: 0, c: C });
     if (!ws[address]) continue;
     ws[address].s = {
-      font: { bold: true, color: { rgb: "FFFFFF" } },
+      font: { bold: true, sz: 14, color: { rgb: "FFFFFF" } }, // 加大字体(sz: 14)并加粗
       fill: { fgColor: { rgb: "4F46E5" } }, // Indigo color
-      alignment: { horizontal: "center" }
+      alignment: { horizontal: "center", vertical: "center" } // 居中对齐
     };
   }
   
@@ -184,16 +183,22 @@ export const exportToExcelReport = (entries, schedules, shifts, fileName, t) => 
       
       // Center align all cells
       if (!ws[address].s) ws[address].s = {};
-      ws[address].s.alignment = { horizontal: "center" };
+      ws[address].s.alignment = { horizontal: "center", vertical: "center" }; // 垂直居中
       
       // Special styling for notes column (second column)
       if (C === 1) {
-        ws[address].s.alignment = { horizontal: "left" };
+        ws[address].s.alignment = { horizontal: "left", vertical: "center" }; // 左对齐但垂直居中
       }
       
-      // Special styling for the total row (last row)
+      // Special styling for the total row (last row) - 高亮加粗显示
       if (R === range.e.R) {
         ws[address].s.font = { bold: true };
+        ws[address].s.fill = { fgColor: { rgb: "E0E7FF" } }; // Light indigo color
+      }
+      
+      // 特殊处理总计行中的总工时单元格（第3列）- 加大加粗蓝色字体显示
+      if (R === range.e.R && C === 2) {
+        ws[address].s.font = { bold: true, sz: 14, color: { rgb: "1E40AF" } }; // 加粗并加大字体(sz: 14)，蓝色字体
         ws[address].s.fill = { fgColor: { rgb: "E0E7FF" } }; // Light indigo color
       }
     }
