@@ -4,9 +4,9 @@
 export const shiftTypeToColorMap = {
   day: {
     hue: 180,        // 青色
-    saturation: 70,   // 饱和度70%
-    lightness: 35,    // 亮度35% (较深的青色)
-    bgLightness: 85  // 背景亮度85% (较浅的青色)
+    saturation: 80,   // 饱和度80%
+    lightness: 30,    // 亮度30% (更深的青色)
+    bgLightness: 80  // 背景亮度80% (较深的浅青色)
   },
   overnight: {
     hue: 240,        // 蓝色
