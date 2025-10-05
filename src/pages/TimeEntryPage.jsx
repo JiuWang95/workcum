@@ -6,6 +6,7 @@ import AddEntryModal from '../components/modals/AddEntryModal';
 import ReplaceConfirmationModal from '../components/modals/ReplaceConfirmationModal';
 import { useTranslation } from 'react-i18next';
 import { isSameDay } from 'date-fns';
+import { getData, setData, watchStorageChanges } from '../utils/dataManager';
 
 const TimeEntryPage = () => {
   const { t } = useTranslation();
@@ -19,15 +20,33 @@ const TimeEntryPage = () => {
   const [pendingEntry, setPendingEntry] = useState(null);
   const editSectionRef = useRef(null);
 
-  // Load entries, schedules and shifts from localStorage on component mount
   useEffect(() => {
-    const savedEntries = JSON.parse(localStorage.getItem('timeEntries') || '[]');
-    const savedSchedules = JSON.parse(localStorage.getItem('schedules') || '[]');
-    const savedShifts = JSON.parse(localStorage.getItem('customShifts') || '[]');
+    // Load data from localStorage on component mount using dataManager
+    setEntries(getData('timeEntries'));
+    setSchedules(getData('schedules'));
+    setShifts(getData('customShifts'));
     
-    setEntries(savedEntries);
-    setSchedules(savedSchedules);
-    setShifts(savedShifts);
+    // Watch for storage changes from other tabs
+    const unsubscribe = watchStorageChanges((key, newValue) => {
+      switch (key) {
+        case 'timeEntries':
+          setEntries(newValue || []);
+          break;
+        case 'schedules':
+          setSchedules(newValue || []);
+          break;
+        case 'customShifts':
+          setShifts(newValue || []);
+          break;
+        default:
+          break;
+      }
+    });
+
+    // Cleanup listener on component unmount
+    return () => {
+      unsubscribe();
+    };
   }, []);
 
   // Function to scroll to edit section
@@ -69,7 +88,7 @@ const TimeEntryPage = () => {
       // No existing data, add entry directly
       const newEntries = [...entries, entry];
       setEntries(newEntries);
-      localStorage.setItem('timeEntries', JSON.stringify(newEntries));
+      setData('timeEntries', newEntries);
     }
   };
 
@@ -85,8 +104,8 @@ const TimeEntryPage = () => {
       // Update state and localStorage
       setEntries(newEntries);
       setSchedules(filteredSchedules);
-      localStorage.setItem('timeEntries', JSON.stringify(newEntries));
-      localStorage.setItem('schedules', JSON.stringify(filteredSchedules));
+      setData('timeEntries', newEntries);
+      setData('schedules', filteredSchedules);
       
       // Close modals
       setShowReplaceModal(false);
@@ -99,7 +118,7 @@ const TimeEntryPage = () => {
     if (window.confirm(t('time_entry.delete_confirm'))) {
       const newEntries = entries.filter(entry => entry.id !== id);
       setEntries(newEntries);
-      localStorage.setItem('timeEntries', JSON.stringify(newEntries));
+      setData('timeEntries', newEntries);
     }
   };
 

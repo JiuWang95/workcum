@@ -3,6 +3,7 @@ import { format, startOfWeek, endOfWeek, addDays, isSameDay } from 'date-fns';
 import { zhCN } from 'date-fns/locale';
 import { useTranslation } from 'react-i18next';
 import { getShiftColor, getShiftBackgroundColor } from '@/utils/shiftColor.js'; // 导入颜色工具函数
+import { getData, setData, watchStorageChanges } from '../../utils/dataManager';
 
 const ScheduleCalendar = ({ currentDate }) => {
   const { t } = useTranslation();
@@ -18,15 +19,26 @@ const ScheduleCalendar = ({ currentDate }) => {
     endTime: '10:00'
   });
 
-  // Load schedules from localStorage
+  // Load data from localStorage on component mount using dataManager
   useEffect(() => {
-    const savedSchedules = JSON.parse(localStorage.getItem('schedules') || '[]');
-    setSchedules(savedSchedules);
+    setSchedules(getData('schedules'));
+    
+    // Watch for storage changes from other tabs
+    const unsubscribe = watchStorageChanges((key, newValue) => {
+      if (key === 'schedules') {
+        setSchedules(newValue || []);
+      }
+    });
+
+    // Cleanup listener on component unmount
+    return () => {
+      unsubscribe();
+    };
   }, []);
 
   // Save schedules to localStorage whenever they change
   useEffect(() => {
-    localStorage.setItem('schedules', JSON.stringify(schedules));
+    setData('schedules', schedules);
   }, [schedules]);
 
   const weekStart = startOfWeek(currentDate, { weekStartsOn: 1 });

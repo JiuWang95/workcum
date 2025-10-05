@@ -4,6 +4,7 @@ import { exportToExcelReport } from '../utils/export';
 import { useTranslation } from 'react-i18next';
 import { getEntryColor } from '../utils/entryColor'; // 导入时间记录颜色工具函数
 import Modal from '../components/modals/Modal'; // 导入Modal组件
+import { getData, watchStorageChanges } from '../utils/dataManager'; // 导入数据管理工具
 
 const ReportPage = () => {
   const { t } = useTranslation();
@@ -18,14 +19,31 @@ const ReportPage = () => {
   const [excelFileName, setExcelFileName] = useState(''); // 添加自定义文件名状态
   const [selectedButton, setSelectedButton] = useState('thisWeek'); // 添加选中状态跟踪
 
-  // Load entries and schedules from localStorage on component mount
+  // Load entries and schedules from dataManager on component mount
   useEffect(() => {
-    const savedEntries = JSON.parse(localStorage.getItem('timeEntries') || '[]');
-    const savedSchedules = JSON.parse(localStorage.getItem('schedules') || '[]');
-    const savedShifts = JSON.parse(localStorage.getItem('customShifts') || '[]');
-    setEntries(savedEntries);
-    setSchedules(savedSchedules);
-    setShifts(savedShifts);
+    const loadData = () => {
+      const savedEntries = getData('timeEntries');
+      const savedSchedules = getData('schedules');
+      const savedShifts = getData('customShifts');
+      setEntries(savedEntries);
+      setSchedules(savedSchedules);
+      setShifts(savedShifts);
+    };
+
+    // Load initial data
+    loadData();
+
+    // Watch for storage changes
+    const unsubscribe = watchStorageChanges(() => {
+      loadData();
+    });
+
+    // Cleanup listener on unmount
+    return () => {
+      if (unsubscribe) {
+        unsubscribe();
+      }
+    };
   }, []);
 
   // Filter entries and schedules based on date range

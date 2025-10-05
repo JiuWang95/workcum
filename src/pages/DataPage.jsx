@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { exportAllData, importDataFromJSON, clearAllData, getAllData } from '../utils/dataManager';
 import ConfirmOverrideModal from '../components/modals/ConfirmOverrideModal';
 import Modal from '../components/modals/Modal';
 
@@ -14,19 +15,34 @@ const DataPage = () => {
 
   // Export all data to JSON - 只导出本地存储数据为JSON格式
   const handleExportAllData = () => {
-    // 设置默认文件名
-    const defaultFileName = `time-tracker-backup-${new Date().toISOString().split('T')[0]}`;
-    setExportFileName(defaultFileName);
-    setIsExportFileNameModalOpen(true);
+    try {
+      // Use dataManager to export all data
+      const dataStr = exportAllData();
+      const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+
+      const exportFileDefaultName = `workcum-data-${new Date().toISOString().split('T')[0]}.json`;
+
+      const linkElement = document.createElement('a');
+      linkElement.setAttribute('href', dataUri);
+      linkElement.setAttribute('download', exportFileDefaultName);
+      linkElement.click();
+
+      setExportStatus(t('data.export.success'));
+      setTimeout(() => setExportStatus(''), 3000);
+    } catch (error) {
+      console.error('Export failed:', error);
+      setExportStatus(t('data.export.error'));
+      setTimeout(() => setExportStatus(''), 3000);
+    }
   };
 
   // Handle export with custom file name
   const handleExportWithFileName = () => {
     try {
-      // Get all data from localStorage
-      const timeEntries = JSON.parse(localStorage.getItem('timeEntries') || '[]');
-      const schedules = JSON.parse(localStorage.getItem('schedules') || '[]');
-      const customShifts = JSON.parse(localStorage.getItem('customShifts') || '[]');
+      // Get all data from dataManager
+      const timeEntries = JSON.parse(exportAllData()).timeEntries || [];
+      const schedules = JSON.parse(exportAllData()).schedules || [];
+      const customShifts = JSON.parse(exportAllData()).customShifts || [];
       
       // Create data object - 只包含本地存储的数据
       const data = {
@@ -63,14 +79,12 @@ const DataPage = () => {
     if (!file) return;
 
     // Check if there's existing data
-    const existingTimeEntries = localStorage.getItem('timeEntries');
-    const existingSchedules = localStorage.getItem('schedules');
-    const existingCustomShifts = localStorage.getItem('customShifts');
+    const { timeEntries, schedules, customShifts } = getAllData();
 
     const hasExistingData = 
-      (existingTimeEntries && JSON.parse(existingTimeEntries).length > 0) ||
-      (existingSchedules && JSON.parse(existingSchedules).length > 0) ||
-      (existingCustomShifts && JSON.parse(existingCustomShifts).length > 0);
+      (timeEntries && timeEntries.length > 0) ||
+      (schedules && schedules.length > 0) ||
+      (customShifts && customShifts.length > 0);
 
     if (hasExistingData) {
       // Show confirmation modal if there's existing data
@@ -89,21 +103,8 @@ const DataPage = () => {
     const reader = new FileReader();
     reader.onload = (e) => {
       try {
-        const data = JSON.parse(e.target.result);
-        
-        // Validate data structure
-        if (!data.timeEntries || !data.schedules) {
-          throw new Error(t('data.import.invalid_format'));
-        }
-        
-        // Save to localStorage
-        localStorage.setItem('timeEntries', JSON.stringify(data.timeEntries));
-        localStorage.setItem('schedules', JSON.stringify(data.schedules));
-        // Check if customShifts exists in the imported data, if not, keep existing data
-        if (data.customShifts !== undefined) {
-          localStorage.setItem('customShifts', JSON.stringify(data.customShifts));
-        }
-        
+        // Use dataManager to import data
+        importDataFromJSON(e.target.result, true);
         setImportStatus(t('data.import.success'));
         setTimeout(() => setImportStatus(''), 3000);
       } catch (error) {
@@ -117,9 +118,8 @@ const DataPage = () => {
   // Clear all data
   const handleClearAllData = () => {
     if (window.confirm(t('data.clear_confirm'))) {
-      localStorage.removeItem('timeEntries');
-      localStorage.removeItem('schedules');
-      localStorage.removeItem('customShifts');
+      // Use dataManager to clear all data
+      clearAllData();
       setImportStatus(t('data.clear_success'));
       setTimeout(() => setImportStatus(''), 3000);
     }

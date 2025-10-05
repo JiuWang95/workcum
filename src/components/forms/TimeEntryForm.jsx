@@ -3,6 +3,7 @@ import { format, parse } from 'date-fns';
 import { useTranslation } from 'react-i18next';
 import DurationPicker from '../pickers/DurationPicker';
 import ColorPicker from '../pickers/ColorPicker'; // 导入颜色选择器组件
+import { getData, watchStorageChanges } from '../../utils/dataManager';
 
 const TimeEntryForm = ({ onAddEntry, onCancel, onSubmit }) => {
   const { t } = useTranslation();
@@ -15,10 +16,22 @@ const TimeEntryForm = ({ onAddEntry, onCancel, onSubmit }) => {
   const [customDuration, setCustomDuration] = useState('');
   const [customHue, setCustomHue] = useState(30); // 添加自定义色调状态，默认为橙色
 
-  // Load custom shifts from localStorage
+  // Load custom shifts from dataManager
   useEffect(() => {
-    const savedShifts = JSON.parse(localStorage.getItem('customShifts') || '[]');
+    const savedShifts = getData('customShifts');
     setShifts(savedShifts);
+    
+    // Watch for storage changes from other tabs
+    const unsubscribe = watchStorageChanges((key, newValue) => {
+      if (key === 'customShifts') {
+        setShifts(newValue || []);
+      }
+    });
+
+    // Cleanup listener on component unmount
+    return () => {
+      unsubscribe();
+    };
   }, []);
 
   const calculateDuration = (start, end, customDur) => {

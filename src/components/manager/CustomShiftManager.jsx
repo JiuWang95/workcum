@@ -4,6 +4,7 @@ import DurationPicker from '../pickers/DurationPicker';
 import { getShiftColor, getShiftBackgroundColor, getShiftTypeBackgroundColor } from '@/utils/shiftColor.js';
 import Modal from '../modals/Modal';
 import ColorPicker from '../pickers/ColorPicker'; // 导入颜色选择器组件
+import { getData, setData, watchStorageChanges } from '../../utils/dataManager';
 
 const CustomShiftManager = ({ scrollToEditSection }) => {
   const { t } = useTranslation();
@@ -21,15 +22,27 @@ const CustomShiftManager = ({ scrollToEditSection }) => {
   const [draggedItem, setDraggedItem] = useState(null);
   const [draggedOver, setDraggedOver] = useState(null);
 
-  // Load shifts from localStorage on component mount
+  // Load shifts from dataManager on component mount
   useEffect(() => {
-    const savedShifts = JSON.parse(localStorage.getItem('customShifts') || '[]');
+    const savedShifts = getData('customShifts');
     setShifts(savedShifts);
+    
+    // Watch for storage changes from other tabs
+    const unsubscribe = watchStorageChanges((key, newValue) => {
+      if (key === 'customShifts') {
+        setShifts(newValue || []);
+      }
+    });
+
+    // Cleanup listener on component unmount
+    return () => {
+      unsubscribe();
+    };
   }, []);
 
-  // Save shifts to localStorage whenever shifts change
+  // Save shifts to dataManager whenever shifts change
   useEffect(() => {
-    localStorage.setItem('customShifts', JSON.stringify(shifts));
+    setData('customShifts', shifts);
   }, [shifts]);
 
   // 根据班次类型自动设置默认颜色
