@@ -194,24 +194,48 @@ const CalendarDay = ({ day, isCurrentMonth, isToday: isTodayProp, daySchedules, 
     } ${isTodayProp ? 'bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-300 shadow-sm' : ''}`}
       style={daySchedules.length > 0 || dayTimeEntries.length > 0 ? { backgroundColor: dayBackgroundColor } : {}}
     >
-      <div className={`text-right ${isTodayProp ? 'bg-blue-500 text-white rounded-full w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center ml-auto text-[10px] sm:text-xs' : ''}`}>
-        <span className="font-bold">{format(day, 'd', { locale: zhCN })}</span>
+      {/* 日期数字区域 */}
+      <div className="flex justify-end">
+        <div className={`text-right ${isTodayProp ? 'bg-blue-500 text-white rounded-full w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center text-[10px] sm:text-xs' : ''}`}>
+          <span className="font-bold">{format(day, 'd', { locale: zhCN })}</span>
+        </div>
       </div>
       
-      <div className="flex-1 overflow-hidden relative mt-0.5 sm:mt-1">
-        {/* 多个项目时使用对角线分割显示 */}
-        {(daySchedules.length + dayTimeEntries.length) >= 2 ? 
-          renderMultipleItems() : 
-          renderSingleItem()
-        }
-        
-        {/* 显示额外项目数量 */}
-        {(daySchedules.length + dayTimeEntries.length) > 2 && (
-          <div className="text-[0.5rem] sm:text-[0.6rem] md:text-xs text-gray-600 truncate relative z-10 bg-white bg-opacity-80 px-1 py-0.5 rounded-full shadow-sm mt-1">
-            +{(daySchedules.length + dayTimeEntries.length) - 2} {t('schedule.more_items')}
-          </div>
-        )}
-      </div>
+      {/* 当日排班颜色显示格子 - 覆盖整个下半部分并显示班次名称 */}
+      {isTodayProp && (daySchedules.length > 0 || dayTimeEntries.length > 0) ? (
+        <div 
+          className="flex-1 mt-1 rounded-md shadow-sm flex items-center justify-center p-1"
+          style={{
+            backgroundColor: daySchedules.length > 0 ? 
+              getShiftColor(daySchedules[0].selectedShift ? 
+                shifts.find(shift => shift.id === daySchedules[0].selectedShift)?.shiftType || 'day' : 'day') : 
+              '#f97316'
+          }}
+        >
+          <span className="text-white text-[0.6rem] sm:text-xs font-bold truncate text-center">
+            {daySchedules.length > 0 ? 
+              (shifts.find(shift => shift.id === daySchedules[0].selectedShift)?.name || t('schedule.shift')) : 
+              t('time_entry.entry')
+            }
+          </span>
+        </div>
+      ) : (
+        // 非当日或无排班时显示正常的排班项目
+        <div className="flex-1 overflow-hidden relative mt-0.5 sm:mt-1">
+          {/* 多个项目时使用对角线分割显示 */}
+          {(daySchedules.length + dayTimeEntries.length) >= 2 ? 
+            renderMultipleItems() : 
+            renderSingleItem()
+          }
+          
+          {/* 显示额外项目数量 */}
+          {(daySchedules.length + dayTimeEntries.length) > 2 && (
+            <div className="text-[0.5rem] sm:text-[0.6rem] md:text-xs text-gray-600 truncate relative z-10 bg-white bg-opacity-80 px-1 py-0.5 rounded-full shadow-sm mt-1">
+              +{(daySchedules.length + dayTimeEntries.length) - 2} {t('schedule.more_items')}
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 };
