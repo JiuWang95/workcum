@@ -276,7 +276,7 @@ const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
             >
               <div className="flex h-full">
                 {/* Left side - Date information */}
-                <div className={`w-1/4 sm:w-1/5 pr-1 sm:pr-2 border-r border-gray-200 flex flex-col items-center justify-center ${
+                <div className={`w-1/4 sm:w-1/5 pr-0.5 sm:pr-1 border-r border-gray-200 flex flex-col items-center justify-center ${
                   isToday ? 'text-blue-600' : 'text-gray-700'
                 }`}>
                   <div className="text-black text-[0.7rem] sm:text-sm font-bold">
@@ -291,7 +291,7 @@ const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
                 </div>
                 
                 {/* Right side - Events information */}
-                <div className="w-3/4 sm:w-4/5 pl-2 sm:pl-3 flex flex-col">
+                <div className="w-3/4 sm:w-4/5 pl-1 sm:pl-2 flex flex-col">
                   {/* Arrangement of schedules and time entries: improved layout with full height and minimal margin */}
                   <div className="flex flex-col gap-1.5 sm:gap-2 flex-grow -mt-px -mb-px sm:-mt-px sm:-mb-px">
                     {/* Display schedules */}
@@ -326,14 +326,14 @@ const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
                               ></div>
                               <div className="min-w-0 flex-1 flex items-center">
                                 <h3 
-                                  className="font-bold text-gray-800 text-xs sm:text-sm truncate leading-tight mr-1"
+                                  className="font-bold text-gray-800 text-sm sm:text-base leading-tight mr-1"
                                   style={{ color: getShiftColor(shiftType, customHue) }}
                                 >
                                   {shiftName}
                                 </h3>
                                 {/* 类型标识：显示班次类型，带颜色填充 */}
                                 <span 
-                                  className="inline-flex items-center px-1 py-0.5 rounded-full text-[0.55rem] sm:text-[0.65rem] font-medium whitespace-nowrap"
+                                  className="inline-flex items-center px-1 py-0.5 rounded-full text-[0.5rem] sm:text-[0.6rem] font-medium whitespace-nowrap mr-2"
                                   style={{
                                     backgroundColor: getShiftTypeBackgroundColor(shiftType, customHue),
                                     color: getShiftColor(shiftType, customHue)
