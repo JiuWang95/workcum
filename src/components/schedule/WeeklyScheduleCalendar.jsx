@@ -276,7 +276,7 @@ const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
             >
               <div className="flex h-full">
                 {/* Left side - Date information */}
-                <div className={`w-1/4 sm:w-1/5 pr-0.5 sm:pr-1 border-r border-gray-200 flex flex-col items-center justify-center ${
+                <div className={`w-1/6 sm:w-1/12 pr-0.5 sm:pr-1 border-r border-gray-200 flex flex-col items-center justify-center ${
                   isToday ? 'text-blue-600' : 'text-gray-700'
                 }`}>
                   <div className="text-black text-[0.7rem] sm:text-sm font-bold">
@@ -291,7 +291,7 @@ const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
                 </div>
                 
                 {/* Right side - Events information */}
-                <div className="w-3/4 sm:w-4/5 pl-1 sm:pl-2 flex flex-col">
+                <div className="w-5/6 sm:w-11/12 pl-1 sm:pl-2 flex flex-col">
                   {/* Arrangement of schedules and time entries: improved layout with full height and minimal margin */}
                   <div className="flex flex-col gap-1.5 sm:gap-2 flex-grow -mt-px -mb-px sm:-mt-px sm:-mb-px">
                     {/* Display schedules */}
