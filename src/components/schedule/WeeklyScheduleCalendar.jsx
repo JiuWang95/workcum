@@ -10,7 +10,6 @@ import {
 } from 'date-fns';
 import { zhCN } from 'date-fns/locale';
 import { useTranslation } from 'react-i18next';
-import { getData, setData, watchStorageChanges } from '../../utils/dataManager';
 import { getShiftColor, getShiftBackgroundColor, getShiftTypeBackgroundColor } from '@/utils/shiftColor.js'; // 导入颜色工具函数
 import { getEntryColor } from '@/utils/entryColor.js'; // 导入时间记录颜色工具函数
 import Modal from '../modals/Modal.jsx'; // 导入统一的Modal组件
@@ -20,7 +19,6 @@ const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
   const [schedules, setSchedules] = useState([]);
   const [timeEntries, setTimeEntries] = useState([]);
   const [shifts, setShifts] = useState([]); // Add shifts state
-  const [customShifts, setCustomShifts] = useState([]); // Add customShifts state
   const [showModal, setShowModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
@@ -33,45 +31,57 @@ const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
   const [showReplaceModal, setShowReplaceModal] = useState(false);
   const [selectedDateForReplace, setSelectedDateForReplace] = useState(null);
 
-  // Load data from localStorage on component mount using dataManager
+  // Load schedules from localStorage
   useEffect(() => {
-    setSchedules(getData('schedules'));
-    setTimeEntries(getData('timeEntries'));
-    setShifts(getData('customShifts'));
-    setCustomShifts(getData('customShifts'));
-    
-    // Watch for storage changes from other tabs
-    const unsubscribe = watchStorageChanges((key, newValue) => {
-      switch (key) {
-        case 'schedules':
-          setSchedules(newValue || []);
-          break;
-        case 'timeEntries':
-          setTimeEntries(newValue || []);
-          break;
-        case 'customShifts':
-          setShifts(newValue || []);
-          setCustomShifts(newValue || []);
-          break;
-        default:
-          break;
-      }
-    });
+    const savedSchedules = JSON.parse(localStorage.getItem('schedules') || '[]');
+    setSchedules(savedSchedules);
+  }, []);
 
-    // Cleanup listener on component unmount
+  // Load time entries from localStorage
+  useEffect(() => {
+    const savedEntries = JSON.parse(localStorage.getItem('timeEntries') || '[]');
+    setTimeEntries(savedEntries);
+  }, []);
+
+  // 添加一个useEffect来监听localStorage的变化
+  useEffect(() => {
+    const handleStorageChange = (e) => {
+      if (e.key === 'timeEntries') {
+        const savedEntries = JSON.parse(e.newValue || '[]');
+        setTimeEntries(savedEntries);
+      }
+      if (e.key === 'schedules') {
+        const savedSchedules = JSON.parse(e.newValue || '[]');
+        setSchedules(savedSchedules);
+      }
+      if (e.key === 'customShifts') {
+        const savedShifts = JSON.parse(e.newValue || '[]');
+        setShifts(savedShifts);
+      }
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    
+    // Cleanup event listener on component unmount
     return () => {
-      unsubscribe();
+      window.removeEventListener('storage', handleStorageChange);
     };
   }, []);
 
-  // Save schedules to localStorage whenever schedules change
+  // Load custom shifts from localStorage
   useEffect(() => {
-    setData('schedules', schedules);
+    const savedShifts = JSON.parse(localStorage.getItem('customShifts') || '[]');
+    setShifts(savedShifts);
+  }, []);
+
+  // Save schedules to localStorage whenever they change
+  useEffect(() => {
+    localStorage.setItem('schedules', JSON.stringify(schedules));
   }, [schedules]);
 
-  // Save time entries to localStorage whenever timeEntries change
+  // Save time entries to localStorage whenever they change
   useEffect(() => {
-    setData('timeEntries', timeEntries);
+    localStorage.setItem('timeEntries', JSON.stringify(timeEntries));
   }, [timeEntries]);
 
   // Get all days to display in the week view

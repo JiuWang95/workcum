@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { format, isSameDay, isSameMonth, startOfMonth, endOfMonth, startOfWeek, endOfWeek, addDays } from 'date-fns';
 import { zhCN } from 'date-fns/locale';
 import { useTranslation } from 'react-i18next';
-import { getData, setData, watchStorageChanges } from '../../utils/dataManager';
 import { getShiftColor, getShiftBackgroundColor } from '@/utils/shiftColor.js'; // 导入颜色工具函数
 
 const CalendarDay = ({ day, isCurrentMonth, isToday: isTodayProp, daySchedules, dayTimeEntries, shifts, dayBackgroundColor, t, getShiftBackgroundColor }) => {
@@ -247,32 +246,91 @@ const MonthlyScheduleCalendar = ({ currentDate, onDateChange }) => {
   const [timeEntries, setTimeEntries] = useState([]);
   const [shifts, setShifts] = useState([]);
 
-  // Load data from localStorage on component mount using dataManager
+  // Load schedules from localStorage
   useEffect(() => {
-    setSchedules(getData('schedules'));
-    setTimeEntries(getData('timeEntries'));
-    setShifts(getData('customShifts'));
+    const savedSchedules = JSON.parse(localStorage.getItem('schedules') || '[]');
+    setSchedules(savedSchedules);
     
-    // Watch for storage changes from other tabs
-    const unsubscribe = watchStorageChanges((key, newValue) => {
-      switch (key) {
-        case 'schedules':
-          setSchedules(newValue || []);
-          break;
-        case 'timeEntries':
-          setTimeEntries(newValue || []);
-          break;
-        case 'customShifts':
-          setShifts(newValue || []);
-          break;
-        default:
-          break;
+    // 添加storage事件监听器
+    const handleStorageChange = (e) => {
+      if (e.key === 'schedules') {
+        try {
+          const updatedSchedules = JSON.parse(e.newValue || '[]');
+          setSchedules(updatedSchedules);
+        } catch (error) {
+          console.error('Error parsing schedules from localStorage:', error);
+        }
       }
-    });
+    };
 
-    // Cleanup listener on component unmount
+    window.addEventListener('storage', handleStorageChange);
+    
+    // 清理函数
     return () => {
-      unsubscribe();
+      window.removeEventListener('storage', handleStorageChange);
+    };
+  }, []);
+
+  // 在每次打开月历时同步周历数据
+  useEffect(() => {
+    // 从localStorage获取最新的数据
+    const latestSchedules = JSON.parse(localStorage.getItem('schedules') || '[]');
+    const latestTimeEntries = JSON.parse(localStorage.getItem('timeEntries') || '[]');
+    const latestShifts = JSON.parse(localStorage.getItem('customShifts') || '[]');
+    
+    // 更新状态
+    setSchedules(latestSchedules);
+    setTimeEntries(latestTimeEntries);
+    setShifts(latestShifts);
+  }, [currentDate]);
+
+  // Load time entries from localStorage
+  useEffect(() => {
+    const savedEntries = JSON.parse(localStorage.getItem('timeEntries') || '[]');
+    setTimeEntries(savedEntries);
+    
+    // 添加storage事件监听器
+    const handleStorageChange = (e) => {
+      if (e.key === 'timeEntries') {
+        try {
+          const updatedEntries = JSON.parse(e.newValue || '[]');
+          setTimeEntries(updatedEntries);
+        } catch (error) {
+          console.error('Error parsing timeEntries from localStorage:', error);
+        }
+      }
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    
+    // 清理函数
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+    };
+  }, []);
+
+  // Load custom shifts from localStorage
+  useEffect(() => {
+    const savedShifts = JSON.parse(localStorage.getItem('customShifts') || '[]');
+    setShifts(savedShifts);
+    
+    // 添加storage事件监听器
+    const handleStorageChange = (e) => {
+      if (e.key === 'customShifts') {
+        try {
+          const updatedShifts = JSON.parse(e.newValue || '[]');
+          setShifts(updatedShifts);
+        } catch (error) {
+          console.error('Error parsing customShifts from localStorage:', error);
+        }
+      }
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    
+    // 清理函数
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
     };
   }, []);
 
