@@ -198,8 +198,16 @@
       "date": "Date",
       "start_time": "Start Time",
       "end_time": "End Time",
+      "duration": "Duration",
       "notes": "Notes",
-      "shift_template": "Shift Template"
+      "shift_template": "Shift Template",
+      "type": "Type",
+      "time_entry": "Time Entry",
+      "schedule": "Schedule",
+      "name": "Shift Name",
+      "custom_hours": "Custom Hours",
+      "time_period": "Time Period",
+      "shift_type": "Shift Type"
     },
     "select_placeholder": "Select a shift template",
     "select_shift_help": "Please select a shift template to quickly populate schedule information",
@@ -292,7 +300,8 @@
       "end_time": "End Time",
       "name": "Name",
       "custom_hours": "Custom Hours",
-      "time_period": "Time Period"
+      "time_period": "Time Period",
+      "shift_type": "Shift Type"
     },
     "worksheet_name": "Work Records",
     "total": "Total",

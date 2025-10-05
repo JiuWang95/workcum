@@ -1,7 +1,7 @@
 import { utils, writeFile } from 'xlsx';
 import { format, parseISO, eachDayOfInterval } from 'date-fns';
 import { getEntryColor } from './entryColor';
-import { getShiftColor } from './shiftColor';
+import { getShiftColor, shiftTypeToColorMap } from './shiftColor';
 
 // Function to convert duration string to hours
 const convertDurationToHours = (durationStr) => {
@@ -14,6 +14,22 @@ const convertDurationToHours = (durationStr) => {
   const minutes = minutesMatch ? parseFloat(minutesMatch[1]) : 0;
   
   return hours + (minutes / 60);
+};
+
+// Function to get shift type text
+const getShiftTypeText = (shiftType, t) => {
+  switch (shiftType) {
+    case 'day':
+      return t ? t('time_entry.custom_shift.day_shift') : '白天班';
+    case 'rest':
+      return t ? t('time_entry.custom_shift.rest_day') : '休息日';
+    case 'overnight':
+      return t ? t('time_entry.custom_shift.overnight_shift') : '跨夜班';
+    case 'special':
+      return t ? t('time_entry.custom_shift.special_shift') : '特殊班次';
+    default:
+      return t ? t('time_entry.custom_shift.day_shift') : '白天班';
+  }
 };
 
 export const exportToExcelReport = (entries, schedules, shifts, fileName, t) => {
@@ -36,7 +52,7 @@ export const exportToExcelReport = (entries, schedules, shifts, fileName, t) => 
 
   // Create the data array for Excel with custom formatting
   const data = [
-    [t('reports.table.notes'), t('reports.table.start_time'), t('reports.table.end_time'), t('reports.table.duration'), t('reports.table.date'), t('reports.table.type')]
+    [t('reports.table.date'), t('reports.table.notes'), t('reports.table.duration'), t('reports.table.start_time'), t('reports.table.end_time'), t('reports.table.shift_type'), t('reports.table.type')]
   ];
 
   // Add all records to the data array
@@ -75,12 +91,21 @@ export const exportToExcelReport = (entries, schedules, shifts, fileName, t) => 
 
   // Add each record to the data array
   sortedRecords.forEach(record => {
+    let shiftTypeText = '';
+    if (record.type === 'schedule' && record.selectedShift) {
+      const shift = shifts.find(s => s.id === record.selectedShift);
+      if (shift) {
+        shiftTypeText = getShiftTypeText(shift.shiftType, t);
+      }
+    }
+    
     const rowData = [
+      record.date,
       record.type === 'entry' ? (record.notes || t('time_entry.entry')) : (record.notes || record.title || '-'),
+      record.customHours.toFixed(1) + 'h',
       record.startTime,
       record.endTime,
-      record.customHours.toFixed(1) + 'h',
-      record.date,
+      shiftTypeText,
       record.type === 'entry' ? t('reports.table.time_entry') : t('reports.table.schedule')
     ];
     data.push(rowData);
@@ -125,11 +150,12 @@ export const exportToExcelReport = (entries, schedules, shifts, fileName, t) => 
 
   // Add a total row at the end
   data.push([
+    '', 
     t('reports.total'), 
-    '', 
-    '', 
     totalHours.toFixed(1) + 'h', 
     '', 
+    '', 
+    '',
     ''
   ]);
 
@@ -160,8 +186,8 @@ export const exportToExcelReport = (entries, schedules, shifts, fileName, t) => 
       if (!ws[address].s) ws[address].s = {};
       ws[address].s.alignment = { horizontal: "center" };
       
-      // Special styling for notes column (first column)
-      if (C === 0) {
+      // Special styling for notes column (second column)
+      if (C === 1) {
         ws[address].s.alignment = { horizontal: "left" };
       }
       

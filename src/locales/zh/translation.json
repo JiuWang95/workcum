@@ -193,7 +193,8 @@
       "schedule": "排班",
       "name": "班次名称",
       "custom_hours": "自定义工时",
-      "time_period": "班次时间段"
+      "time_period": "班次时间段",
+      "shift_type": "班次类型"
     },
     "worksheet_name": "工作记录",
     "total": "总计",
