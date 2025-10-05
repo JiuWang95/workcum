@@ -190,8 +190,13 @@
       "notes": "班次",
       "type": "类型",
       "time_entry": "工时记录",
-      "schedule": "排班"
+      "schedule": "排班",
+      "name": "班次名称",
+      "custom_hours": "自定义工时",
+      "time_period": "班次时间段"
     },
+    "worksheet_name": "工作记录",
+    "total": "总计",
     "summary_item": "统计项目",
     "value": "数值",
     "entries_count": "工时记录总数",

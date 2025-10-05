@@ -25,163 +25,93 @@ export const exportToExcelReport = (entries, schedules, shifts, filename, t) => 
   // Create a new workbook
   const wb = utils.book_new();
 
-  // Sort entries by date and start time
-  const sortedEntries = [...entries].sort((a, b) => {
+  // Combine entries and schedules into a single array with required fields
+  const allRecords = [
+    ...entries.map(entry => ({
+      date: entry.date,
+      name: entry.notes || t('reports.table.time_entry'),
+      customHours: (entry.duration / 60).toFixed(1),
+      timePeriod: `${entry.startTime}-${entry.endTime}`,
+      type: t('reports.table.time_entry')
+    })),
+    ...schedules.map(schedule => {
+      // Calculate custom hours using the same logic as in ReportPage.jsx
+      let hours = 0;
+      // Prioritize using custom duration saved in schedule record
+      if (schedule.customDuration !== undefined && schedule.customDuration !== null && schedule.customDuration !== "") {
+        hours = convertDurationToHours(schedule.customDuration);
+      } else if (schedule.selectedShift) {
+        const shift = shifts.find(s => s.id === schedule.selectedShift);
+        // Modify logic: If custom duration exists (even if 0), use custom duration
+        if (shift && shift.customDuration !== undefined && shift.customDuration !== null && shift.customDuration !== "") {
+          hours = convertDurationToHours(shift.customDuration);
+        } else {
+          // Calculate duration from start and end time and convert to hours
+          const start = new Date(`1970-01-01T${schedule.startTime}:00`);
+          const end = new Date(`1970-01-01T${schedule.endTime}:00`);
+          const durationInMinutes = (end - start) / (1000 * 60); // Convert to minutes
+          hours = durationInMinutes / 60; // Convert to hours
+        }
+      }
+      
+      return {
+        date: schedule.date,
+        name: schedule.notes || schedule.title || '',
+        customHours: hours.toFixed(1),
+        timePeriod: `${schedule.startTime}-${schedule.endTime}`,
+        type: t('reports.table.schedule')
+      };
+    })
+  ];
+
+  // Sort all records by date and start time
+  const sortedRecords = [...allRecords].sort((a, b) => {
     // First sort by date
     if (a.date !== b.date) {
       return a.date.localeCompare(b.date);
     }
-    // If dates are equal, sort by start time
-    return a.startTime.localeCompare(b.startTime);
+    // If dates are equal, sort by time period (start time)
+    return a.timePeriod.localeCompare(b.timePeriod);
   });
 
-  // 1. Format time entries data for Excel
-  const formattedEntries = sortedEntries.map(entry => {
-    return {
-        Type: t ? t('reports.table.time_entry') : t('reports.table.time_entry'),
-        Date: entry.date,
-        'Start Time': entry.startTime,
-        'End Time': entry.endTime,
-        Duration: `${(entry.duration / 60).toFixed(1)}h`,
-        Minutes: entry.duration,
-        Notes: entry.notes || ''
-      };
-  });
+  // Add a summary row at the end
+  const totalHours = sortedRecords.reduce((sum, record) => sum + parseFloat(record.customHours), 0);
+  const summaryRow = {
+    date: '',
+    name: '',
+    customHours: totalHours.toFixed(1),
+    timePeriod: '',
+    type: t('reports.total')
+  };
 
-  // Add time entries worksheet if there are entries
-  if (formattedEntries.length > 0) {
-    const wsEntries = utils.json_to_sheet(formattedEntries);
-    
-    // Apply centered style to all cells in the worksheet
-    const range = utils.decode_range(wsEntries['!ref']);
-    for (let row = range.s.r; row <= range.e.r; row++) {
-      for (let col = range.s.c; col <= range.e.c; col++) {
-        const cellRef = utils.encode_cell({ r: row, c: col });
-        if (wsEntries[cellRef]) {
-          wsEntries[cellRef].s = centeredStyle;
-        }
-      }
-    }
-    
-    utils.book_append_sheet(wb, wsEntries, t ? t('reports.table.time_entry') : t('reports.table.time_entry'));
-  }
+  // Combine all records with the summary row
+  const finalData = [...sortedRecords, summaryRow];
 
-  // Sort schedules by date and start time
-  const sortedSchedules = [...schedules].sort((a, b) => {
-    // First sort by date
-    if (a.date !== b.date) {
-      return a.date.localeCompare(b.date);
-    }
-    // If dates are equal, sort by start time
-    return a.startTime.localeCompare(b.startTime);
-  });
+  // Format data for Excel with the required column names
+  const formattedData = finalData.map(record => ({
+    [t('reports.table.date')]: record.date,
+    [t('reports.table.name')]: record.name,
+    [t('reports.table.custom_hours')]: record.customHours,
+    [t('reports.table.time_period')]: record.timePeriod,
+    [t('reports.table.type')]: record.type
+  }));
 
-  // 2. Format schedules data for Excel
-  const formattedSchedules = sortedSchedules.map(schedule => {
-    let duration = 0;
-    // Prioritize using custom duration saved in schedule record
-    if (schedule.customDuration !== undefined && schedule.customDuration !== null && schedule.customDuration !== "") {
-      duration = convertDurationToHours(schedule.customDuration) * 60;
-    } else if (schedule.selectedShift) {
-      const shift = shifts.find(s => s.id === schedule.selectedShift);
-      // Modify logic: If custom duration exists (even if 0), use custom duration
-      if (shift && shift.customDuration !== undefined && shift.customDuration !== null && shift.customDuration !== "") {
-        duration = convertDurationToHours(shift.customDuration) * 60;
-      } else {
-        // Calculate duration from start and end time
-        const start = new Date(`1970-01-01T${schedule.startTime}:00`);
-        const end = new Date(`1970-01-01T${schedule.endTime}:00`);
-        duration = (end - start) / (1000 * 60); // Convert to minutes
-      }
-    }
-    
-    return {
-        Type: t ? t('reports.table.schedule') : t('reports.table.schedule'),
-        Date: schedule.date,
-        'Start Time': schedule.startTime,
-        'End Time': schedule.endTime,
-        Duration: `${(duration / 60).toFixed(1)}h`,
-        Minutes: duration,
-        Notes: schedule.notes || schedule.title || ''
-      };
-  });
-
-  // Add schedules worksheet if there are schedules
-  if (formattedSchedules.length > 0) {
-    const wsSchedules = utils.json_to_sheet(formattedSchedules);
-    
-    // Apply centered style to all cells in the worksheet
-    const range = utils.decode_range(wsSchedules['!ref']);
-    for (let row = range.s.r; row <= range.e.r; row++) {
-      for (let col = range.s.c; col <= range.e.c; col++) {
-        const cellRef = utils.encode_cell({ r: row, c: col });
-        if (wsSchedules[cellRef]) {
-          wsSchedules[cellRef].s = centeredStyle;
-        }
-      }
-    }
-    
-    utils.book_append_sheet(wb, wsSchedules, t ? t('schedule.title') : t('schedule.title'));
-  }
-
-  // 3. Format custom shifts data for Excel
-  const formattedShifts = shifts.map(shift => {
-    return {
-      [t ? t('shifts.name') : t('shifts.name')]: shift.name,
-      [t ? t('shifts.start_time') : t('shifts.start_time')]: shift.startTime,
-      [t ? t('shifts.end_time') : t('shifts.end_time')]: shift.endTime,
-      [t ? t('shifts.custom_duration') : t('shifts.custom_duration')]: shift.customDuration || '',
-      [t ? t('shifts.shift_type') : t('shifts.shift_type')]: shift.shiftType || 'day'
-    };
-  });
-
-  // Add shifts worksheet if there are shifts
-  if (formattedShifts.length > 0) {
-    const wsShifts = utils.json_to_sheet(formattedShifts);
-    
-    // Apply centered style to all cells in the worksheet
-    const range = utils.decode_range(wsShifts['!ref']);
-    for (let row = range.s.r; row <= range.e.r; row++) {
-      for (let col = range.s.c; col <= range.e.c; col++) {
-        const cellRef = utils.encode_cell({ r: row, c: col });
-        if (wsShifts[cellRef]) {
-          wsShifts[cellRef].s = centeredStyle;
-        }
-      }
-    }
-    
-    utils.book_append_sheet(wb, wsShifts, t ? t('shifts.custom_shifts') : t('shifts.custom_shifts'));
-  }
-
-  // 4. Create summary data
-  // Calculate total hours from filtered data using custom duration (decimal hours)
-  const totalHoursFromEntries = formattedEntries.reduce((sum, entry) => sum + (entry.Minutes / 60), 0);
-  const totalHoursFromSchedules = formattedSchedules.reduce((sum, schedule) => sum + (schedule.Minutes / 60), 0);
-  const totalHours = (totalHoursFromEntries + totalHoursFromSchedules).toFixed(1);
-
-  // Summary data
-  const summaryData = [
-      { [t ? t('reports.summary_item') : t('reports.summary_item')]: t ? t('reports.entries_count') : t('reports.entries_count'), [t ? t('reports.value') : t('reports.value')]: entries.length },
-      { [t ? t('reports.summary_item') : t('reports.summary_item')]: t ? t('reports.schedules_count') : t('reports.schedules_count'), [t ? t('reports.value') : t('reports.value')]: schedules.length },
-      { [t ? t('reports.summary_item') : t('reports.summary_item')]: t ? t('reports.custom_shifts_count') : t('reports.custom_shifts_count'), [t ? t('reports.value') : t('reports.value')]: shifts.length },
-      { [t ? t('reports.summary_item') : t('reports.summary_item')]: t ? t('reports.total_hours') : t('reports.total_hours'), [t ? t('reports.value') : t('reports.value')]: totalHours },
-      { [t ? t('reports.summary_item') : t('reports.summary_item')]: t ? t('reports.total_minutes') : t('reports.total_minutes'), [t ? t('reports.value') : t('reports.value')]: totalMinutes }
-    ];
-
-  const wsSummary = utils.json_to_sheet(summaryData);
+  // Create worksheet
+  const ws = utils.json_to_sheet(formattedData);
   
   // Apply centered style to all cells in the worksheet
-  const range = utils.decode_range(wsSummary['!ref']);
+  const range = utils.decode_range(ws['!ref']);
   for (let row = range.s.r; row <= range.e.r; row++) {
     for (let col = range.s.c; col <= range.e.c; col++) {
       const cellRef = utils.encode_cell({ r: row, c: col });
-      if (wsSummary[cellRef]) {
-        wsSummary[cellRef].s = centeredStyle;
+      if (ws[cellRef]) {
+        ws[cellRef].s = centeredStyle;
       }
     }
   }
   
-  utils.book_append_sheet(wb, wsSummary, t ? t('reports.summary') : t('reports.summary'));
+  // Add worksheet to workbook
+  utils.book_append_sheet(wb, ws, t('reports.worksheet_name'));
 
   // Export to file
   writeFile(wb, `${filename}.xlsx`);

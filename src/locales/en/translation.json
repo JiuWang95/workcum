@@ -289,8 +289,13 @@
       "time_entry": "Time Entry",
       "schedule": "Schedule",
       "start_time": "Start Time",
-      "end_time": "End Time"
+      "end_time": "End Time",
+      "name": "Name",
+      "custom_hours": "Custom Hours",
+      "time_period": "Time Period"
     },
+    "worksheet_name": "Work Records",
+    "total": "Total",
     "summary_item": "Item",
     "value": "Value",
     "entries_count": "Total Time Entries",
