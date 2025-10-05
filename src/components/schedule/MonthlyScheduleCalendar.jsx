@@ -276,19 +276,6 @@ const MonthlyScheduleCalendar = ({ currentDate, onDateChange }) => {
     };
   }, []);
 
-  // 在每次打开月历时同步周历数据
-  useEffect(() => {
-    // 从localStorage获取最新的数据
-    const latestSchedules = getData('schedules');
-    const latestTimeEntries = getData('timeEntries');
-    const latestShifts = getData('customShifts');
-    
-    // 更新状态
-    setSchedules(latestSchedules);
-    setTimeEntries(latestTimeEntries);
-    setShifts(latestShifts);
-  }, [currentDate]);
-
   // Get all days to display in the month view
   const getCalendarDays = (date) => {
     const monthStart = startOfMonth(date);
