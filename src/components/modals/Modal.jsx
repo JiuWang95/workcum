@@ -48,9 +48,9 @@ const Modal = ({ isOpen, onClose, title, children, footer, size = 'sm' }) => {
           className={`inline-block align-bottom bg-white/95 backdrop-blur-xl rounded-3xl text-left overflow-hidden shadow-2xl transform transition-all duration-500 ease-out sm:my-8 sm:align-middle w-full mx-2 ${sizeClasses[size]} opacity-0 scale-95 translate-y-8 border border-white/30`}
           onClick={(e) => e.stopPropagation()} // Prevent closing when clicking modal content
         >
-          {/* Modal header with gradient background */}
-          <div className="flex justify-between items-center px-6 py-4 border-b border-white/20 bg-gradient-to-r from-primary-50/80 to-accent-50/80 backdrop-blur-sm">
-            <h3 className="text-lg sm:text-xl font-semibold bg-gradient-to-r from-primary-600 to-accent-600 bg-clip-text text-transparent">{title}</h3>
+          {/* Modal header with black bold title */}
+          <div className="flex justify-between items-center px-6 py-3 border-b border-gray-100 bg-white">
+            <h3 className="text-lg sm:text-xl font-bold text-gray-900">{title}</h3>
             <button
               type="button"
               className="inline-flex items-center justify-center w-10 h-10 rounded-full text-secondary-400 hover:text-primary-600 hover:bg-primary-50 transition-all duration-300 ease-out transform hover:scale-110 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"

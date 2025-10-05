@@ -12,6 +12,7 @@ import { zhCN } from 'date-fns/locale';
 import { useTranslation } from 'react-i18next';
 import { getShiftColor, getShiftBackgroundColor } from '@/utils/shiftColor.js'; // 导入颜色工具函数
 import { getEntryColor } from '@/utils/entryColor.js'; // 导入时间记录颜色工具函数
+import Modal from '../modals/Modal.jsx'; // 导入统一的Modal组件
 
 const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
   const { t } = useTranslation();
@@ -408,21 +409,12 @@ const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
       </div>
 
       {showModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 p-2 sm:p-4">
-          <div className="bg-white rounded-2xl p-4 sm:p-6 w-full max-w-md sm:max-w-lg shadow-2xl transform transition-all duration-300 scale-95 animate-in fade-in-90 zoom-in-95">
-            <div className="flex justify-between items-center mb-4 sm:mb-6">
-              <h2 className="text-lg sm:text-xl font-bold text-gray-800">
-                {formData.id ? t('schedule.edit_schedule') : t('schedule.add_schedule')}
-              </h2>
-              <button
-                onClick={() => setShowModal(false)}
-                className="text-gray-400 hover:text-gray-500 transition-colors duration-200"
-              >
-                <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
-                </svg>
-              </button>
-            </div>
+        <Modal
+          isOpen={showModal}
+          onClose={() => setShowModal(false)}
+          title={formData.id ? t('schedule.edit_schedule') : t('schedule.add_schedule')}
+          size="md"
+        >
             
             <form onSubmit={handleSubmit}>
               {/* 只保留班次选择框 */}
@@ -497,26 +489,16 @@ const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
                 </div>
               </div>
             </form>
-          </div>
-        </div>
-      )}
+          </Modal>
+        )}
 
       {showDeleteModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl p-6 w-full max-w-md shadow-2xl transform transition-all duration-300 scale-95 animate-in fade-in-90 zoom-in-95">
-            <div className="flex justify-between items-center mb-6">
-              <h2 className="text-xl font-bold text-gray-800">
-                {t('time_entry.delete_entry')}
-              </h2>
-              <button
-                onClick={() => setShowDeleteModal(false)}
-                className="text-gray-400 hover:text-gray-500 transition-colors duration-200"
-              >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
-                </svg>
-              </button>
-            </div>
+        <Modal
+          isOpen={showDeleteModal}
+          onClose={() => setShowDeleteModal(false)}
+          title={t('time_entry.delete_entry')}
+          size="sm"
+        >
             
             <div className="mb-6">
               <p className="text-gray-700 text-center mb-4">
@@ -558,25 +540,15 @@ const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
                 {t('schedule.form.delete')}
               </button>
             </div>
-          </div>
-        </div>
-      )}
+          </Modal>
+        )}
       {showReplaceModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl p-6 w-full max-w-md shadow-2xl transform transition-all duration-300 scale-95 animate-in fade-in-90 zoom-in-95">
-            <div className="flex justify-between items-center mb-6">
-              <h2 className="text-xl font-bold text-gray-800">
-                {t('schedule.replace_confirmation')}
-              </h2>
-              <button
-                onClick={() => setShowReplaceModal(false)}
-                className="text-gray-400 hover:text-gray-500 transition-colors duration-200"
-              >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
-                </svg>
-              </button>
-            </div>
+        <Modal
+          isOpen={showReplaceModal}
+          onClose={() => setShowReplaceModal(false)}
+          title={t('schedule.replace_schedule')}
+          size="sm"
+        >
             
             <div className="mb-6">
               <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-r-lg mb-4">
@@ -626,9 +598,8 @@ const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
                 {t('schedule.replace')}
               </button>
             </div>
-          </div>
-        </div>
-      )}
+          </Modal>
+        )}
     </div>
   );
 };
