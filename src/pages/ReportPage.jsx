@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { format, subDays, startOfWeek, endOfWeek, startOfMonth, endOfMonth } from 'date-fns';
+import { format, subDays, startOfWeek, endOfWeek, startOfMonth, endOfMonth, eachDayOfInterval, isSameDay } from 'date-fns';
 import { exportToExcelReport } from '../utils/export';
 import { useTranslation } from 'react-i18next';
 import { getEntryColor } from '../utils/entryColor'; // 导入时间记录颜色工具函数
@@ -59,25 +59,50 @@ const ReportPage = () => {
   // 直接使用自定义工时（带小数的小时数）而不单独计算分钟
   const totalHoursFromEntries = filteredEntries.reduce((sum, entry) => sum + (entry.duration / 60), 0);
   
-  const totalHoursFromSchedules = filteredSchedules.reduce((sum, schedule) => {
-    let hours = 0;
-    // 优先使用排班记录中保存的自定义工时（带小数的小时数）
-    if (schedule.customDuration !== undefined && schedule.customDuration !== null && schedule.customDuration !== "") {
-      hours = convertDurationToHours(schedule.customDuration);
-    } else if (schedule.selectedShift) {
-      const shift = shifts.find(s => s.id === schedule.selectedShift);
-      if (shift && shift.customDuration !== undefined && shift.customDuration !== null && shift.customDuration !== "") {
-        hours = convertDurationToHours(shift.customDuration);
-      } else {
-        // Calculate duration from start and end time and convert to hours
-        const start = new Date(`1970-01-01T${schedule.startTime}:00`);
-        const end = new Date(`1970-01-01T${schedule.endTime}:00`);
-        const durationInMinutes = (end - start) / (1000 * 60); // Convert to minutes
-        hours = durationInMinutes / 60; // Convert to hours
+  // 修改计算逻辑：对于选定日期范围内的每一天，如果没有数据则使用0
+  const totalHoursFromSchedules = (() => {
+    // 生成选定日期范围内的所有日期
+    const dateRange = eachDayOfInterval({
+      start: new Date(startDate),
+      end: new Date(endDate)
+    });
+    
+    // 对于每个日期，计算该日期的工时（如果没有数据则为0）
+    const dailyHours = dateRange.map(date => {
+      const dateStr = format(date, 'yyyy-MM-dd');
+      // 获取该日期的所有排班记录
+      const schedulesForDate = filteredSchedules.filter(schedule => schedule.date === dateStr);
+      
+      // 如果该日期没有排班记录，返回0
+      if (schedulesForDate.length === 0) {
+        return 0;
       }
-    }
-    return sum + hours;
-  }, 0);
+      
+      // 如果有排班记录，计算这些记录的总工时
+      return schedulesForDate.reduce((sum, schedule) => {
+        let hours = 0;
+        // 优先使用排班记录中保存的自定义工时（带小数的小时数）
+        if (schedule.customDuration !== undefined && schedule.customDuration !== null && schedule.customDuration !== "") {
+          hours = convertDurationToHours(schedule.customDuration);
+        } else if (schedule.selectedShift) {
+          const shift = shifts.find(s => s.id === schedule.selectedShift);
+          if (shift && shift.customDuration !== undefined && shift.customDuration !== null && shift.customDuration !== "") {
+            hours = convertDurationToHours(shift.customDuration);
+          } else {
+            // Calculate duration from start and end time and convert to hours
+            const start = new Date(`1970-01-01T${schedule.startTime}:00`);
+            const end = new Date(`1970-01-01T${schedule.endTime}:00`);
+            const durationInMinutes = (end - start) / (1000 * 60); // Convert to minutes
+            hours = durationInMinutes / 60; // Convert to hours
+          }
+        }
+        return sum + hours;
+      }, 0);
+    });
+    
+    // 返回所有日期的工时总和
+    return dailyHours.reduce((sum, hours) => sum + hours, 0);
+  })();
   
   const totalHours = totalHoursFromEntries + totalHoursFromSchedules;
 

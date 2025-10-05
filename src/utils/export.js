@@ -1,4 +1,7 @@
-import { utils, writeFile } from 'xlsx-js-style';
+import { utils, writeFile } from 'xlsx';
+import { format, parseISO, eachDayOfInterval } from 'date-fns';
+import { getEntryColor } from './entryColor';
+import { getShiftColor } from './shiftColor';
 
 // Function to convert duration string to hours
 const convertDurationToHours = (durationStr) => {
@@ -13,106 +16,167 @@ const convertDurationToHours = (durationStr) => {
   return hours + (minutes / 60);
 };
 
-// Define centered style
-const centeredStyle = {
-  alignment: {
-    horizontal: "center",
-    vertical: "center"
-  }
-};
-
-export const exportToExcelReport = (entries, schedules, shifts, filename, t) => {
-  // Create a new workbook
-  const wb = utils.book_new();
-
-  // Combine entries and schedules into a single array with required fields
+export const exportToExcelReport = (entries, schedules, shifts, fileName, t) => {
+  // Combine entries and schedules into a single array with type identifiers
   const allRecords = [
-    ...entries.map(entry => ({
-      date: entry.date,
-      name: entry.notes || t('reports.table.time_entry'),
-      customHours: (entry.duration / 60).toFixed(1),
-      timePeriod: `${entry.startTime}-${entry.endTime}`,
-      type: t('reports.table.time_entry')
-    })),
-    ...schedules.map(schedule => {
-      // Calculate custom hours using the same logic as in ReportPage.jsx
-      let hours = 0;
-      // Prioritize using custom duration saved in schedule record
-      if (schedule.customDuration !== undefined && schedule.customDuration !== null && schedule.customDuration !== "") {
-        hours = convertDurationToHours(schedule.customDuration);
-      } else if (schedule.selectedShift) {
-        const shift = shifts.find(s => s.id === schedule.selectedShift);
-        // Modify logic: If custom duration exists (even if 0), use custom duration
-        if (shift && shift.customDuration !== undefined && shift.customDuration !== null && shift.customDuration !== "") {
-          hours = convertDurationToHours(shift.customDuration);
-        } else {
-          // Calculate duration from start and end time and convert to hours
-          const start = new Date(`1970-01-01T${schedule.startTime}:00`);
-          const end = new Date(`1970-01-01T${schedule.endTime}:00`);
-          const durationInMinutes = (end - start) / (1000 * 60); // Convert to minutes
-          hours = durationInMinutes / 60; // Convert to hours
-        }
-      }
-      
-      return {
-        date: schedule.date,
-        name: schedule.notes || schedule.title || '',
-        customHours: hours.toFixed(1),
-        timePeriod: `${schedule.startTime}-${schedule.endTime}`,
-        type: t('reports.table.schedule')
-      };
-    })
+    ...entries.map(entry => ({ ...entry, type: 'entry' })),
+    ...schedules.map(schedule => ({ ...schedule, type: 'schedule' }))
   ];
 
-  // Sort all records by date and start time
-  const sortedRecords = [...allRecords].sort((a, b) => {
+  // Sort all records by date and time
+  allRecords.sort((a, b) => {
     // First sort by date
     if (a.date !== b.date) {
       return a.date.localeCompare(b.date);
     }
-    // If dates are equal, sort by time period (start time)
-    return a.timePeriod.localeCompare(b.timePeriod);
+    
+    // If dates are the same, sort by start time
+    return a.startTime.localeCompare(b.startTime);
   });
 
-  // Add a summary row at the end
-  const totalHours = sortedRecords.reduce((sum, record) => sum + parseFloat(record.customHours), 0);
-  const summaryRow = {
-    date: '',
-    name: '',
-    customHours: totalHours.toFixed(1),
-    timePeriod: '',
-    type: t('reports.total')
-  };
+  // Create the data array for Excel with custom formatting
+  const data = [
+    [t('reports.table.notes'), t('reports.table.start_time'), t('reports.table.end_time'), t('reports.table.duration'), t('reports.table.date'), t('reports.table.type')]
+  ];
 
-  // Combine all records with the summary row
-  const finalData = [...sortedRecords, summaryRow];
+  // Add all records to the data array
+  const sortedRecords = allRecords.map(record => {
+    if (record.type === 'entry') {
+      // For time entries, use the duration directly (convert from minutes to hours)
+      const durationInHours = record.duration / 60;
+      return {
+        ...record,
+        customHours: durationInHours
+      };
+    } else {
+      // For schedules, calculate duration based on customDuration, shift customDuration, or start/end time
+      let hours = 0;
+      // Prioritize using the saved custom duration in the schedule record (in hours with decimals)
+      if (record.customDuration !== undefined && record.customDuration !== null && record.customDuration !== "") {
+        hours = convertDurationToHours(record.customDuration);
+      } else if (record.selectedShift) {
+        const shift = shifts.find(s => s.id === record.selectedShift);
+        if (shift && shift.customDuration !== undefined && shift.customDuration !== null && shift.customDuration !== "") {
+          hours = convertDurationToHours(shift.customDuration);
+        } else {
+          // Calculate duration from start and end time and convert to hours
+          const start = new Date(`1970-01-01T${record.startTime}:00`);
+          const end = new Date(`1970-01-01T${record.endTime}:00`);
+          const durationInMinutes = (end - start) / (1000 * 60); // Convert to minutes
+          hours = durationInMinutes / 60; // Convert to hours
+        }
+      }
+      return {
+        ...record,
+        customHours: hours
+      };
+    }
+  });
 
-  // Format data for Excel with the required column names
-  const formattedData = finalData.map(record => ({
-    [t('reports.table.date')]: record.date,
-    [t('reports.table.name')]: record.name,
-    [t('reports.table.custom_hours')]: record.customHours,
-    [t('reports.table.time_period')]: record.timePeriod,
-    [t('reports.table.type')]: record.type
-  }));
+  // Add each record to the data array
+  sortedRecords.forEach(record => {
+    const rowData = [
+      record.type === 'entry' ? (record.notes || t('time_entry.entry')) : (record.notes || record.title || '-'),
+      record.startTime,
+      record.endTime,
+      record.customHours.toFixed(1) + 'h',
+      record.date,
+      record.type === 'entry' ? t('reports.table.time_entry') : t('reports.table.schedule')
+    ];
+    data.push(rowData);
+  });
 
-  // Create worksheet
-  const ws = utils.json_to_sheet(formattedData);
-  
-  // Apply centered style to all cells in the worksheet
+  // 修改计算逻辑：对于选定日期范围内的每一天，如果没有数据则使用0
+  const totalHours = (() => {
+    // 如果没有记录，返回0
+    if (allRecords.length === 0) {
+      return 0;
+    }
+    
+    // 确定日期范围
+    const dates = allRecords.map(record => record.date);
+    const startDate = new Date(Math.min(...dates.map(date => new Date(date))));
+    const endDate = new Date(Math.max(...dates.map(date => new Date(date))));
+    
+    // 生成日期范围内的所有日期
+    const dateRange = eachDayOfInterval({
+      start: startDate,
+      end: endDate
+    });
+    
+    // 对于每个日期，计算该日期的工时（如果没有数据则为0）
+    const dailyHours = dateRange.map(date => {
+      const dateStr = format(date, 'yyyy-MM-dd');
+      // 获取该日期的所有记录
+      const recordsForDate = sortedRecords.filter(record => record.date === dateStr);
+      
+      // 如果该日期没有记录，返回0
+      if (recordsForDate.length === 0) {
+        return 0;
+      }
+      
+      // 如果有记录，计算这些记录的总工时
+      return recordsForDate.reduce((sum, record) => sum + record.customHours, 0);
+    });
+    
+    // 返回所有日期的工时总和
+    return dailyHours.reduce((sum, hours) => sum + hours, 0);
+  })();
+
+  // Add a total row at the end
+  data.push([
+    t('reports.total'), 
+    '', 
+    '', 
+    totalHours.toFixed(1) + 'h', 
+    '', 
+    ''
+  ]);
+
+  // Create a new workbook and worksheet
+  const ws = utils.aoa_to_sheet(data);
+
+  // Apply styling to the worksheet
   const range = utils.decode_range(ws['!ref']);
-  for (let row = range.s.r; row <= range.e.r; row++) {
-    for (let col = range.s.c; col <= range.e.c; col++) {
-      const cellRef = utils.encode_cell({ r: row, c: col });
-      if (ws[cellRef]) {
-        ws[cellRef].s = centeredStyle;
+  
+  // Style the header row
+  for (let C = range.s.C; C <= range.e.C; ++C) {
+    const address = utils.encode_cell({ r: 0, c: C });
+    if (!ws[address]) continue;
+    ws[address].s = {
+      font: { bold: true, color: { rgb: "FFFFFF" } },
+      fill: { fgColor: { rgb: "4F46E5" } }, // Indigo color
+      alignment: { horizontal: "center" }
+    };
+  }
+  
+  // Style the data rows (center align all cells except notes)
+  for (let R = 1; R <= range.e.R; ++R) {
+    for (let C = 0; C <= range.e.C; ++C) {
+      const address = utils.encode_cell({ r: R, c: C });
+      if (!ws[address]) continue;
+      
+      // Center align all cells
+      if (!ws[address].s) ws[address].s = {};
+      ws[address].s.alignment = { horizontal: "center" };
+      
+      // Special styling for notes column (first column)
+      if (C === 0) {
+        ws[address].s.alignment = { horizontal: "left" };
+      }
+      
+      // Special styling for the total row (last row)
+      if (R === range.e.R) {
+        ws[address].s.font = { bold: true };
+        ws[address].s.fill = { fgColor: { rgb: "E0E7FF" } }; // Light indigo color
       }
     }
   }
-  
-  // Add worksheet to workbook
-  utils.book_append_sheet(wb, ws, t('reports.worksheet_name'));
 
-  // Export to file
-  writeFile(wb, `${filename}.xlsx`);
+  // Create workbook and add worksheet
+  const wb = utils.book_new();
+  utils.book_append_sheet(wb, ws, t('reports.title'));
+
+  // Export the workbook
+  writeFile(wb, `${fileName}.xlsx`);
 };
