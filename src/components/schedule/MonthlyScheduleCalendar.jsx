@@ -203,21 +203,40 @@ const CalendarDay = ({ day, isCurrentMonth, isToday: isTodayProp, daySchedules, 
       
       {/* 当日排班颜色显示格子 - 覆盖整个下半部分并显示班次名称 */}
       {isTodayProp && (daySchedules.length > 0 || dayTimeEntries.length > 0) ? (
-        <div 
-          className="flex-1 mt-1 rounded-md shadow-sm flex items-center justify-center p-1"
-          style={{
-            backgroundColor: daySchedules.length > 0 ? 
-              getShiftColor(daySchedules[0].selectedShift ? 
-                shifts.find(shift => shift.id === daySchedules[0].selectedShift)?.shiftType || 'day' : 'day') : 
-              '#f97316'
-          }}
-        >
-          <span className="text-white text-[0.6rem] sm:text-xs font-bold truncate text-center">
-            {daySchedules.length > 0 ? 
-              (shifts.find(shift => shift.id === daySchedules[0].selectedShift)?.name || t('schedule.shift')) : 
-              t('time_entry.entry')
-            }
-          </span>
+        <div className="flex-1 mt-1 rounded-md shadow-sm p-1">
+          {daySchedules.map((schedule, index) => {
+            const shiftInfo = shifts.find(shift => shift.id === schedule.selectedShift);
+            const shiftType = shiftInfo ? shiftInfo.shiftType : 'day';
+            const shiftColor = getShiftColor(shiftType);
+            const shiftName = shiftInfo ? shiftInfo.name : t('schedule.shift');
+            
+            return (
+              <div 
+                key={index}
+                className="rounded-md shadow-sm flex items-center justify-center p-1 mb-1 last:mb-0"
+                style={{
+                  backgroundColor: shiftColor
+                }}
+              >
+                <span className="text-white text-[0.6rem] sm:text-xs font-bold truncate text-center">
+                  {shiftName}
+                </span>
+              </div>
+            );
+          })}
+          {dayTimeEntries.map((entry, index) => (
+            <div 
+              key={`entry-${index}`}
+              className="rounded-md shadow-sm flex items-center justify-center p-1"
+              style={{
+                backgroundColor: '#f97316'
+              }}
+            >
+              <span className="text-white text-[0.6rem] sm:text-xs font-bold truncate text-center">
+                {entry.notes || t('time_entry.entry')}
+              </span>
+            </div>
+          ))}
         </div>
       ) : (
         // 非当日或无排班时显示正常的排班项目
