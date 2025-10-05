@@ -326,14 +326,14 @@ const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
                               ></div>
                               <div className="min-w-0 flex-1 flex items-center">
                                 <h3 
-                                  className="font-bold text-gray-800 text-sm truncate leading-tight mr-2"
+                                  className="font-bold text-gray-800 text-xs sm:text-sm truncate leading-tight mr-1.5"
                                   style={{ color: getShiftColor(shiftType, customHue) }}
                                 >
                                   {shiftName}
                                 </h3>
                                 {/* 类型标识：显示班次类型，带颜色填充 */}
                                 <span 
-                                  className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium whitespace-nowrap"
+                                  className="inline-flex items-center px-1.5 py-0.5 rounded-full text-[0.65rem] sm:text-xs font-medium whitespace-nowrap"
                                   style={{
                                     backgroundColor: getShiftTypeBackgroundColor(shiftType, customHue),
                                     color: getShiftColor(shiftType, customHue)
@@ -354,7 +354,7 @@ const WeeklyScheduleCalendar = ({ currentDate, onDateChange }) => {
                                   <svg className="w-3 h-3 text-gray-400 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                   </svg>
-                                  <span className="text-gray-700 text-xs font-bold">
+                                  <span className="text-gray-700 text-[0.65rem] sm:text-xs font-bold">
                                     {convertDurationToHours(shifts.find(s => s.id === schedule.selectedShift).customDuration).toFixed(1)}h
                                   </span>
                                 </div>
