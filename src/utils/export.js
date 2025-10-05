@@ -154,9 +154,9 @@ export const exportToExcelReport = (entries, schedules, shifts, filename, t) => 
   }
 
   // 4. Create summary data
-  // Calculate total minutes
-  const totalMinutesFromEntries = entries.reduce((sum, entry) => sum + entry.duration, 0);
-  const totalMinutesFromSchedules = formattedSchedules.reduce((sum, schedule) => sum + (schedule.Minutes || 0), 0);
+  // Calculate total minutes from filtered data
+  const totalMinutesFromEntries = formattedEntries.reduce((sum, entry) => sum + entry.Minutes, 0);
+  const totalMinutesFromSchedules = formattedSchedules.reduce((sum, schedule) => sum + schedule.Minutes, 0);
   const totalMinutes = totalMinutesFromEntries + totalMinutesFromSchedules;
   const totalHours = (totalMinutes / 60).toFixed(1);
 
