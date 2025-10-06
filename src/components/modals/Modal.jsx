@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 const Modal = ({ isOpen, onClose, title, children, footer, size = 'sm' }) => {
   const { t } = useTranslation();
   const modalRef = useRef(null);
+  const overlayRef = useRef(null);
   
   // Set modal width based on size property
   const sizeClasses = {
@@ -16,12 +17,15 @@ const Modal = ({ isOpen, onClose, title, children, footer, size = 'sm' }) => {
 
   // Apply entrance animation when modal opens
   useEffect(() => {
-    if (isOpen && modalRef.current) {
+    if (isOpen && modalRef.current && overlayRef.current) {
       // Trigger reflow to ensure the animation plays
       modalRef.current.offsetHeight;
-      // Apply the visible state
-      modalRef.current.classList.remove('opacity-0', 'translate-y-4');
-      modalRef.current.classList.add('opacity-100', 'translate-y-0');
+      overlayRef.current.offsetHeight;
+      // Apply the visible state with enhanced animations
+      modalRef.current.classList.remove('opacity-0', 'scale-95', 'translate-y-8');
+      modalRef.current.classList.add('opacity-100', 'scale-100', 'translate-y-0');
+      overlayRef.current.classList.remove('opacity-0');
+      overlayRef.current.classList.add('opacity-100');
     }
   }, [isOpen]);
 
@@ -29,43 +33,44 @@ const Modal = ({ isOpen, onClose, title, children, footer, size = 'sm' }) => {
 
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto">
-      {/* Background overlay with blur effect */}
+      {/* Background overlay with enhanced blur and gradient */}
       <div 
-        className="fixed inset-0 bg-black bg-opacity-40 backdrop-blur-sm transition-opacity duration-300"
+        ref={overlayRef}
+        className="fixed inset-0 bg-gradient-to-br from-primary-900/20 via-accent-900/15 to-secondary-900/10 backdrop-blur-md transition-all duration-500 ease-out opacity-0"
         onClick={onClose}
       ></div>
 
-      {/* Modal container with smooth entrance animation */}
+      {/* Modal container with enhanced animations */}
       <div className="flex items-center justify-center min-h-screen px-4 pt-4 pb-6 text-center sm:block sm:p-0">
-        {/* Modal content with enhanced styling and animations */}
+        {/* Modal content with modern styling and animations */}
         <div 
           ref={modalRef}
-          className={`inline-block align-bottom bg-white rounded-2xl text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:align-middle w-full mx-2 ${sizeClasses[size]} opacity-0 translate-y-4 duration-300 ease-out`}
+          className={`inline-block align-bottom bg-white/95 backdrop-blur-xl rounded-3xl text-left overflow-hidden shadow-2xl transform transition-all duration-500 ease-out sm:my-8 sm:align-middle w-full mx-2 ${sizeClasses[size]} opacity-0 scale-95 translate-y-8 border border-white/30`}
           onClick={(e) => e.stopPropagation()} // Prevent closing when clicking modal content
         >
-          {/* Modal header with improved styling */}
-          <div className="flex justify-between items-center px-4 py-3 sm:px-6 sm:py-4 border-b border-gray-100 bg-gradient-to-r from-gray-50 to-gray-100">
-            <h3 className="text-base sm:text-xl font-semibold text-gray-800">{title}</h3>
+          {/* Modal header with black bold title */}
+          <div className="flex justify-between items-center px-6 py-3 border-b border-gray-100 bg-white">
+            <h3 className="text-lg sm:text-xl font-bold text-gray-900">{title}</h3>
             <button
               type="button"
-              className="text-gray-500 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-300 rounded-full p-1 transition-all duration-200"
+              className="inline-flex items-center justify-center w-10 h-10 rounded-full text-secondary-400 hover:text-primary-600 hover:bg-primary-50 transition-all duration-300 ease-out transform hover:scale-110 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
               onClick={onClose}
               aria-label={t('common.close')}
             >
-              <svg className="h-5 w-5 sm:h-6 sm:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
           </div>
 
-          {/* Modal body with improved padding and spacing */}
-          <div className="px-4 py-3 sm:px-6 sm:py-6">
+          {/* Modal body with enhanced styling */}
+          <div className="px-6 py-6 bg-gradient-to-b from-white/90 to-white/70 backdrop-blur-sm">
             {children}
           </div>
 
-          {/* Modal footer with enhanced styling */}
+          {/* Modal footer with gradient background */}
           {footer && (
-            <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:py-4 sm:flex sm:flex-row-reverse border-t border-gray-100 rounded-b-2xl">
+            <div className="px-6 py-4 border-t border-white/20 bg-gradient-to-r from-primary-50/60 to-accent-50/60 backdrop-blur-sm">
               {footer}
             </div>
           )}

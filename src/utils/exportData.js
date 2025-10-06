@@ -49,6 +49,10 @@ export const exportAllDataToExcel = (timeEntries, schedules, customShifts, filen
   // Create a new workbook
   const wb = utils.book_new();
 
+  // Filter entries and schedules by date range (assuming we want to export all data)
+  const startDate = null; // We don't have date range in this function, so we'll export all data
+  const endDate = null;
+
   // Sort entries by date and start time
   const sortedEntries = sortEntries(timeEntries);
 
@@ -164,11 +168,10 @@ export const exportAllDataToExcel = (timeEntries, schedules, customShifts, filen
   }
 
   // 4. Create summary data
-  // Calculate total minutes
-  const totalMinutesFromEntries = timeEntries.reduce((sum, entry) => sum + entry.duration, 0);
-  const totalMinutesFromSchedules = formattedSchedules.reduce((sum, schedule) => sum + (schedule.Minutes || 0), 0);
-  const totalMinutes = totalMinutesFromEntries + totalMinutesFromSchedules;
-  const totalHours = (totalMinutes / 60).toFixed(1);
+  // Calculate total hours from filtered data using custom duration (decimal hours)
+  const totalHoursFromEntries = formattedEntries.reduce((sum, entry) => sum + (entry.Minutes / 60), 0);
+  const totalHoursFromSchedules = formattedSchedules.reduce((sum, schedule) => sum + (schedule.Minutes / 60), 0);
+  const totalHours = (totalHoursFromEntries + totalHoursFromSchedules).toFixed(1);
 
   // Summary data
     const summaryData = [
