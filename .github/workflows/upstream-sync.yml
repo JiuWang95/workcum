@@ -5,15 +5,8 @@ on:
     - cron: "0 0 * * *" # every day
   workflow_dispatch:
 
-# Only run this workflow on fork repositories, not on the original repository
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
-
 jobs:
   sync-with-upstream:
-    # Only run this job if this is a fork repository
-    if: github.event.repository.fork == true
     runs-on: ubuntu-latest
     steps:
       # Step 1: Checkout the fork repository
